@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.example.books.R
 import com.example.books.databinding.LoginFragmentBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -49,7 +50,14 @@ class LoginFragment : Fragment() {
             else->loginUser(email, password)
 
 
-        }}
+
+
+        }
+
+findNavController().navigate(R.id.action_loginFragment_to_editFileFragment)
+
+
+        }
 
 
         return binding.root
@@ -67,10 +75,12 @@ class LoginFragment : Fragment() {
         }
     }
 
-    fun loginUser(email:String , password:String){
+  private  fun loginUser(email:String , password:String){
+
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task->
                 if (task.isSuccessful) {
+
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success")
                     Toast.makeText(context, "Authentication Done.",

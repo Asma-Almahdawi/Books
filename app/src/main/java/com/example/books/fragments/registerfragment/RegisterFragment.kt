@@ -8,12 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.example.books.R
+import com.example.books.database.User
 import com.example.books.databinding.RegisterFragmentBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 
 private const val TAG = "RegisterFragment"
 class RegisterFragment : Fragment() {
@@ -111,6 +114,9 @@ class RegisterFragment : Fragment() {
 
 
             }
+
+
+
 //
 //            database= FirebaseDatabase.getInstance().getReference("Users")
 //            val User = User(username,email,password)
@@ -142,23 +148,42 @@ class RegisterFragment : Fragment() {
 
 }
 
-    private fun registerUser(username:String,email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email,password)
-            .addOnCompleteListener { task->
-                if (task.isSuccessful){
-                    showToast("good job")
-                }else{
-                    Log.e(TAG , "there was something wrong",task.exception)
-                }
+//    private fun registerUser(username:String,email: String, password: String) {
+//        auth.createUserWithEmailAndPassword(email,password)
+//            .addOnCompleteListener { task->
+//                if (task.isSuccessful){
+//                    FirebaseFirestore.getInstance().collection("users").document(auth.currentUser?.uid!!).set(
+//                        hashMapOf("name" to binding.usernameTv.text,
+//                                    "email" to binding.emailTv.text)
+//                    )
+//                    showToast("good job")
+//                }else{
+//
+//                    Log.e(TAG , "there was something wrong",task.exception)
+//                }
+//
+//            }
+private fun registerUser(username:String,email: String, password: String) {
+    auth.createUserWithEmailAndPassword(email,password)
+        .addOnCompleteListener { task->
+            if (task.isSuccessful){
+                val user = User(username)
+               val  firestoreDB = FirebaseFirestore.getInstance()
+//                firestoreDB.collection("users").document(auth.currentUser!!.uid).set(username)
+                firestoreDB.collection("users").document(auth.currentUser!!.uid).set(user)
+                findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+                showToast("good job")
+            }else{
 
+                Log.e(TAG , "there was something wrong",task.exception)
             }
-        val updateProfile = userProfileChangeRequest{
-            displayName = username
+
         }
 
-        auth.currentUser?.updateProfile(updateProfile)
 
-    }
+
+
+}
     private fun showToast(msg:String){
         Toast.makeText( context, msg  ,Toast.LENGTH_LONG).show()
 
