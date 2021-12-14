@@ -17,6 +17,7 @@ import com.example.books.databinding.EditFileFragmentBinding
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -91,23 +92,32 @@ class EditFileFragment : Fragment() {
     private fun uploadImage(user: User)= CoroutineScope(Dispatchers.IO).launch {
   try {
       cruFile?.let {
-          imageRef.child("image/$user").putFile(it).addOnSuccessListener(
+         val ref =  imageRef.child("image/$user")
+          val task =ref.putFile(it)
+
+            val uriTask = task.continueWithTask{task ->
+
+                if (!task.isSuccessful){
+                     task.exception?.let {
+                        throw it
+                    }
+
+                }
+
+                ref.downloadUrl
+            }
+              .addOnSuccessListener {
+
+                  val imageUrl = it.toString()
+                  user.profileImageUrl = imageUrl
+                  Log.d(TAG, "image url $imageUrl")
+                  Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!).set(
+                      hashMapOf("imageUrl" to imageUrl))
 
 
-              OnSuccessListener<UploadTask.TaskSnapshot> {
-                  it.storage.downloadUrl.addOnSuccessListener {
-                      Log.d(TAG,"Download image $it")
-                      val imageUrl = it.toString()
-                      user.profileImageUrl=imageUrl
-                      Log.d(TAG,"cannot save link")
-                      Log.d(TAG,"Download image $imageUrl")
-
-                  }
-              }
-
-          )?.addOnFailureListener(OnFailureListener {
+          }.addOnFailureListener {
               Log.d(TAG,"error url ")
-          })
+          }
           withContext(Dispatchers.Main){
               Toast.makeText(context,"true save",Toast.LENGTH_SHORT).show()
       }
