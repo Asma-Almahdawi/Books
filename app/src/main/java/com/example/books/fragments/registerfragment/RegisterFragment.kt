@@ -167,6 +167,7 @@ private fun registerUser(username:String,email: String, password: String) {
     auth.createUserWithEmailAndPassword(email,password)
         .addOnCompleteListener { task->
             if (task.isSuccessful){
+//                val user = User()
                 val user = User(username)
                val  firestoreDB = FirebaseFirestore.getInstance()
 //                firestoreDB.collection("users").document(auth.currentUser!!.uid).set(username)

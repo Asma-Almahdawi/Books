@@ -7,22 +7,12 @@
     android:layout_height="match_parent"
     tools:context=".fragments.editfilefragment.EditFileFragment" >
 
-    <ImageView
-        android:id="@+id/profile_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="48dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" />
-
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginStart="124dp"
+        android:layout_marginTop="28dp"
         android:text="Name"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +22,7 @@
         android:id="@+id/name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="100dp"
         android:layout_marginTop="28dp"
         android:ems="10"
         android:inputType="textPersonName"
@@ -46,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="128dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="132dp"
         android:text="Change Photo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_image" />
@@ -55,20 +45,22 @@
         android:id="@+id/saveBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginStart="148dp"
         android:text="save"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name_tv" />
 
-    <EditText
-        android:id="@+id/age_Tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="age"
-        tools:layout_editor_absoluteX="68dp"
-        tools:layout_editor_absoluteY="459dp" />
+    <ImageButton
+        android:id="@+id/profile_image"
+        android:layout_width="150sp"
+        android:layout_height="150sp"
+        android:layout_marginStart="124dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="135dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck"
+        tools:src="@tools:sample/avatars" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
