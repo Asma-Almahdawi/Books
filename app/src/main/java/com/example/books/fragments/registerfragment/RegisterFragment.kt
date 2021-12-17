@@ -168,9 +168,8 @@ private fun registerUser(username:String,email: String, password: String) {
         .addOnCompleteListener { task->
             if (task.isSuccessful){
 //                val user = User()
-                val user = User(username)
+                val user = User()
                val  firestoreDB = FirebaseFirestore.getInstance()
-//                firestoreDB.collection("users").document(auth.currentUser!!.uid).set(username)
                 firestoreDB.collection("users").document(auth.currentUser!!.uid).set(user)
                 findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                 showToast("good job")

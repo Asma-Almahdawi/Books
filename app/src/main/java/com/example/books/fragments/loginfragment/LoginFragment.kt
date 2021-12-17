@@ -54,8 +54,8 @@ class LoginFragment : Fragment() {
 
         }
 
-findNavController().navigate(R.id.action_loginFragment_to_editFileFragment)
-
+//findNavController().navigate(R.id.action_registerFragment_to_loginFragment
+       
         }
 
 
@@ -97,7 +97,7 @@ findNavController().navigate(R.id.action_loginFragment_to_editFileFragment)
 
             }
 
-
+ findNavController().navigate(R.id.action_loginFragment_to_booksFragment)
     }
 
 

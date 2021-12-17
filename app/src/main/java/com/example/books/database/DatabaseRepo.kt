@@ -25,7 +25,6 @@ class DatabaseRepo(){
 //        var usersData:List<User> = emptyList()
         try {
 
-
             userCollectionRef.add(user).addOnSuccessListener { documentReference ->
                 Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
             }

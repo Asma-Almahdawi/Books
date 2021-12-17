@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/navigation_home">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -29,8 +29,8 @@
         android:label="login_fragment"
         tools:layout="@layout/login_fragment" >
         <action
-            android:id="@+id/action_loginFragment_to_editFileFragment"
-            app:destination="@id/editFileFragment" />
+            android:id="@+id/action_loginFragment_to_booksFragment"
+            app:destination="@id/booksFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatPageFragment"
@@ -52,4 +52,9 @@
         android:name="com.example.books.fragments.editfilefragment.EditFileFragment"
         android:label="edit_file_fragment"
         tools:layout="@layout/edit_file_fragment" />
+    <fragment
+        android:id="@+id/booksFragment"
+        android:name="com.example.books.fragments.BooksFragment"
+        android:label="fragment_books"
+        tools:layout="@layout/fragment_books" />
 </navigation>

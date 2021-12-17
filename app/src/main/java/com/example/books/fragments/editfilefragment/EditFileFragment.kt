@@ -19,15 +19,18 @@ import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.util.*
 
 private const val TAG = "EditFileFragment"
 const val REQUEST_CODE_IMAGE =1
@@ -69,7 +72,7 @@ class EditFileFragment : Fragment() {
         }
 
         binding.changePhotoBtn.setOnClickListener {
-            uploadImage(user)
+
         }
 
 
@@ -80,7 +83,7 @@ class EditFileFragment : Fragment() {
 
             viewModel.saveUser(user)
 
-
+            uploadImage(user)
         }
 
 
@@ -92,7 +95,7 @@ class EditFileFragment : Fragment() {
     private fun uploadImage(user: User)= CoroutineScope(Dispatchers.IO).launch {
   try {
       cruFile?.let {
-         val ref =  imageRef.child("image/$user")
+         val ref =  imageRef.child("image/$user/${Calendar.getInstance().time}")
           val task =ref.putFile(it)
 
             val uriTask = task.continueWithTask{task ->
@@ -111,8 +114,15 @@ class EditFileFragment : Fragment() {
                   val imageUrl = it.toString()
                   user.profileImageUrl = imageUrl
                   Log.d(TAG, "image url $imageUrl")
-                  Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!).set(
-                      hashMapOf("imageUrl" to imageUrl))
+//                  Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!).set(
+//                      hashMapOf("imageUrl" to imageUrl))
+                  if(Firebase.auth.currentUser != null){
+                      val userId = Firebase.auth.currentUser?.uid
+                      Firebase.firestore.collection("users").document(userId!!).set(user,
+                          SetOptions.merge())
+                  }
+
+//                      .update("profileImageUrl",imageUrl)
 
 
           }.addOnFailureListener {

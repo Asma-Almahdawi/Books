@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.container)
 
         bottomNavigationView.setupWithNavController(navController)
-        setupActionBarWithNavController(navController, AppBarConfiguration(setOf( R.layout.edit_file_fragment,R.layout.home_page_fragment,R.layout.like_page_fragment,R.layout.chat_page_fragment,R.layout.profile_fragment)))
+        setupActionBarWithNavController(navController, AppBarConfiguration(setOf( R.layout.edit_file_fragment,R.layout.home_page_fragment,R.layout.like_page_fragment,R.layout.chat_page_fragment,R.layout.profile_fragment ,R.layout.fragment_books)))
 
 
 
