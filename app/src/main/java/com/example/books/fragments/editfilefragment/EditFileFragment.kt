@@ -42,7 +42,7 @@ class EditFileFragment : Fragment() {
 
     private lateinit var binding:EditFileFragmentBinding
      private lateinit var user: User
-     val imageRef = Firebase.storage.reference
+     private val imageRef = Firebase.storage.reference
     val storeImageInFirestore=FirebaseFirestore.getInstance()
     private lateinit var auth: FirebaseAuth
 
@@ -71,9 +71,9 @@ class EditFileFragment : Fragment() {
 
         }
 
-        binding.changePhotoBtn.setOnClickListener {
-
-        }
+//        binding.changePhotoBtn.setOnClickListener {
+//
+//        }
 
 
         binding.saveBtn.setOnClickListener {

@@ -6,15 +6,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.books.Book
 import com.example.books.databinding.BooksAddItemBinding
 import com.example.books.databinding.HomePageFragmentBinding
+import com.example.books.fragments.editfilefragment.EditFileViewModel
 import com.google.firebase.firestore.*
+import kotlinx.coroutines.launch
 
 private const val TAG = "HomePageFragment"
 class HomePageFragment : Fragment() {
+
+    private val homePageViewModel by lazy { ViewModelProvider(this)[HomePageViewModel::class.java] }
 
    private lateinit var binding: HomePageFragmentBinding
    private lateinit var book: Book
@@ -30,17 +37,43 @@ class HomePageFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
       binding= HomePageFragmentBinding.inflate(layoutInflater)
         binding.booksRv.layoutManager=LinearLayoutManager(context)
-
 //        val book: List<Book> = listOf()
 //        val bookAdapter = BookAdapter(book)
 //        binding.booksRv.adapter=bookAdapter
 
-        fetchDataFromFirebase()
+
+//        binding.booksRv.adapter=BookAdapter(bookList)
+        lifecycleScope.launch {
+
+            homePageViewModel.getAllBook().observe(viewLifecycleOwner , Observer {
+                binding.booksRv.adapter= BookAdapter(it)
+
+
+            }
+
+        ) }
+
+
         return binding.root
     }
+
+
+
+//    .addOnSuccessListener {
+//        for (doc in it){
+//            val book = doc.toObject(Book::class.java)
+//            bookList.add(book)
+//
+//
+//        }
+//
+////            binding.booksRv.adapter=BookAdapter(bookList)
+//
+//    }
+
 
 
 //    private fun updateUI(book: List<Book>) {
@@ -80,7 +113,7 @@ class HomePageFragment : Fragment() {
 
         override fun getItemCount(): Int {
             return books.size
-            Log.d("Size" , "${books.size}")
+//            Log.d("Size" , "${books.size}")
         }
 
 
@@ -92,11 +125,9 @@ class HomePageFragment : Fragment() {
             for (doc in it){
                 val book = doc.toObject(Book::class.java)
                 bookList.add(book)
-
                 Log.d(TAG," GET DATA $bookList")
 
         }
-
             binding.booksRv.adapter=BookAdapter(bookList)
 
 

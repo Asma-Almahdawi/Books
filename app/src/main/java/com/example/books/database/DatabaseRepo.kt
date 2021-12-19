@@ -3,6 +3,7 @@ package com.example.books.database
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.room.Update
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -18,7 +19,9 @@ private const val TAG = "DatabaseRepo"
 class DatabaseRepo(){
 
 
+
     private val userCollectionRef = Firebase.firestore.collection("users")
+
 
 //    var user:List<User> = mutableListOf()
     fun saveUser(user:User) = CoroutineScope(Dispatchers.IO).launch {
@@ -50,7 +53,11 @@ class DatabaseRepo(){
 
     }
 
-     }
+    fun deleteDataForUser(user: User){
+
+
+    }
+}
 
 //    companion object{
 //
