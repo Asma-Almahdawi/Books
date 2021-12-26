@@ -5,88 +5,59 @@
     android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#C5C1B7"
     tools:context=".fragments.registerfragment.RegisterFragment">
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="56dp"
-        android:text="username"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/username_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:hint="enter username"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="28dp"
-        android:text="email"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username_tv" />
 
     <EditText
         android:id="@+id/email_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="300sp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="200dp"
+        android:background="@drawable/button_default"
         android:ems="10"
         android:hint="enter email"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="60dp"
-        android:text="password"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_tv" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/password_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="300sp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="72dp"
+        android:background="@drawable/button_default"
         android:ems="10"
         android:hint="enter password"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/email_tv" />
 
     <Button
         android:id="@+id/registerBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginStart="152dp"
+        android:layout_marginTop="68dp"
+        android:background="@drawable/button_default"
+        android:backgroundTint="#E4DCDC"
         android:text="register"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password_tv" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="52dp"
+        android:text="Register"
+        android:textColor="#151515"
+        android:textSize="34sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

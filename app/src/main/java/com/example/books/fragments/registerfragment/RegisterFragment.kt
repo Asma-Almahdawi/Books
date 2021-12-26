@@ -101,16 +101,17 @@ class RegisterFragment : Fragment() {
 //        }
         binding.registerBtn.setOnClickListener {
 //
-            val username=binding.usernameTv.text.toString()
+//            val username=binding.usernameTv.text.toString()
             val email = binding.emailTv.text.toString()
             val password=binding.passwordTv.text.toString()
 
             when{
 
-                username.isEmpty()->showToast("enter username")
+//                username.isEmpty()->showToast("enter username")
                 email.isEmpty()->showToast("enter email")
                 password.isEmpty()->showToast("enter password")
-                else->registerUser(username,email, password)
+//                else->registerUser(username,email, password)
+                else->registerUser(email, password)
 
 
             }
@@ -163,7 +164,7 @@ class RegisterFragment : Fragment() {
 //                }
 //
 //            }
-private fun registerUser(username:String,email: String, password: String) {
+private fun registerUser(email: String, password: String) {
     auth.createUserWithEmailAndPassword(email,password)
         .addOnCompleteListener { task->
             if (task.isSuccessful){
@@ -171,7 +172,7 @@ private fun registerUser(username:String,email: String, password: String) {
                 val user = User()
                val  firestoreDB = FirebaseFirestore.getInstance()
                 firestoreDB.collection("users").document(auth.currentUser!!.uid).set(user)
-                findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+//                findNavController().navigate(R.id.action_registerFragment_to_booksFragment)
                 showToast("good job")
             }else{
 

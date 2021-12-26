@@ -12,18 +12,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
-import coil.load
 import com.example.books.Book
 import com.example.books.R
-import com.example.books.database.User
 import com.example.books.databinding.FragmentBooksBinding
 import com.example.books.fragments.editfilefragment.REQUEST_CODE_IMAGE
-import com.example.books.fragments.homepagefragment.HomePageViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -31,19 +26,23 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.reflect.Field
 import java.util.*
 
 private const val TAG = "BooksFragment"
 private const val REQUEST_CODE_PDF = 1
+private const val  REQUEST_CODE_IMAGEE =9
 class BooksFragment : Fragment() {
 
     private val booksViewModel by lazy { ViewModelProvider(this)[BooksViewModel::class.java] }
     private lateinit var auth: FirebaseAuth
   val firestore= Firebase.firestore.collection("users")
+    val bookDoc = Firebase.firestore.collection("books")
+    private val imageBookRef = Firebase.storage.reference
 
    private lateinit var bindig :FragmentBooksBinding
    var cruPdfFile:Uri?= null
+
+    var cruImage :Uri? = null
     private val pdfRef = Firebase.storage.reference
   private lateinit var book: Book
 
@@ -58,25 +57,45 @@ class BooksFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
        bindig= FragmentBooksBinding.inflate(layoutInflater)
 
         bindig.addBtn.setOnClickListener {
-            val bookImage = bindig.imageView
-            val bookName = bindig.bookNameTv.text.toString()
-            val autherName = bindig.autherNameTv.text.toString()
-            val yearOfPublication = bindig.yearOfPublicationTv.text.toString()
-            val pdfFile = bindig.filePDFBtn.text.toString()
+//            val bookOwner = bindig.bookownerTv.text.toString()
+            book.bookOwner= auth.currentUser!!.uid
+            book.bookName= bindig.bookNameTv.text.toString()
+            book.pdfFile=bindig.filePDFBtn.text.toString()
 
-            val book =Book(bookName,pdfFile,autherName,yearOfPublication)
+            book.authorName=bindig.autherNameTv.text.toString()
+            book.yearOfPublication= bindig.yearOfPublicationTv.text.toString()
+
+
+
+//            val book = Book( bookImage ,bookOwner=auth.currentUser!!.uid,bookName,pdfFile,autherName,yearOfPublication )
             booksViewModel.insertBook(book)
 
 
             firestore.document(auth.currentUser!!.uid).update("books",FieldValue.arrayUnion(book))
-            uploadPdfFile(book)
+//            uploadPdfFile(book)
 
+
+findNavController().navigate(R.id.action_booksFragment_to_navigation_home)
 
         }
-
+//        bindig.saveImage.setOnClickListener {
+////            uploadImage(book)
+//        }
+//        bindig.bookTv.setOnClickListener{
+//
+//            Intent(Intent.ACTION_GET_CONTENT).also {
+//
+//                it.type= "image/*"
+//
+//                startActivityForResult(it, REQUEST_CODE_IMAGEE)
+//
+//            }
+//
+//        }
         bindig.filePDFBtn.setOnClickListener {
 
             Intent(Intent.ACTION_GET_CONTENT).also {
@@ -87,22 +106,53 @@ class BooksFragment : Fragment() {
             }
         }
 
+        bindig.takePhoto.setOnClickListener {
+//            bookDoc.document(book.bookId).delete()
+//            booksViewModel.deleteBook(book)
+//            booksViewModel.deleteBook(book)
+//             Log.d("Delete" , "we are delete data")
+            Intent(Intent.ACTION_GET_CONTENT).also {
+
+                it.type = "image/*"
+
+                startActivityForResult(it, REQUEST_CODE_IMAGEE)
+
+            }
+
+//        uploadImage(book)}
+        }
+
         return bindig.root
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode== Activity.RESULT_OK && requestCode == REQUEST_CODE_PDF)
-
+        if (resultCode== Activity.RESULT_OK && requestCode == REQUEST_CODE_PDF){
             data?.data.let {
 
                 cruPdfFile= it
 //                bindig.filePDFBtn.set
 
             }
+            uploadPdfFile(book)
+        }
+        if (resultCode==Activity.RESULT_OK && requestCode ==REQUEST_CODE_IMAGEE){
+
+            data?.data.let {
+                cruImage = it
+                bindig.bookTv.setImageURI(it)
+            }
+            uploadImage(book)
+        }
 
 
-    }
+
+        }
+
+
+
+
+
 
     private fun uploadPdfFile(book: Book)= CoroutineScope(Dispatchers.IO).launch {
         try {
@@ -129,9 +179,10 @@ class BooksFragment : Fragment() {
 //                  Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!).set(
 //                      hashMapOf("imageUrl" to imageUrl))
                         if(Firebase.auth.currentUser != null){
-                            val userId = Firebase.auth.currentUser?.uid
-                            Firebase.firestore.collection("books").document(userId!!).set(book,
-                                SetOptions.merge())
+                            val userId = UUID.randomUUID()
+//                            Firebase.firestore.collection("books").document().set(book,
+//                                SetOptions.merge())
+                            Firebase.firestore.collection("books").document().update("pdfFile" , book)
                         }
 
 //                      .update("profileImageUrl",imageUrl)
@@ -153,4 +204,64 @@ class BooksFragment : Fragment() {
 
     }
 
+    private fun uploadImage(book: Book) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            cruImage?.let {
+                val ref =  imageBookRef.child("image/${this@BooksFragment.book}/${Calendar.getInstance().time}")
+                val task =ref.putFile(it)
+
+                val uriTask = task.continueWithTask{task ->
+
+                    if (!task.isSuccessful){
+                        task.exception?.let {
+                            throw it
+                        }
+
+                    }
+
+                    ref.downloadUrl
+                }
+                    .addOnSuccessListener {
+
+                        val imageBookUrl = it.toString()
+                        this@BooksFragment.book.bookImage = imageBookUrl
+                        Log.d(TAG,"Image url $imageBookUrl")
+
+//                  Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!).set(
+//                      hashMapOf("imageUrl" to imageUrl))
+                        if(Firebase.auth.currentUser != null){
+                            val userId = Firebase.auth.currentUser?.uid
+                            Firebase.firestore.collection("books").document(userId!!).update("bookImage",
+                                this@BooksFragment.book
+                            )
+                        }
+
+//                      .update("profileImageUrl",imageUrl)
+
+
+                    }.addOnFailureListener {
+//                        Log.d(com.example.books.fragments.editfilefragment.TAG,"error url ")
+                    }
+                withContext(Dispatchers.Main){
+                    Toast.makeText(context,"true save",Toast.LENGTH_SHORT).show()
+                }
+            }}
+        catch (e:Exception){
+            withContext(Dispatchers.Main){
+                Toast.makeText(context,e.message,Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+    }
+
+    fun saveUserProfileUrl(){
+
+        val uid= FirebaseAuth.getInstance().uid
+
+
+
+
+
+    }
 }

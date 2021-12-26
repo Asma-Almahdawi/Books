@@ -15,4 +15,9 @@ class BooksViewModel : ViewModel() {
         bookRepo.insertBook(book)
 
     }
+
+    fun deleteBook(book: Book){
+
+       bookRepo.deleteBook(book)
+    }
 }

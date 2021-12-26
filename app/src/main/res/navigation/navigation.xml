@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/booksFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -11,8 +11,8 @@
         android:label="home_page_fragment"
         tools:layout="@layout/home_page_fragment" >
         <action
-            android:id="@+id/action_homePageFragment_to_registerFragment"
-            app:destination="@id/registerFragment" />
+            android:id="@+id/action_navigation_home_to_bookDetailsFragment2"
+            app:destination="@id/bookDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -29,7 +29,7 @@
         android:label="login_fragment"
         tools:layout="@layout/login_fragment" >
         <action
-            android:id="@+id/action_loginFragment_to_booksFragment"
+            android:id="@+id/action_loginFragment_to_booksFragment2"
             app:destination="@id/booksFragment" />
     </fragment>
     <fragment
@@ -56,5 +56,21 @@
         android:id="@+id/booksFragment"
         android:name="com.example.books.fragments.BooksFragment"
         android:label="fragment_books"
-        tools:layout="@layout/fragment_books" />
+        tools:layout="@layout/fragment_books" >
+        <action
+            android:id="@+id/action_booksFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookDetailsFragment"
+        android:name="com.example.books.fragments.bookdetails.BookDetailsFragment"
+        android:label="fragment_book_details"
+        tools:layout="@layout/fragment_book_details" >
+        <argument
+            android:name="bookId"
+            app:argType="string" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_booksFragment"
+        app:destination="@id/booksFragment" />
 </navigation>

@@ -10,7 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class HomePageViewModel : ViewModel() {
 
-    val bookRep = BookDatabaseRepo()
+    private val bookRep = BookDatabaseRepo()
 //    private val bookList : LiveData<List<Book>>
 //    private val db = FirebaseFirestore.getInstance()
 
@@ -44,5 +44,12 @@ class HomePageViewModel : ViewModel() {
 
 
     }
+
+    fun deleteBook(book: Book){
+
+        bookRep.deleteBook(book)
+    }
+
+
 
 }

@@ -5,9 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.example.books.Book
+import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.squareup.okhttp.internal.DiskLruCache
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
@@ -22,32 +25,78 @@ class BookDatabaseRepo {
 
     fun insertBook(book: Book){
 
-        try {
+//        try {
+//         booksCollectionRef.add(book)
 
-            booksCollectionRef.add(book)
-                .addOnSuccessListener { documentReference ->
-                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-            }.addOnFailureListener { e ->
-                    Log.w(TAG, "Error adding document", e)
-                }
-
-        } catch (e: Exception) {
-                Log.d(TAG, " cannot SAVE DATA ")
-
-            }
+           val Id =  booksCollectionRef.document()
+                    book.bookId = Id.id
+                      Id.set(book)
+//                .addOnSuccessListener { documentReference ->
+//                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference}")
+//            }.addOnFailureListener { e ->
+//                    Log.w(TAG, "Error adding document", e)
+//                }
+//
+//        } catch (e: Exception) {
+//                Log.d(TAG, " cannot SAVE DATA ")
+//
+//            }
         }
 
     fun deleteBook(book: Book){
+        Log.d(TAG, "deleteBook: ${book.bookId}")
+   val db = Firebase.firestore.collection("books")
+
+        db.document(book.bookId).delete()
+//        booksCollectionRef.get()
+//            .addOnSuccessListener {
+//
+//            it.forEach {
+//
+//                if (it.id == book.bookId) {
+//                    Log.d("DELETEE", "YES")
+//                    booksCollectionRef.document(book.bookId).delete()
+//                    Log.d("DELETEE", "YESssssssss")
+//
+//                }
+//            }
+//            }
+            }
 
 
 
-    }
+
+
+
+
+
+
+
+
+
+
+
+
 
    suspend fun getAllBook(): LiveData<List<Book>> {
 
        return liveData {
-          val a = booksCollectionRef.get().await().toObjects(Book::class.java)
-           emit(a)
+
+           val books = mutableListOf<Book>()
+          booksCollectionRef.get().await().forEach {
+              val book =Book()
+              book.bookName = it.getString("bookName")!!
+              Log.d(TAG, "getAllBook: ${book.bookName}")
+              book.authorName= it.getString("authorName")!!
+              book.bookImage= it.getString("bookImage")!!
+              book.pdfFile=it.getString("pdfFile")!!
+              book.bookOwner= it.getString("bookOwner")!!
+              book.yearOfPublication=it.getString("yearOfPublication")!!
+              book.bookId = it.id
+
+              books+=book
+          }
+           emit(books)
        }
     }
 //        db.collection("books").get().addOnSuccessListener {
@@ -63,9 +112,9 @@ class BookDatabaseRepo {
 
 
 
-    }
+    }}
 
 
 
 
-}
+
