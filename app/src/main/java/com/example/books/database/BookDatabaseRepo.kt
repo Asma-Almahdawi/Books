@@ -139,10 +139,12 @@ class BookDatabaseRepo {
 
 
 }
+
     suspend fun getAllComment(bookId:String):List<Comment>{
-     val document=   booksCollectionRef.document(bookId).get().await()
+     val document =   booksCollectionRef.document(bookId).get().await()
 //        val comment : MutableList<Comment> = document["comment"] as MutableList<Comment>
         val comment : MutableList<Comment> = document["comment"] as MutableList<Comment>
+
 
         Log.d(TAG,"$comment")
 
@@ -173,25 +175,10 @@ class BookDatabaseRepo {
 
 
     }
-    fun getBook(bookId: String) {
+  suspend fun getBook(bookId: String): Book? {
         // [START get_document]
         val bookRef = Firebase.firestore.collection("books").document(bookId)
-        bookRef.get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    val book = document.toObject(Book::class.java)
-                    if (book != null) {
-                        bookList.add(book)
-                    }
-                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
-                } else {
-                    Log.d(TAG, "No such document")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "get failed with ", exception)
-            }
-        // [END get_document]
+        return bookRef.get().await().toObject(Book::class.java)
     }
 
 

@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +25,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
 
 
 private const val TAG = "BookDetailsFragment"
@@ -47,18 +49,18 @@ private val firebase = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        book = Book()
+
 //        comment=Comment()
         auth = FirebaseAuth.getInstance()
          bookId = args.bookId as String
         Log.d(TAG, "onCreate: $bookId")
-        bookDetailsViewModel.getComments(bookId).observe(
-              this, Observer {
 
-                  binding.commentRv.adapter=CommentAdapter(it)
-
-            }
-        )
+//        bookDetailsViewModel.getComments(bookId).observe(
+//              this, Observer {
+//                Log.d(TAG, "onCreate: $it")
+//                  binding.commentRv.adapter=CommentAdapter(it)
+//            }
+//        )
     }
 
     override fun onCreateView(
@@ -67,7 +69,14 @@ private val firebase = FirebaseAuth.getInstance()
     ): View? {
        binding = FragmentBookDetailsBinding.inflate(layoutInflater)
 //        getBookData()
- bookDetailsViewModel.getBook(bookId)
+
+        lifecycleScope.launch(){
+            book = bookDetailsViewModel.getBook(bookId) ?: Book()
+            Log.d(TAG, "Book: $book")
+        }.invokeOnCompletion {
+            binding.commentRv.adapter=CommentAdapter(book.comment)
+            Log.d(TAG, "onCreateView: ${book.comment}")
+        }
         binding.sendCommentBtn.setOnClickListener {
             val commentText =binding.commentTv.text.toString()
             val comment = Comment(commentText)
@@ -77,7 +86,7 @@ private val firebase = FirebaseAuth.getInstance()
 
         }
         binding.commentRv.layoutManager=LinearLayoutManager(context)
-        binding.commentRv.adapter=CommentAdapter(book.comment)
+
 
         return binding.root
     }
@@ -121,7 +130,9 @@ private inner class CommentHolder(val binding: CommentListItemBinding):RecyclerV
         }
 
         override fun getItemCount(): Int {
+
             return comments.size
+            Log.d(TAG, "getItemCount:${comments.size} ")
         }
 
 

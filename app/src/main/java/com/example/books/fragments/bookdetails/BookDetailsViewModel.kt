@@ -28,7 +28,7 @@ class BookDetailsViewModel : ViewModel() {
 
     }
 
-    fun getBook(bookId: String){
+    suspend fun getBook(bookId: String): Book?{
 
         return bookRep.getBook(bookId)
 
