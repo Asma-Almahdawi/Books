@@ -1,10 +1,10 @@
 package com.example.books.commentFragment
 
+import java.security.acl.Owner
+
 data class Comment(
 
-    val commentText :String = "",
-    val bookId:String = ""
-
+    var commentText :String = "",
 
 ) {
 

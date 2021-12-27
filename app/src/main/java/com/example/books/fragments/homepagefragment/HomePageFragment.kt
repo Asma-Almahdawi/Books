@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.books.Book
+import com.example.books.R
 import com.example.books.databinding.BooksAddItemBinding
 import com.example.books.databinding.HomePageFragmentBinding
 import com.example.books.fragments.editfilefragment.EditFileViewModel
@@ -31,9 +32,9 @@ class HomePageFragment : Fragment() {
    private lateinit var binding: HomePageFragmentBinding
    private lateinit var book: Book
    private val bookList = mutableListOf<Book>()
+    lateinit var bookId:String
 
    private val db = FirebaseFirestore.getInstance()
-
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,8 +59,6 @@ class HomePageFragment : Fragment() {
 
             homePageViewModel.getAllBook().observe(viewLifecycleOwner , Observer {
                 binding.booksRv.adapter= BookAdapter(it)
-
-
             }
 
             ) }
@@ -93,23 +92,40 @@ class HomePageFragment : Fragment() {
             private lateinit var book: Book
         init {
             binding.bookDelete.setOnClickListener(this)
+            itemView.setOnClickListener(this)
         }
         fun bind(book: Book){
             this.book = book
              binding.bookNamesTv.text=book.bookName
             binding.bookImageTv.load(book.bookImage)
+            bookId = book.bookId
             Log.d(TAG, "bind: ${book.bookImage}")
         }
 
         override fun onClick(v: View?) {
-            if (v == binding.bookDelete){
+            when(v){
+                binding.bookDelete -> {
+                    if (auth.currentUser!!.uid == book.bookOwner) {
 
-                if (auth.currentUser!!.uid ==book.bookOwner){
-
-                homePageViewModel.deleteBook(book)
+                        homePageViewModel.deleteBook(book)
+                    }
+                }
+                itemView->{
+                    val action = HomePageFragmentDirections.actionNavigationHomeToBookDetailsFragment(book.bookId)
+                    findNavController().navigate(action)
+                }
             }
-
-        }}
+//            if (v == binding.bookDelete) {
+//
+//                if (auth.currentUser!!.uid == book.bookOwner) {
+//
+//                    homePageViewModel.deleteBook(book)
+//                }
+//
+//            }
+//            val action = HomePageFragmentDirections.actionNavigationHomeToBookDetailsFragment(book.bookId)
+//            findNavController().navigate(action)
+        }
 
 //            if (v == binding.bookDelete){
 //            if (auth.currentUser!!.uid ==book.bookOwner){
