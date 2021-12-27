@@ -73,10 +73,11 @@ class BookDatabaseRepo {
    suspend fun getAllBook(): LiveData<List<Book>> {
 
        return liveData {
-
+              val comment = mutableListOf<Comment>()
            val books = mutableListOf<Book>()
           booksCollectionRef.get().await().forEach {
               val book =Book()
+              val comment = Comment()
               book.bookName = it.getString("bookName")!!
               Log.d(TAG, "getAllBook: ${book.bookName}")
               book.authorName= it.getString("authorName")!!
@@ -84,6 +85,7 @@ class BookDatabaseRepo {
               book.pdfFile=it.getString("pdfFile")!!
               book.bookOwner= it.getString("bookOwner")!!
               book.yearOfPublication=it.getString("yearOfPublication")!!
+//              comment.commentText=it.getString("comment")!!
               book.bookId = it.id
 //              bookId = it.id
               books+=book
@@ -137,7 +139,12 @@ class BookDatabaseRepo {
 
 
 }
-    suspend fun getAllComment(comment: Comment):LiveData<List<Comment>>{
+    suspend fun getAllComment(bookId:String):List<Comment>{
+     val document=   booksCollectionRef.document(bookId).get().await()
+//        val comment : MutableList<Comment> = document["comment"] as MutableList<Comment>
+        val comment : MutableList<Comment> = document["comment"] as MutableList<Comment>
+
+        Log.d(TAG,"$comment")
 
 //        booksCollectionRef.document(bookId).update("books",FieldValue.arrayUnion(comment))
 
@@ -157,12 +164,8 @@ class BookDatabaseRepo {
 //
 //
 //        }
-        return liveData {
+        return comment
 
-
-
-
-        }
     }
 
     fun updateBookInformation(){
@@ -176,6 +179,10 @@ class BookDatabaseRepo {
         bookRef.get()
             .addOnSuccessListener { document ->
                 if (document != null) {
+                    val book = document.toObject(Book::class.java)
+                    if (book != null) {
+                        bookList.add(book)
+                    }
                     Log.d(TAG, "DocumentSnapshot data: ${document.data}")
                 } else {
                     Log.d(TAG, "No such document")

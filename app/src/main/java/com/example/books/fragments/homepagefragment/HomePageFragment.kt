@@ -37,6 +37,7 @@ class HomePageFragment : Fragment() {
    private val db = FirebaseFirestore.getInstance()
     private lateinit var auth: FirebaseAuth
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth= FirebaseAuth.getInstance()

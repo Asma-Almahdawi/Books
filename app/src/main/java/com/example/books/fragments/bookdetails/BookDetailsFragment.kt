@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -51,6 +52,13 @@ private val firebase = FirebaseAuth.getInstance()
         auth = FirebaseAuth.getInstance()
          bookId = args.bookId as String
         Log.d(TAG, "onCreate: $bookId")
+        bookDetailsViewModel.getComments(bookId).observe(
+              this, Observer {
+
+                  binding.commentRv.adapter=CommentAdapter(it)
+
+            }
+        )
     }
 
     override fun onCreateView(
@@ -78,13 +86,17 @@ private val firebase = FirebaseAuth.getInstance()
 private inner class CommentHolder(val binding: CommentListItemBinding):RecyclerView.ViewHolder(binding.root){
     private lateinit var comment: Comment
 
-    fun bind(comment: Comment){
+
+
+     fun bind(comment: Comment){
 
         this.comment = comment
         binding.commentTv.text=comment.commentText
 
 
     }
+
+
 
 
 }
