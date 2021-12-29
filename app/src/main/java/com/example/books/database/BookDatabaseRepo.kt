@@ -1,11 +1,16 @@
 package com.example.books.database
 
+import android.media.Rating
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.example.books.Book
 import com.example.books.commentFragment.Comment
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -66,6 +71,8 @@ class BookDatabaseRepo {
 //                }
 //            }
 //            }
+
+
             }
 
 
@@ -170,19 +177,74 @@ class BookDatabaseRepo {
 
     }
 
+   fun rating(){
+
+       val ref = FirebaseDatabase.getInstance().getReference("books")
+       var numbers: ArrayList<Int> = arrayListOf() // Change to whatever type is accurate in your case
+       var sum = 0
+
+       ref.addListenerForSingleValueEvent(object : ValueEventListener {
+           override fun onDataChange(p0: DataSnapshot) {
+               p0.children.forEach {
+                   val rt = it.child("rating").value
+                   numbers.add(rt as Int)
+
+               }
+
+               // After the forEach loop is finished you should have all the ratings in the numbers array
+
+           }
+
+           override fun onCancelled(error: DatabaseError) {
+               Log.d(TAG, "onCancelled: ")
+           }
+       })
+
+   }
+
     fun updateBookInformation(){
 
 
 
     }
   suspend fun getBook(bookId: String): Book? {
-        // [START get_document]
+
         val bookRef = Firebase.firestore.collection("books").document(bookId)
         return bookRef.get().await().toObject(Book::class.java)
+//      val bookRef = Firebase.firestore.collection("books").document(bookId)
+//      return bookRef.get().addOnSuccessListener {
+//          if (it != null){
+//            val book = it.toObject(Book::class.java)
+//              fi
+//          }
+//
+//
+//      }
+    }
+
+    fun addBookRating(bookId: String, ratingBook: RatingBook){
+
+      booksCollectionRef.document(bookId ).update("rating",FieldValue.arrayUnion(ratingBook))
+
+
+    }
+
+    fun getBookRating(bookId:String):List<Float>{
+        var rating:List<Float> = emptyList()
+       booksCollectionRef.document(bookId).get().addOnSuccessListener {
+          rating = it["rating"] as List<Float>
+           Log.e(TAG, "$rating")
+      }
+        return rating
     }
 
 
-}
+
+
+    }
+
+
+
 
 
 

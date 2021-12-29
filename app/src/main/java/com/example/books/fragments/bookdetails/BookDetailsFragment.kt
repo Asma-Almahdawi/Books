@@ -1,27 +1,23 @@
 package com.example.books.fragments.bookdetails
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.books.Book
-import com.example.books.R
 import com.example.books.commentFragment.Comment
+import com.example.books.database.RatingBook
 import com.example.books.databinding.CommentListItemBinding
 import com.example.books.databinding.FragmentBookDetailsBinding
-import com.example.books.fragments.homepagefragment.HomePageFragment
-import com.example.books.fragments.homepagefragment.HomePageViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -41,6 +37,7 @@ private val firebase = FirebaseAuth.getInstance()
     private val commentList = mutableListOf<Comment>()
     private val db = FirebaseFirestore.getInstance()
     val firestore= Firebase.firestore.collection("books")
+    var ratingAverage =0f
 
     private lateinit var auth: FirebaseAuth
 //    val firestore = Firebase.firestore.collection("books").whereEqualTo("bookId" ,book.bookId)
@@ -72,26 +69,133 @@ private val firebase = FirebaseAuth.getInstance()
 
         lifecycleScope.launch(){
             book = bookDetailsViewModel.getBook(bookId) ?: Book()
+            binding.BookNameTv.setText(book.bookName)
             Log.d(TAG, "Book: $book")
         }.invokeOnCompletion {
             binding.commentRv.adapter=CommentAdapter(book.comment)
             Log.d(TAG, "onCreateView: ${book.comment}")
+            book.rating.forEach {
+
+                ratingAverage += it.userRating.toFloat()
+
+
+
+            }
+            ratingAverage =ratingAverage / book.rating.size
+            binding.ratingBar.rating = ratingAverage
+
         }
         binding.sendCommentBtn.setOnClickListener {
             val commentText =binding.commentTv.text.toString()
-            val comment = Comment(commentText)
+            val comment = Comment( useraId = auth.currentUser!!.uid, commentText)
 //            booksCollectionRef.document().update("books", FieldValue.arrayUnion(comment))
 //            bookId = args.bookId
             bookDetailsViewModel.addComment(comment,bookId)
 
         }
         binding.commentRv.layoutManager=LinearLayoutManager(context)
+//
+//          binding.ratingBar.rating = 1f
+        book = Book()
+//        bookDetailsViewModel.getRating(bookId,book.rating)
+
+        binding.ratingBar.setOnClickListener {
+
+
+
+        }
+
+//        binding.ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
+//
+//            var total = 0.0
+//            var count = 0.0
+//            var average = 0.0
+//            total += rating;
+//            count += 1
+//            average=  total / count
+//            bookDetailsViewModel.getRating(bookId ,rating)
+//        }
+
+        binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
+
+            val ratingBook = RatingBook(userRating =rating.toString(), userId = auth.currentUser!!.uid )
+            bookDetailsViewModel.addBookRating(bookId,ratingBook)
+
+        }
+
+        binding.sendRate.setOnClickListener {
+
+
+
+////             binding.ratingBar.rating
+//
+//                 var rating = 0f
+//
+//            book.rating.forEach {
+//
+//                val count = 1f
+//                count+1
+//
+//              val average =  count/ binding.ratingBar.rating
+//
+//            }
+
+//            val rating =  mutableMapOf(auth.currentUser!!.uid to binding.ratingBar.rating)
+
+
+
+
+
+//          val bookRating: MutableList<Float> = bookDetailsViewModel.getBookRating(bookId).toMutableList()
+//            when(bookRating){
+//                null -> binding.ratingBar.rating = 5F
+//                else -> binding.ratingBar.rating = bookRating.sum().toFloat()/5
+//            }
+
+//            val userRating = binding.ratingBar.rating
+//            val ind = bookRating.size
+//            bookRating.add(userRating)
+//            var rating:MutableList<Float> = bookRating
+//            bookDetailsViewModel.getRating(bookId ,rating)
+
+            
+//
+//book.rating.forEach {
+//    var count =0.1
+//        count += 1
+//
+//   val  average = count / binding.ratingBar.stepSize
+//
+//
+//}
+
+        }
+//        binding.ratingBar.rating = 5f
+//        binding.ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
+//
+//            bookDetailsViewModel.rating()
+//
+//        }
+
 
 
         return binding.root
     }
 
 
+
+
+//    fun getRating(ratings: List<Rating> , book: Book):Float{
+//
+//        var count = 1f
+//        ratings.forEach{
+//
+//            count += it
+//            book.value= (count / ratings.size).toString()
+//        }
+//        return
+//
+//    }
 private inner class CommentHolder(val binding: CommentListItemBinding):RecyclerView.ViewHolder(binding.root){
     private lateinit var comment: Comment
 

@@ -7,9 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.books.Book
 import com.example.books.commentFragment.Comment
 import com.example.books.database.BookDatabaseRepo
+import com.example.books.database.RatingBook
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 
 class BookDetailsViewModel : ViewModel() {
     private val bookRep = BookDatabaseRepo()
@@ -26,6 +26,22 @@ class BookDetailsViewModel : ViewModel() {
         return bookRep.getAllBook()
 
 
+    }
+
+    fun rating(){
+
+        bookRep.rating()
+
+    }
+
+    fun addBookRating(bookId: String, ratingBook: RatingBook){
+
+        bookRep.addBookRating(bookId,ratingBook)
+
+    }
+
+    fun getBookRating(bookId:String):List<Float>{
+        return bookRep.getBookRating(bookId)
     }
 
     suspend fun getBook(bookId: String): Book?{

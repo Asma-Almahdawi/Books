@@ -10,5 +10,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/booksRv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_gravity="clip_horizontal"
+        />
+<!--    <com.jackandphantom.carouselrecyclerview.CarouselRecyclerview-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/recycler"/>-->
 </FrameLayout>
