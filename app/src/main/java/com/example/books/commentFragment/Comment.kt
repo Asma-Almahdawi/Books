@@ -4,7 +4,8 @@ import java.security.acl.Owner
 
 data class Comment(
      var useraId :String="",
-    var commentText :String = ""
+    var commentText :String = "",
+    var commentId :String=""
 
 ) {
 

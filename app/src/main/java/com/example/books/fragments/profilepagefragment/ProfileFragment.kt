@@ -1,30 +1,90 @@
 package com.example.books.fragments.profilepagefragment
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.books.R
+import com.example.books.database.User
 import com.example.books.databinding.ProfileFragmentBinding
+import com.example.books.fragments.homepagefragment.HomePageViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
+
+private const val TAG = "ProfileFragment"
 
 class ProfileFragment : Fragment() {
 
+    private val profileViewModel by lazy { ViewModelProvider(this)[ProfileViewModel::class.java] }
 
 private lateinit var binding: ProfileFragmentBinding
+
+    private lateinit var user: User
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+//        userId=args.userId
+        user=User()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
        binding= ProfileFragmentBinding.inflate(layoutInflater)
-        binding.booksUserRv.layoutManager=LinearLayoutManager(context)
+//        binding.userImage.load(user.profileImageUrl)
+//        binding.usernameTv.text=user.username
+
+        lifecycleScope.launch {
+
+            profileViewModel.getUserData().observe(
+
+                viewLifecycleOwner,
+                Observer {
+                    Log.d(TAG, "onCreateView: $it")
+                    binding.usernameTv.text=it.username
+                    binding.userImage.load(it.profileImageUrl)
+                    binding.bioTv.text=it.bio
+                    Log.d(TAG, "onCreateView: ${user.profileImageUrl}")
+                }
+
+            )
+
+        }
+
+//        getProfileUserData()
+
+//       lifecycleScope.launch {
+////           user=User(userId)
+//           profileViewModel.getUserData(user.userId)?:User()
+//       }
+
+        binding.editProfileBtn.setOnClickListener {
+//               lifecycleScope.launch {
+////                   binding.userImage.load(user.profileImageUrl)
+////                   binding.usernameTv.text=user.username
+//                   profileViewModel.getUserData()
+//               }
+//            getProfileUserData()
+            findNavController().navigate(R.id.action_profileFragment_to_editFileFragment)
+        }
 
         return binding.root
     }
+
+
+
 
 
 //    private inner class ProfileHolder():RecyclerView.ViewHolder()

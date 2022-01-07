@@ -3,10 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/button_default"
+    android:layout_height="200sp"
     android:layout_margin="@android:dimen/app_icon_size"
-    >
+    android:background="@drawable/button_default">
 
     <ImageView
         android:id="@+id/bookImageTv"
@@ -21,12 +20,11 @@
         android:id="@+id/bookNamesTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="28dp"
         android:text="TextView"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/bookImageTv"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/bookImageTv"
+        tools:layout_editor_absoluteX="16dp" />
 
     <ImageView
         android:id="@+id/bookDelete"
@@ -38,4 +36,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/btn_dialog" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

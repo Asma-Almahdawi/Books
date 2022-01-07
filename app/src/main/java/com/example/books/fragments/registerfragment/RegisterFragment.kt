@@ -1,6 +1,5 @@
 package com.example.books.fragments.registerfragment
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,15 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.navigation.fragment.findNavController
-import com.example.books.R
 import com.example.books.database.User
 import com.example.books.databinding.RegisterFragmentBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.userProfileChangeRequest
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 
 private const val TAG = "RegisterFragment"
 class RegisterFragment : Fragment() {
@@ -169,7 +165,7 @@ private fun registerUser(email: String, password: String) {
         .addOnCompleteListener { task->
             if (task.isSuccessful){
 //                val user = User()
-                val user = User()
+                val user = User(userId = auth.currentUser!!.uid)
                val  firestoreDB = FirebaseFirestore.getInstance()
                 firestoreDB.collection("users").document(auth.currentUser!!.uid).set(user)
 //                findNavController().navigate(R.id.action_registerFragment_to_booksFragment)
@@ -188,5 +184,21 @@ private fun registerUser(email: String, password: String) {
     private fun showToast(msg:String){
         Toast.makeText( context, msg  ,Toast.LENGTH_LONG).show()
 
-    }
-}
+
+
+//        val user = Firebase.auth.currentUser
+//        user?.let {
+//            for (profile in it.providerData) {
+//                // Id of the provider (ex: google.com)
+//                val providerId = profile.providerId
+//
+//                // UID specific to the provider
+//                val uid = profile.uid
+//
+//                // Name, email address, and profile photo Url
+//                val name = profile.displayName
+//                val email = profile.email
+//                val photoUrl = profile.photoUrl
+//            }
+//        }   }
+}}

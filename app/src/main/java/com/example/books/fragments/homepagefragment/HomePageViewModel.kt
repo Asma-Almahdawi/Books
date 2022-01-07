@@ -4,13 +4,24 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.books.Book
 import com.example.books.database.BookDatabaseRepo
+import com.example.books.database.DatabaseRepo
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.launch
 
 class HomePageViewModel : ViewModel() {
 
-    private val bookRep = BookDatabaseRepo()
+    private val bookRep = BookDatabaseRepo.getInstant()
+    private val database = DatabaseRepo.getInstant()
+    var userId: String? = ""
+
+    init {
+        viewModelScope.launch {
+            userId = getUserUid()
+        }
+    }
 //    private val bookList : LiveData<List<Book>>
 //    private val db = FirebaseFirestore.getInstance()
 
@@ -38,7 +49,7 @@ class HomePageViewModel : ViewModel() {
 
     }
 
-    suspend fun getAllBook(): LiveData<List<Book>> {
+   suspend fun getAllBook(): LiveData<List<Book>> {
 
       return bookRep.getAllBook()
 
@@ -49,6 +60,10 @@ class HomePageViewModel : ViewModel() {
 
         bookRep.deleteBook(book)
     }
+
+   private suspend fun getUserUid():String?{
+       return database.getUserData().value?.userId
+   }
 
 
 

@@ -29,7 +29,7 @@
         android:label="login_fragment"
         tools:layout="@layout/login_fragment" >
         <action
-            android:id="@+id/action_loginFragment_to_booksFragment2"
+            android:id="@+id/action_loginFragment_to_booksFragment"
             app:destination="@id/booksFragment" />
     </fragment>
     <fragment
@@ -41,7 +41,11 @@
         android:id="@+id/profileFragment"
         android:name="com.example.books.fragments.profilepagefragment.ProfileFragment"
         android:label="profile_fragment"
-        tools:layout="@layout/profile_fragment" />
+        tools:layout="@layout/profile_fragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_editFileFragment"
+            app:destination="@id/editFileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/likePageFragment"
         android:name="com.example.books.fragments.likespagefragment.LikePageFragment"
@@ -51,7 +55,11 @@
         android:id="@+id/editFileFragment"
         android:name="com.example.books.fragments.editfilefragment.EditFileFragment"
         android:label="edit_file_fragment"
-        tools:layout="@layout/edit_file_fragment" />
+        tools:layout="@layout/edit_file_fragment" >
+        <action
+            android:id="@+id/action_editFileFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/booksFragment"
         android:name="com.example.books.fragments.BooksFragment"
@@ -72,6 +80,9 @@
         <argument
             android:name="bookId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_bookDetailsFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <action
         android:id="@+id/action_global_booksFragment"

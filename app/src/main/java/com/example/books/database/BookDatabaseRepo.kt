@@ -1,5 +1,6 @@
 package com.example.books.database
 
+import android.content.Context
 import android.media.Rating
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -7,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.example.books.Book
 import com.example.books.commentFragment.Comment
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -17,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.squareup.okhttp.internal.DiskLruCache
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
@@ -26,31 +29,24 @@ import java.util.*
 import kotlin.Exception
 
 private const val TAG = "BookDatabaseRepo"
-class BookDatabaseRepo {
-    private val database = FirebaseFirestore.getInstance()
+class BookDatabaseRepo private constructor(context: Context){
+
+private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+private val firestore:FirebaseFirestore = FirebaseFirestore.getInstance()
+private val storge = FirebaseStorage.getInstance()
+private val storageRef = storge.reference
     private val booksCollectionRef = Firebase.firestore.collection("books")
     private val bookList = mutableListOf<Book>()
     lateinit var bookId: String
 
     fun insertBook(book: Book){
 
-//        try {
-//         booksCollectionRef.add(book)
 
            val Id =  booksCollectionRef.document()
                     book.bookId = Id.id
                       Id.set(book)
 
-//                .addOnSuccessListener { documentReference ->
-//                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference}")
-//            }.addOnFailureListener { e ->
-//                    Log.w(TAG, "Error adding document", e)
-//                }
-//
-//        } catch (e: Exception) {
-//                Log.d(TAG, " cannot SAVE DATA ")
-//
-//            }
+
         }
 
     fun deleteBook(book: Book){
@@ -58,19 +54,6 @@ class BookDatabaseRepo {
    val db = Firebase.firestore.collection("books")
 
         db.document(book.bookId).delete()
-//        booksCollectionRef.get()
-//            .addOnSuccessListener {
-//
-//            it.forEach {
-//
-//                if (it.id == book.bookId) {
-//                    Log.d("DELETEE", "YES")
-//                    booksCollectionRef.document(book.bookId).delete()
-//                    Log.d("DELETEE", "YESssssssss")
-//
-//                }
-//            }
-//            }
 
 
             }
@@ -80,11 +63,9 @@ class BookDatabaseRepo {
    suspend fun getAllBook(): LiveData<List<Book>> {
 
        return liveData {
-              val comment = mutableListOf<Comment>()
            val books = mutableListOf<Book>()
           booksCollectionRef.get().await().forEach {
               val book =Book()
-              val comment = Comment()
               book.bookName = it.getString("bookName")!!
               Log.d(TAG, "getAllBook: ${book.bookName}")
               book.authorName= it.getString("authorName")!!
@@ -100,79 +81,22 @@ class BookDatabaseRepo {
            emit(books)
        }
     }
-//        db.collection("books").get().addOnSuccessListener {
-//            for (doc in it){
-//                val book = doc.toObject(Book::class.java)
-//                bookList.add(book)
-//                Log.d(com.example.books.fragments.homepagefragment.TAG," GET DATA $bookList")
-//
-//            }
+
 
     fun addComment(comment: Comment , bookId: String){
 
        booksCollectionRef.document(bookId ).update("comment",FieldValue.arrayUnion(comment))
 
-
-//        booksCollectionRef.document(bookId).update("books",FieldValue.arrayUnion(comment))
-
-
-//        return liveData {
-//
-//            val comments = mutableListOf<Comment>()
-//            booksCollectionRef.get().await().forEach {
-//                val comment =Comment()
-////                comment.commentText = it.getString("commentText")!!
-//                comment.bookIdOwner= it.getString("bookOwner")!!
-//                comment.bookId = it.getString("bookId")!!
-////              bookId = it.id
-//                comments+=comment
-//            }
-//            emit(comments)
-//            booksCollectionRef.document(bookId).update("books",FieldValue.arrayUnion(comment))
-//        }
-
-
-//        booksCollectionRef.add(comment)
-//        val Id =  booksCollectionRef.document()
-//        book.bookId = Id.id
-//        booksCollectionRef.document(Id.id).set(comment)
-
-
-//        booksCollectionRef.document().update("books", FieldValue.arrayUnion(comment))
-//        val commentId = booksCollectionRef.whereEqualTo("comment" , book.Id)
-//        val commentId =  booksCollectionRef.document()
-//        book.bookId = commentId.id
-//        commentId.set(comment)
-
-
 }
 
     suspend fun getAllComment(bookId:String):List<Comment>{
      val document =   booksCollectionRef.document(bookId).get().await()
-//        val comment : MutableList<Comment> = document["comment"] as MutableList<Comment>
+
         val comment : MutableList<Comment> = document["comment"] as MutableList<Comment>
 
 
         Log.d(TAG,"$comment")
 
-//        booksCollectionRef.document(bookId).update("books",FieldValue.arrayUnion(comment))
-
-//
-//        return liveData {
-//
-//            val comments = mutableListOf<Comment>()
-//                .forEach {
-//                val comment =Comment()
-//                comment.commentText = it.getString("commentText")!!
-//                comment.bookId = it.id
-////              bookId = it.id
-//                comments+=comment
-//            }
-//            emit(comments))
-//        }
-//
-//
-//        }
         return comment
 
     }
@@ -238,10 +162,47 @@ class BookDatabaseRepo {
         return rating
     }
 
+    suspend fun getFav(bookId: List<Favorite>):LiveData<List<Book>>{
+        val books = mutableListOf<Book>()
+       return liveData {
+
+           bookId.forEach { fav ->
+
+               booksCollectionRef.document(fav.bookId).get().await().toObject(Book::class.java)?.let {
+                   books.add(
+                       it
+                   )
+               }
+           }
+
+           emit(books)
+
+       }
+
 
 
 
     }
+
+
+
+
+companion object {
+
+    private var INSTANT: BookDatabaseRepo? = null
+
+    fun initiliza(context: Context) {
+
+        if (INSTANT == null) {
+            INSTANT = BookDatabaseRepo(context)
+
+        }
+
+    }
+
+    fun getInstant(): BookDatabaseRepo = INSTANT ?: throw IllegalStateException(" repo has not be init")
+
+}}
 
 
 

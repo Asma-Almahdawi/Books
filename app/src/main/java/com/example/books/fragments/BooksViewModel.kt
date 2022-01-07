@@ -6,7 +6,7 @@ import com.example.books.database.BookDatabaseRepo
 
 class BooksViewModel : ViewModel() {
 
-    val bookRepo = BookDatabaseRepo()
+    val bookRepo = BookDatabaseRepo.getInstant()
 
 
     fun insertBook(book: Book){

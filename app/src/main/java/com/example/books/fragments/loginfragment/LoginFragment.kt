@@ -78,7 +78,7 @@ class LoginFragment : Fragment() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task->
                 if (task.isSuccessful) {
-          findNavController().navigate(R.id.action_loginFragment_to_booksFragment2)
+          findNavController().navigate(R.id.action_loginFragment_to_booksFragment)
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success")
                     Toast.makeText(context, "Authentication Done.",

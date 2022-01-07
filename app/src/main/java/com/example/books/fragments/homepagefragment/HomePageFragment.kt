@@ -34,22 +34,16 @@ class HomePageFragment : Fragment() {
    private val bookList = mutableListOf<Book>()
     lateinit var bookId:String
 
-   private val db = FirebaseFirestore.getInstance()
-    private lateinit var auth: FirebaseAuth
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        auth= FirebaseAuth.getInstance()
-        book=Book()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
       binding= HomePageFragmentBinding.inflate(layoutInflater)
-        binding.booksRv.layoutManager=LinearLayoutManager(context)
+        binding.booksRv.layoutManager=LinearLayoutManager(context , LinearLayoutManager.HORIZONTAL,false)
+        book=Book()
 //        val book: List<Book> = listOf()
 //        val bookAdapter = BookAdapter(book)
 //        binding.booksRv.adapter=bookAdapter
@@ -106,13 +100,13 @@ class HomePageFragment : Fragment() {
         override fun onClick(v: View?) {
             when(v){
                 binding.bookDelete -> {
-                    if (auth.currentUser!!.uid == book.bookOwner) {
-
+                    if (homePageViewModel.userId== book.bookOwner) {
                         homePageViewModel.deleteBook(book)
                     }
                 }
                 itemView->{
                     val action = HomePageFragmentDirections.actionNavigationHomeToBookDetailsFragment(book.bookId)
+                    Log.d(TAG, "onClick: ${book.bookId}")
                     findNavController().navigate(action)
                 }
             }
@@ -195,25 +189,6 @@ class HomePageFragment : Fragment() {
 
     }
 
-    private fun fetchDataFromFirebase(){
-
-        db.collection("books").get().addOnSuccessListener {
-            for (doc in it){
-                val book = doc.toObject(Book::class.java)
-                bookList.add(book)
-                Log.d(TAG," GET DATA $bookList")
-
-        }
-            binding.booksRv.adapter=BookAdapter(bookList)
-
-
-
-
-
-        }
-
-
-    }
 
 
 

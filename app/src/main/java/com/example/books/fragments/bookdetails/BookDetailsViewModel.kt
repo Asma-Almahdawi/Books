@@ -6,14 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.books.Book
 import com.example.books.commentFragment.Comment
-import com.example.books.database.BookDatabaseRepo
-import com.example.books.database.RatingBook
+import com.example.books.commentFragment.Following
+import com.example.books.database.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class BookDetailsViewModel : ViewModel() {
-    private val bookRep = BookDatabaseRepo()
-
+    private val bookRep = BookDatabaseRepo.getInstant()
+    private val userRepo = DatabaseRepo.getInstant()
 
      fun addComment(comment:Comment , bookId:String){
 
@@ -28,6 +28,21 @@ class BookDetailsViewModel : ViewModel() {
 
     }
 
+    suspend fun addToFavv(favorite: Favorite , bookId: String){
+        userRepo.addToFavv(favorite , bookId)
+
+    }
+
+
+
+
+     fun following(following: Following){
+
+
+        userRepo.following(following)
+
+    }
+
     fun rating(){
 
         bookRep.rating()
@@ -39,6 +54,18 @@ class BookDetailsViewModel : ViewModel() {
         bookRep.addBookRating(bookId,ratingBook)
 
     }
+    suspend fun getUserData():LiveData<User>{
+
+
+        return  userRepo.getUserData()
+
+    }
+
+//    suspend fun addToFav(favorite:List<String>){
+//
+//        userRepo.addToFav(favorite)
+//
+//    }
 
     fun getBookRating(bookId:String):List<Float>{
         return bookRep.getBookRating(bookId)

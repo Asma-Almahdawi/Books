@@ -64,10 +64,10 @@ class BooksFragment : Fragment() {
 //            val bookOwner = bindig.bookownerTv.text.toString()
             book.bookOwner= auth.currentUser!!.uid
             book.bookName= bindig.bookNameTv.text.toString()
-            book.pdfFile=bindig.filePDFBtn.text.toString()
-
+//            book.pdfFile=bindig.filePDFBtn.text.toString()
             book.authorName=bindig.autherNameTv.text.toString()
             book.yearOfPublication= bindig.yearOfPublicationTv.text.toString()
+               bindig.filePDFBtn.text = book.pdfFile
 
 
 
@@ -179,7 +179,7 @@ findNavController().navigate(R.id.action_booksFragment_to_navigation_home)
 //                  Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!).set(
 //                      hashMapOf("imageUrl" to imageUrl))
                         if(Firebase.auth.currentUser != null){
-                            val userId = UUID.randomUUID()
+//                            val userId = UUID.randomUUID()
 //                            Firebase.firestore.collection("books").document().set(book,
 //                                SetOptions.merge())
                             Firebase.firestore.collection("books").document().update("pdfFile" , book)

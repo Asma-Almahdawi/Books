@@ -11,24 +11,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.books.R
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
+import coil.load
 import com.example.books.database.User
 import com.example.books.databinding.EditFileFragmentBinding
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.util.*
 
@@ -42,11 +40,13 @@ class EditFileFragment : Fragment() {
 
     private lateinit var binding:EditFileFragmentBinding
      private lateinit var user: User
-     private val imageRef = Firebase.storage.reference
-    val storeImageInFirestore=FirebaseFirestore.getInstance()
-    private lateinit var auth: FirebaseAuth
+    var cruFile :Uri? = null
 
-      var cruFile :Uri? = null
+    private val openGallery = registerForActivityResult(ActivityResultContracts.GetContent()){
+         if (it != null){
+             cruFile = it
+         }
+     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -61,15 +61,21 @@ class EditFileFragment : Fragment() {
 
         binding.profileImage.setOnClickListener {
 
-          Intent(Intent.ACTION_GET_CONTENT).also {
-
-          it.type= "image/*"
-
-              startActivityForResult(it,REQUEST_CODE_IMAGE)
-
-          }
+            openGallery.launch("image/*")
 
         }
+       lifecycleScope.launch {
+           viewModel.getUserData().observe(
+
+               viewLifecycleOwner, {
+       user = it
+                   binding.nameTv.setText(it.username)
+                   binding.profileImage.load(it.profileImageUrl)
+                   binding.bioTvUpdate.setText(it.bio)
+               }
+
+           )
+       }
 
 //        binding.changePhotoBtn.setOnClickListener {
 //
@@ -77,13 +83,20 @@ class EditFileFragment : Fragment() {
 
 
         binding.saveBtn.setOnClickListener {
-         user.username = binding.nameTv.text.toString()
-//            user.age=binding.ageTv.text.toString()
+
+
+            user.username = binding.nameTv.text.toString()
+            user.bio=binding.bioTvUpdate.text.toString()
+            binding.profileImage.load(user.profileImageUrl)
+            Log.d(TAG, "onCreateView33: ${cruFile}")
 
 
             viewModel.saveUser(user)
 
-            uploadImage(user)
+            if (cruFile != null){
+                uploadProfileImage(cruFile!!)
+            }
+
         }
 
 
@@ -92,78 +105,12 @@ class EditFileFragment : Fragment() {
 
     }
 
-    private fun uploadImage(user: User)= CoroutineScope(Dispatchers.IO).launch {
-  try {
-      cruFile?.let {
-         val ref =  imageRef.child("image/$user/${Calendar.getInstance().time}")
-          val task =ref.putFile(it)
+    private fun uploadProfileImage(curFile:Uri) {
 
-            val uriTask = task.continueWithTask{task ->
-
-                if (!task.isSuccessful){
-                     task.exception?.let {
-                        throw it
-                    }
-
-                }
-
-                ref.downloadUrl
-            }
-              .addOnSuccessListener {
-
-                  val imageUrl = it.toString()
-                  user.profileImageUrl = imageUrl
-                  Log.d(TAG, "image url $imageUrl")
-//                  Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!).set(
-//                      hashMapOf("imageUrl" to imageUrl))
-                  if(Firebase.auth.currentUser != null){
-                      val userId = Firebase.auth.currentUser?.uid
-                      Firebase.firestore.collection("users").document(userId!!).set(user,
-                          SetOptions.merge())
-                  }
-
-//                      .update("profileImageUrl",imageUrl)
+        viewModel.uploadProfileImage(curFile)
 
 
-          }.addOnFailureListener {
-              Log.d(TAG,"error url ")
-          }
-          withContext(Dispatchers.Main){
-              Toast.makeText(context,"true save",Toast.LENGTH_SHORT).show()
       }
-  }}
-  catch (e:Exception){
-      withContext(Dispatchers.Main){
-          Toast.makeText(context,e.message,Toast.LENGTH_SHORT).show()
-      }
-  }
-
-
-    }
-
-    fun saveUserProfileUrl(){
-
-      val uid= FirebaseAuth.getInstance().uid
-
-
-
-
-
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode==Activity.RESULT_OK && requestCode == REQUEST_CODE_IMAGE)
-
-            data?.data.let {
-
-               cruFile = it
-                binding.profileImage.setImageURI(it)
-
-            }
-
-
-    }
 
 
 

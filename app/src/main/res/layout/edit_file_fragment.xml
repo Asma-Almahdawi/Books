@@ -57,4 +57,14 @@
         tools:ignore="SpeakableTextPresentCheck"
         tools:src="@tools:sample/avatars" />
 
+    <EditText
+        android:id="@+id/bioTvUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="bio"
+        android:inputType="textPersonName"
+        tools:layout_editor_absoluteX="94dp"
+        tools:layout_editor_absoluteY="218dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

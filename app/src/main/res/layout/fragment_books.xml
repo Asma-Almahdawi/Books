@@ -10,106 +10,107 @@
     android:orientation="vertical"
     tools:context=".fragments.BooksFragment">
 
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FDFBFB"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/bookTv"
+            android:layout_width="120sp"
+            android:layout_height="120sp"
+            tools:src="@tools:sample/avatars"
+
+
+            />
+
+
+        <Button
+            android:id="@+id/takePhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10sp"
+
+            android:backgroundTint="#3F45B5"
+            android:text="takePhoto" />
+
+
+        <Button
+            android:id="@+id/filePDFBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="13dp"
+            android:backgroundTint="#3F45B5"
+            android:text="Uoload PDF file" />
+
+        <EditText
+            android:id="@+id/bookownerTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="44dp"
+            android:ems="10"
+            android:hint="Book owner"
+            android:inputType="textPersonName"
+            android:minHeight="48dp" />
+
+        <EditText
+            android:id="@+id/bookNameTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="44dp"
+            android:ems="10"
+            android:hint="@string/book_name"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <EditText
+            android:id="@+id/autherName_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="54dp"
+            android:ems="10"
+            android:hint="auther name"
+            android:inputType="textPersonName"
+            android:minHeight="48dp" />
+
+        <EditText
+            android:id="@+id/yearOfPublicationTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="yearOfPublication"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            android:textColorHint="#757575" />
+
         <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_height="wrap_content">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:layout_marginBottom="100sp"
+            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/bookTv"
-                android:layout_width="120sp"
-                android:layout_height="120sp"
-                tools:src="@tools:sample/avatars"
-
-
-                />
+            <Button
+                android:id="@+id/addBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#3F45B5"
+                android:text="add" />
 
 
             <Button
-                android:id="@+id/takePhoto"
+                android:id="@+id/save_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10sp"
-
-                android:backgroundTint="#A5536F"
-                android:text="takePhoto" />
-
-
-            <Button
-                android:id="@+id/filePDFBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="13dp"
-                android:backgroundTint="#A5536F"
-                android:text="Uoload PDF file" />
-
-            <EditText
-                android:id="@+id/bookownerTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:layout_marginBottom="44dp"
-                android:hint="Book owner"
-                android:inputType="textPersonName"
-                android:minHeight="48dp" />
-
-            <EditText
-                android:id="@+id/bookNameTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="44dp"
-                android:ems="10"
-                android:hint="@string/book_name"
-                android:inputType="textPersonName"
-                android:minHeight="48dp"
-                tools:ignore="TouchTargetSizeCheck" />
-
-            <EditText
-                android:id="@+id/autherName_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="54dp"
-                android:ems="10"
-                android:hint="auther name"
-                android:inputType="textPersonName"
-                android:minHeight="48dp" />
-
-            <EditText
-                android:id="@+id/yearOfPublicationTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="yearOfPublication"
-                android:inputType="textPersonName"
-                android:minHeight="48dp"
-                android:textColorHint="#757575" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:layout_marginBottom="100sp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/addBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#A5536F"
-                    android:text="add" />
-
-
-                <Button
-                    android:id="@+id/save_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10sp"
-                    android:backgroundTint="#A5536F"
-                    android:text="save" />
-            </LinearLayout>
-
-
+                android:backgroundTint="#3F45B5"
+                android:text="save" />
         </LinearLayout>
+
+
+    </LinearLayout>
 </ScrollView>

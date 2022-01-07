@@ -9,10 +9,10 @@
 
     <ImageView
         android:id="@+id/imageBookTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100sp"
+        android:layout_height="100sp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/avatars" />
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="32dp"
         android:text="TextView"
         app:layout_constraintStart_toEndOf="@+id/imageBookTv"
         app:layout_constraintTop_toTopOf="parent" />
@@ -51,7 +51,7 @@
         android:id="@+id/commentTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="200dp"
+        android:layout_marginBottom="84dp"
         android:layout_weight="1"
         android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -64,7 +64,7 @@
         android:id="@+id/sendCommentBtn"
         android:layout_width="90sp"
         android:layout_height="50sp"
-        android:layout_marginBottom="196dp"
+        android:layout_marginBottom="68dp"
         android:layout_weight="1"
         android:text="send"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -74,7 +74,7 @@
         android:id="@+id/commentRv"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="152dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageBookTv" />
 
@@ -92,10 +92,37 @@
         android:id="@+id/sendRate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
         android:text="sendRate"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageBookTv" />
+
+    <Button
+        android:id="@+id/pdfView"
+        android:layout_width="64dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="156dp"
+        android:layout_marginEnd="16dp"
+        android:text="readpdf"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/rateTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintEnd_toStartOf="@+id/yearOfBookTv"
+        app:layout_constraintStart_toEndOf="@+id/imageBookTv"
+        tools:layout_editor_absoluteY="156dp" />
+
+    <Button
+        android:id="@+id/favBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        app:layout_constraintBottom_toTopOf="@+id/commentRv"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

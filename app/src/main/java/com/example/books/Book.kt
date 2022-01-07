@@ -12,14 +12,14 @@ data class Book(
     var bookOwner:String="",
 
     var bookName:String="",
-    var pdfFile :String="",
+//    var pdfFile :String="",
     var authorName:String="",
     var yearOfPublication:String="",
     var bookId :String="",
     val comment :List<Comment> = listOf(),
 //    val rating: MutableMap<String, Float> = mutableMapOf(),
     val rating: List<RatingBook> = listOf(),
-    var value :String=""
+    var pdfFile :String="",
 //    val numberOfPages:String = ""
 
 ) {
