@@ -101,6 +101,21 @@ private val storageRef = storge.reference
 
     }
 
+
+    fun updateRating(bookId: String , userId:String) {
+
+        booksCollectionRef.whereEqualTo("rating" ,userId )
+            .get().addOnSuccessListener {
+                it.apply {
+
+
+                }
+
+            }
+
+    }
+
+
    fun rating(){
 
        val ref = FirebaseDatabase.getInstance().getReference("books")

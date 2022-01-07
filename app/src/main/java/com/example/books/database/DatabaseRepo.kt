@@ -182,15 +182,15 @@ class DatabaseRepo private constructor(context: Context){
 
 
     }
-
-    suspend fun addToFav(bookId:String): LiveData<List<Favorite>> {
-        var user=User()
-        return liveData {
-            val favoriteList : MutableList<Favorite>
-          userCollectionRef.get().await().toObjects(User::class.java)
-            }
-
-}
+//
+//    suspend fun addToFav(bookId:String): LiveData<List<Favorite>> {
+//        var user=User()
+//        return liveData {
+//            val favoriteList : MutableList<Favorite>
+//          userCollectionRef.get().await().toObjects(User::class.java)
+//            }
+//
+//}
 //
 //    fun getProfileUserData(){
 //

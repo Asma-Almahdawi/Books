@@ -9,11 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.books.Book
+import com.example.books.R
 import com.example.books.commentFragment.Comment
 import com.example.books.commentFragment.Following
 import com.example.books.database.Favorite
@@ -169,6 +171,11 @@ private lateinit var binding: FragmentBookDetailsBinding
 //            val action = BookDetailsFragmentDirections.actionBookDetailsFragmentToProfileFragment(user.userId)
 //            findNavController().navigate(action)
 
+        }
+
+        binding.pdfView.setOnClickListener {
+            val action =BookDetailsFragmentDirections.actionBookDetailsFragmentToPdfViewFragment(book.bookId)
+            findNavController().navigate(action)
         }
 
         binding.sendRate.setOnClickListener {

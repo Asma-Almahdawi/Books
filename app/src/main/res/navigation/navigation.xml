@@ -83,8 +83,20 @@
         <action
             android:id="@+id/action_bookDetailsFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_bookDetailsFragment_to_pdfViewFragment"
+            app:destination="@id/pdfViewFragment" />
     </fragment>
     <action
         android:id="@+id/action_global_booksFragment"
         app:destination="@id/booksFragment" />
+    <fragment
+        android:id="@+id/pdfViewFragment"
+        android:name="com.example.books.fragments.bookdetails.PdfViewFragment"
+        android:label="fragment_pdf_view"
+        tools:layout="@layout/fragment_pdf_view" >
+        <argument
+            android:name="bookId"
+            app:argType="string" />
+    </fragment>
 </navigation>

@@ -1,4 +1,22 @@
 <resources>
     <string name="app_name">Books</string>
     <string name="book_name">book name</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="textview">TextView</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="takephoto">takePhoto</string>
+    <string name="uoload_pdf_file">Uoload PDF file</string>
+    <string name="book_owner">Book owner</string>
+    <string name="auther_name">auther name</string>
+    <string name="yearofpublication">yearOfPublication</string>
+    <string name="add">add</string>
+    <string name="save">save</string>
+    <string name="send">send</string>
+    <string name="sendrate">sendRate</string>
+    <string name="readpdf">readpdf</string>
+    <string name="addtofav">addToFav</string>
+    <string name="notification_channel_name">Welcome</string>
+    <string name="new_books_title">New Book</string>
+    <string name="new_books_text">You have new book.</string>
 </resources>
