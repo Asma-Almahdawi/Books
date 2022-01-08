@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.example.books.Book
 import com.example.books.commentFragment.Comment
+import com.example.books.commentFragment.UserComment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -89,115 +90,93 @@ private val storageRef = storge.reference
 
 }
 
-    suspend fun getAllComment(bookId:String):List<Comment>{
-     val document =   booksCollectionRef.document(bookId).get().await()
-
-        val comment : MutableList<Comment> = document["comment"] as MutableList<Comment>
 
 
-        Log.d(TAG,"$comment")
 
-        return comment
+  suspend fun getBook(bookId: String): Book? {
+
+        val bookRef = Firebase.firestore.collection("books").document(bookId)
+
+
+        return bookRef.get().await().toObject(Book::class.java)
+
 
     }
 
+    suspend fun getComment(bookId: String ):LiveData<List<UserComment>>{
 
-    fun updateRating(bookId: String , userId:String) {
+        val book = Firebase.firestore.collection("books").document(bookId)
+            .get().await().toObject(Book::class.java)
+        val comment = mutableListOf<UserComment>()
+        return liveData {
+            book?.comment?.forEach {
+                val userComment = UserComment()
+                userComment.comment=it
 
-        booksCollectionRef.whereEqualTo("rating" ,userId )
-            .get().addOnSuccessListener {
-                it.apply {
+               userComment.user = Firebase.firestore.collection("users").document(it.useraId)
+                    .get().await().toObject(User::class.java)
+                Log.d(TAG, "getComment: ${userComment.comment} , ${userComment.user}")
+                comment.add(userComment)
+             emit(comment)
+            }
 
+
+        }
+
+
+    }
+
+    fun addBookRating(bookId: String, ratingBook: RatingBook) {
+
+      booksCollectionRef.document(bookId ).update("rating",FieldValue.arrayUnion(ratingBook))
+
+        }
+
+        fun deleteBookRating(bookId: String, ratingBook: RatingBook, userId: String) {
+
+//        booksCollectionRef.document().update("rating", FieldValue.arrayRemove(ratingBook)).
+            booksCollectionRef.whereEqualTo("bookId", bookId).get().addOnSuccessListener {
+
+                for (document in it) {
+
+                    val book = document.toObject(Book::class.java)
+                    book.rating.forEach {
+                        if (it.userId == userId)
+                            booksCollectionRef.document(bookId)
+                                .update("rating", FieldValue.arrayUnion(it))
+
+                    }
 
                 }
 
             }
 
-    }
-
-
-   fun rating(){
-
-       val ref = FirebaseDatabase.getInstance().getReference("books")
-       var numbers: ArrayList<Int> = arrayListOf() // Change to whatever type is accurate in your case
-       var sum = 0
-
-       ref.addListenerForSingleValueEvent(object : ValueEventListener {
-           override fun onDataChange(p0: DataSnapshot) {
-               p0.children.forEach {
-                   val rt = it.child("rating").value
-                   numbers.add(rt as Int)
-
-               }
-
-               // After the forEach loop is finished you should have all the ratings in the numbers array
-
-           }
-
-           override fun onCancelled(error: DatabaseError) {
-               Log.d(TAG, "onCancelled: ")
-           }
-       })
-
-   }
-
-    fun updateBookInformation(){
+        }
 
 
 
-    }
-  suspend fun getBook(bookId: String): Book? {
+        suspend fun getFav(bookId: List<Favorite>): LiveData<List<Book>> {
+            val books = mutableListOf<Book>()
+            return liveData {
 
-        val bookRef = Firebase.firestore.collection("books").document(bookId)
-        return bookRef.get().await().toObject(Book::class.java)
-//      val bookRef = Firebase.firestore.collection("books").document(bookId)
-//      return bookRef.get().addOnSuccessListener {
-//          if (it != null){
-//            val book = it.toObject(Book::class.java)
-//              fi
-//          }
-//
-//
-//      }
-    }
+                bookId.forEach { fav ->
 
-    fun addBookRating(bookId: String, ratingBook: RatingBook){
+                    booksCollectionRef.document(fav.bookId).get().await().toObject(Book::class.java)
+                        ?.let {
+                            books.add(
+                                it
+                            )
+                        }
+                }
 
-      booksCollectionRef.document(bookId ).update("rating",FieldValue.arrayUnion(ratingBook))
+                emit(books)
+
+            }
 
 
-    }
-
-    fun getBookRating(bookId:String):List<Float>{
-        var rating:List<Float> = emptyList()
-       booksCollectionRef.document(bookId).get().addOnSuccessListener {
-          rating = it["rating"] as List<Float>
-           Log.e(TAG, "$rating")
-      }
-        return rating
-    }
-
-    suspend fun getFav(bookId: List<Favorite>):LiveData<List<Book>>{
-        val books = mutableListOf<Book>()
-       return liveData {
-
-           bookId.forEach { fav ->
-
-               booksCollectionRef.document(fav.bookId).get().await().toObject(Book::class.java)?.let {
-                   books.add(
-                       it
-                   )
-               }
-           }
-
-           emit(books)
-
-       }
+        }
 
 
-
-
-    }
 
 
 

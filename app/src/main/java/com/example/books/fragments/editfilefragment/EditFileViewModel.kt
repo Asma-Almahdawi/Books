@@ -33,12 +33,6 @@ class EditFileViewModel : ViewModel() {
 
     }
 
-    fun savaProfileUserData(user: User){
-
-        databaseRepo.savaProfileUserData(user)
-
-
-    }
 
 
 }

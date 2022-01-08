@@ -38,6 +38,8 @@ class LikePageFragment : Fragment() {
 
         binding.favRv.layoutManager=LinearLayoutManager(context)
 
+
+
         return binding.root
     }
 
@@ -66,12 +68,8 @@ class LikePageFragment : Fragment() {
     }
 
 
-    private inner class FavoriteHolder(val binding: FavoriteListItemBinding): RecyclerView.ViewHolder(binding.root) {
+    private inner class FavoriteHolder(val binding: FavoriteListItemBinding): RecyclerView.ViewHolder(binding.root)  {
         private lateinit var book: Book
-//        init {
-//            binding.deleteFavBtn.setOnClickListener(this)
-//            itemView.setOnClickListener(this)
-//        }
 
 
         fun bind(book: Book){
@@ -80,20 +78,11 @@ class LikePageFragment : Fragment() {
             binding.BookFavNameTv.text =book.bookName
             binding.bookFavTv.load(book.bookImage)
 
-//         binding.imageUserTv.load(user.profileImageUrl)
-
-
 
 
             }
 
-//        override fun onClick(v: View?) {
-//            if (v==binding.deleteFavBtn){
-//
-//               viewModel.deleteFav(id =)
-//
-//            }
-//        }
+
 
     }
 

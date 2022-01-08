@@ -19,4 +19,5 @@
     <string name="notification_channel_name">Welcome</string>
     <string name="new_books_title">New Book</string>
     <string name="new_books_text">You have new book.</string>
+    <string name="hello">Hello</string>
 </resources>

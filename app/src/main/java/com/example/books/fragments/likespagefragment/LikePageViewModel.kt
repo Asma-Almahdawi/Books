@@ -20,9 +20,9 @@ class LikePageViewModel : ViewModel() {
 
     }
 
-    suspend fun deleteFav(id:String){
+    suspend fun deleteFav(bookId:String){
 
-        userRepo.deleteFav(id)
+        userRepo.deleteFav(bookId)
 
     }
 

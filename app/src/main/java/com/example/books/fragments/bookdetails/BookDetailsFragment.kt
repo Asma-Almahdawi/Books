@@ -15,18 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.books.Book
-import com.example.books.R
 import com.example.books.commentFragment.Comment
-import com.example.books.commentFragment.Following
+import com.example.books.commentFragment.UserComment
 import com.example.books.database.Favorite
 import com.example.books.database.RatingBook
 import com.example.books.database.User
 import com.example.books.databinding.CommentListItemBinding
 import com.example.books.databinding.FragmentBookDetailsBinding
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -51,16 +46,10 @@ private lateinit var binding: FragmentBookDetailsBinding
         super.onCreate(savedInstanceState)
 
 
-//        comment=Comment()
          bookId = args.bookId as String
         Log.d(TAG, "onCreate: $bookId")
 
-//        bookDetailsViewModel.getComments(bookId).observe(
-//              this, Observer {
-//                Log.d(TAG, "onCreate: $it")
-//                  binding.commentRv.adapter=CommentAdapter(it)
-//            }
-//        )
+
     }
 
     override fun onCreateView(
@@ -70,17 +59,6 @@ private lateinit var binding: FragmentBookDetailsBinding
        binding = FragmentBookDetailsBinding.inflate(layoutInflater)
 //        getBookData()
 
-        lifecycleScope.launch {
-
-            bookDetailsViewModel.getUserData().observe(
-                viewLifecycleOwner,{
-                    user = it
-
-
-                }
-            )
-
-        }
         lifecycleScope.launch(){
              book = bookDetailsViewModel.getBook(bookId) ?: Book()
             Log.d(TAG, "onCreateView: ")
@@ -92,11 +70,24 @@ private lateinit var binding: FragmentBookDetailsBinding
 
 
 
-
             Log.d(TAG, "Book: $book")
         }.invokeOnCompletion {
-            binding.commentRv.adapter=CommentAdapter(book.comment)
+
+            lifecycleScope.launch {
+                 bookDetailsViewModel.getComment(bookId).observe(
+                     viewLifecycleOwner ,{
+                         binding.commentRv.adapter=CommentAdapter(it)
+                         Log.d(TAG, "onCreateView: ${it.forEach {
+                             Log.d(TAG, "onCreateView: $it")
+                         }}")
+                     }
+                 )
+
+            }
+
             Log.d(TAG, "onCreateView: ${book.comment}")
+
+
             book.rating.forEach {
 
                 ratingAverage += it.userRating.toFloat()
@@ -110,19 +101,18 @@ private lateinit var binding: FragmentBookDetailsBinding
 
         }
         binding.sendCommentBtn.setOnClickListener {
+            user= User()
             val commentText =binding.commentTv.text.toString()
             val comment = Comment( useraId = user.userId, commentText , commentId = UUID.randomUUID().toString())
-//            booksCollectionRef.document().update("books", FieldValue.arrayUnion(comment))
-//            bookId = args.bookId
+
+
             bookDetailsViewModel.addComment(comment,bookId)
 
         }
         binding.commentRv.layoutManager=LinearLayoutManager(context)
 
-//
-//          binding.ratingBar.rating = 1f
+
         book = Book()
-//        bookDetailsViewModel.getRating(bookId,book.rating)
 
         binding.ratingBar.setOnClickListener {
 
@@ -139,98 +129,20 @@ private lateinit var binding: FragmentBookDetailsBinding
 
         }
 
-//    val following=Following(anotherUserId =user.userId)
-//        binding.followBtn.setOnClickListener {
-//
-//
-//
-//                bookDetailsViewModel.following(following)
-//
-//        }
-
-//        binding.ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
-//
-//            var total = 0.0
-//            var count = 0.0
-//            var average = 0.0
-//            total += rating;
-//            count += 1
-//            average=  total / count
-//            bookDetailsViewModel.getRating(bookId ,rating)
-//        }
 
         binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
 
             val ratingBook = RatingBook(userRating =rating.toString(), userId = user.userId )
-            bookDetailsViewModel.addBookRating(bookId,ratingBook)
+            bookDetailsViewModel.addBookRating(bookId,ratingBook )
 
         }
 
-        binding.BookNameTv.setOnClickListener {
-//            Log.d(TAG, "onCreateView: ${user.userId}")
-//            val action = BookDetailsFragmentDirections.actionBookDetailsFragmentToProfileFragment(user.userId)
-//            findNavController().navigate(action)
-
-        }
 
         binding.pdfView.setOnClickListener {
             val action =BookDetailsFragmentDirections.actionBookDetailsFragmentToPdfViewFragment(book.bookId)
             findNavController().navigate(action)
         }
 
-        binding.sendRate.setOnClickListener {
-
-
-
-////             binding.ratingBar.rating
-//
-//                 var rating = 0f
-//
-//            book.rating.forEach {
-//
-//                val count = 1f
-//                count+1
-//
-//              val average =  count/ binding.ratingBar.rating
-//
-//            }
-
-//            val rating =  mutableMapOf(auth.currentUser!!.uid to binding.ratingBar.rating)
-
-
-
-
-
-//          val bookRating: MutableList<Float> = bookDetailsViewModel.getBookRating(bookId).toMutableList()
-//            when(bookRating){
-//                null -> binding.ratingBar.rating = 5F
-//                else -> binding.ratingBar.rating = bookRating.sum().toFloat()/5
-//            }
-
-//            val userRating = binding.ratingBar.rating
-//            val ind = bookRating.size
-//            bookRating.add(userRating)
-//            var rating:MutableList<Float> = bookRating
-//            bookDetailsViewModel.getRating(bookId ,rating)
-
-            
-//
-//book.rating.forEach {
-//    var count =0.1
-//        count += 1
-//
-//   val  average = count / binding.ratingBar.stepSize
-//
-//
-//}
-
-        }
-//        binding.ratingBar.rating = 5f
-//        binding.ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
-//
-//            bookDetailsViewModel.rating()
-//
-//        }
 
 
 
@@ -240,43 +152,20 @@ private lateinit var binding: FragmentBookDetailsBinding
 
 
 
-//    fun getRating(ratings: List<Rating> , book: Book):Float{
-//
-//        var count = 1f
-//        ratings.forEach{
-//
-//            count += it
-//            book.value= (count / ratings.size).toString()
-//        }
-//        return
-//
-//    }
-
 
 private inner class CommentHolder(val binding: CommentListItemBinding):RecyclerView.ViewHolder(binding.root){
-    private lateinit var comment: Comment
+    private var comment: Comment? = null
 
 
 
 
-     fun bind(comment: Comment){
+     fun bind(comment: UserComment){
 
-        this.comment = comment
-        binding.commentTv.text=comment.commentText
-
-lifecycleScope.launch {
-     bookDetailsViewModel.getUserData().observe(
-
-         viewLifecycleOwner,Observer{
-             binding.imageUserTv.load(it.profileImageUrl)
-
-         }
-//         binding.imageUserTv.load(user.profileImageUrl)
+        this.comment = comment.comment
+        binding.commentTv.text= comment.comment?.commentText
+         binding.imageUserTv.load(comment.user?.profileImageUrl)
 
 
-     )
-
-}
 
     }
 
@@ -285,7 +174,7 @@ lifecycleScope.launch {
 
 }
 
-    private inner class CommentAdapter(val comments :List<Comment>):RecyclerView.Adapter<CommentHolder> (){
+    private inner class CommentAdapter(val comments :List<UserComment>):RecyclerView.Adapter<CommentHolder> (){
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentHolder {
           val binding = CommentListItemBinding.inflate(
               layoutInflater,

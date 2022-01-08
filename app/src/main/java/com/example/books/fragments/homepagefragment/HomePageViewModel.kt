@@ -22,32 +22,7 @@ class HomePageViewModel : ViewModel() {
             userId = getUserUid()
         }
     }
-//    private val bookList : LiveData<List<Book>>
-//    private val db = FirebaseFirestore.getInstance()
 
-//    fun fetchDataFromFirebase(){
-//
-//        db.collection("books").get()
-//
-//
-//            .addOnSuccessListener {
-//            for (doc in it){
-//                val book = doc.toObject(Book::class.java)
-//                bookList.add(book)
-//
-//
-//            }
-//
-////            binding.booksRv.adapter=BookAdapter(bookList)
-//
-//        }
-//    }
-
-    fun insertBook(book: Book){
-
-        bookRep.insertBook(book)
-
-    }
 
    suspend fun getAllBook(): LiveData<List<Book>> {
 

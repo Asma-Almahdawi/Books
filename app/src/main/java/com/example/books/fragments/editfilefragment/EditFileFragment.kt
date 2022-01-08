@@ -77,10 +77,6 @@ class EditFileFragment : Fragment() {
            )
        }
 
-//        binding.changePhotoBtn.setOnClickListener {
-//
-//        }
-
 
         binding.saveBtn.setOnClickListener {
 

@@ -79,22 +79,6 @@ class DatabaseRepo private constructor(context: Context){
 
 
         }
-    fun following(following: Following):LiveData<List<Following>>{
-
-        userCollectionRef1.update("following", FieldValue.arrayUnion(following))
-
-
-        return liveData {
-
-            val following = mutableListOf<Following>()
-            userCollectionRef1.set(following)
-        }
-
-    }
-
-
-
-
     suspend fun getUserData(): LiveData<User> {
 
         return liveData {
@@ -128,26 +112,6 @@ class DatabaseRepo private constructor(context: Context){
 
 
 
-    fun getUserDataToProfile(){
-        var user:User
-        userCollectionRef1.get().addOnSuccessListener {
-            if (it != null){
-
-                user= it.toObject(User::class.java)!!
-                user.username= it.getString("username").toString()
-                user.profileImageUrl=it.getString("profileImageUrl")
-
-            }else{
-
-                Log.d(TAG, "getUserData: $it")
-            }
-
-        }.addOnFailureListener {
-            Log.d(TAG, "getUserData: $it")
-
-        }
-
-    }
 
     fun saveUser(user: User){
 
@@ -182,47 +146,6 @@ class DatabaseRepo private constructor(context: Context){
 
 
     }
-//
-//    suspend fun addToFav(bookId:String): LiveData<List<Favorite>> {
-//        var user=User()
-//        return liveData {
-//            val favoriteList : MutableList<Favorite>
-//          userCollectionRef.get().await().toObjects(User::class.java)
-//            }
-//
-//}
-//
-//    fun getProfileUserData(){
-//
-//        try {
-//
-//
-//            var user:User
-//            userCollectionRef.get().addOnSuccessListener {
-//
-//                if (it != null){
-//
-//                    user= it.toObject(User::class.java)!!
-//                    binding.userImage.load(user.profileImageUrl)
-//                    binding.usernameTv.setText(it.getString("username"))
-//
-//                }else{
-//
-//                    Log.d(TAG, "getUserData: $it")
-//                }
-//
-//            }.addOnFailureListener {
-//
-//                Log.d(TAG, "getProfileUserData: $it")
-//
-//            }
-//
-//        }
-//        catch (e:Exception){
-//
-//            Log.d(com.example.books.fragments.profilepagefragment.TAG, "getProfileUserData: ")
-//
-//        }        }
 
 
 

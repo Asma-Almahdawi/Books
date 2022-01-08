@@ -82,20 +82,7 @@ class BooksFragment : Fragment() {
 findNavController().navigate(R.id.action_booksFragment_to_navigation_home)
 
         }
-//        bindig.saveImage.setOnClickListener {
-////            uploadImage(book)
-//        }
-//        bindig.bookTv.setOnClickListener{
-//
-//            Intent(Intent.ACTION_GET_CONTENT).also {
-//
-//                it.type= "image/*"
-//
-//                startActivityForResult(it, REQUEST_CODE_IMAGEE)
-//
-//            }
-//
-//        }
+
         bindig.filePDFBtn.setOnClickListener {
 
             Intent(Intent.ACTION_GET_CONTENT).also {
@@ -107,10 +94,7 @@ findNavController().navigate(R.id.action_booksFragment_to_navigation_home)
         }
 
         bindig.takePhoto.setOnClickListener {
-//            bookDoc.document(book.bookId).delete()
-//            booksViewModel.deleteBook(book)
-//            booksViewModel.deleteBook(book)
-//             Log.d("Delete" , "we are delete data")
+
             Intent(Intent.ACTION_GET_CONTENT).also {
 
                 it.type = "image/*"
@@ -119,7 +103,7 @@ findNavController().navigate(R.id.action_booksFragment_to_navigation_home)
 
             }
 
-//        uploadImage(book)}
+
         }
 
         return bindig.root

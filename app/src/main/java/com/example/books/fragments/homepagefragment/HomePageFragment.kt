@@ -44,12 +44,7 @@ class HomePageFragment : Fragment() {
       binding= HomePageFragmentBinding.inflate(layoutInflater)
         binding.booksRv.layoutManager=LinearLayoutManager(context , LinearLayoutManager.HORIZONTAL,false)
         book=Book()
-//        val book: List<Book> = listOf()
-//        val bookAdapter = BookAdapter(book)
-//        binding.booksRv.adapter=bookAdapter
 
-
-//        binding.booksRv.adapter=BookAdapter(bookList)
         lifecycleScope.launch {
 
             homePageViewModel.getAllBook().observe(viewLifecycleOwner , Observer {
@@ -64,24 +59,7 @@ class HomePageFragment : Fragment() {
 
 
 
-//    .addOnSuccessListener {
-//        for (doc in it){
-//            val book = doc.toObject(Book::class.java)
-//            bookList.add(book)
-//
-//
-//        }
-//
-////            binding.booksRv.adapter=BookAdapter(bookList)
-//
-//    }
 
-
-
-//    private fun updateUI(book: List<Book>) {
-//        val bookAdapter = BookAdapter(book)
-//        binding.booksRv.adapter=bookAdapter
-//    }
 
     private inner class BookViewHolder(val binding: BooksAddItemBinding):RecyclerView.ViewHolder(binding.root),View.OnClickListener{
             private lateinit var book: Book
@@ -110,49 +88,8 @@ class HomePageFragment : Fragment() {
                     findNavController().navigate(action)
                 }
             }
-//            if (v == binding.bookDelete) {
-//
-//                if (auth.currentUser!!.uid == book.bookOwner) {
-//
-//                    homePageViewModel.deleteBook(book)
-//                }
-//
-//            }
-//            val action = HomePageFragmentDirections.actionNavigationHomeToBookDetailsFragment(book.bookId)
-//            findNavController().navigate(action)
+
         }
-
-//            if (v == binding.bookDelete){
-//            if (auth.currentUser!!.uid ==book.bookOwner){
-//
-//
-//                    binding.bookDelete.visibility=View.VISIBLE
-//
-//            }else{
-//
-//                binding.bookDelete.visibility = View.GONE
-//
-//            }
-//                homePageViewModel.deleteBook(book)
-//            }
-//        }
-
-//            if (v == itemView) {
-//                val navController = findNavController()
-//
-//                val action =
-//                    HomePageFragmentDirections.actionNavigationHomeToBookDetailsFragment2(book.bookId)
-//                navController.navigate(action)
-//            }
-//            binding.bookDelete.visibility = if (auth.currentUser!!.uid == book.bookOwner){
-//
-//                View.VISIBLE
-//
-//
-//            }else{
-//                View.GONE
-//
-//            }
 
 
 
@@ -183,7 +120,7 @@ class HomePageFragment : Fragment() {
 
         override fun getItemCount(): Int {
             return books.size
-//            Log.d("Size" , "${books.size}")
+
         }
 
 
