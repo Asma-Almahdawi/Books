@@ -27,14 +27,19 @@ class BookDetailsViewModel : ViewModel() {
         userRepo.addToFavv(favorite , bookId)
 
     }
+    fun deleteRating(bookId: String, userId: String){
+
+        return bookRep.deleteBookRating(bookId,userId)
+
+    }
 
 
 
 
 
-    fun addBookRating(bookId: String, ratingBook: RatingBook){
+    fun addBookRating(bookId: String, ratingBook: RatingBook , userId: String){
 
-        bookRep.addBookRating(bookId,ratingBook)
+        bookRep.addBookRating(bookId,ratingBook , userId)
 
     }
 

@@ -27,13 +27,6 @@ class LoginFragment : Fragment() {
 
     private lateinit var binding: LoginFragmentBinding
     private lateinit var auth:FirebaseAuth
-    
-
-//    companion object {
-//        fun newInstance() = LoginFragment()
-//    }
-//
-//    private lateinit var viewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,8 +57,6 @@ class LoginFragment : Fragment() {
 
 
         }
-
-//findNavController().navigate(R.id.action_registerFragment_to_loginFragment
        
         }
 
@@ -76,54 +67,17 @@ class LoginFragment : Fragment() {
     private fun showToast(s: String) {
 
     }
-//    val onShowNotification = object : BroadcastReceiver(){
-//        override fun onReceive(context: Context?, intent: Intent?) {
-//            Log.d(TAG , "hi im awake")
-//            resultCode = Activity.RESULT_CANCELED
-//        }
-//
-//    }
+
     override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
         if(currentUser != null){
 
         }
-//
-//        IntentFilter(Worker.ACTION_SHOW_NOTIFICATION).also {
-//            requireContext().registerReceiver(onShowNotification
-//                ,it,
-//                Worker.PERM_PRIVATE,
-//                null
-//            )
-//        }
+
     }
 
 
-
-//    override fun onStop() {
-//        super.onStop()
-//        requireContext().unregisterReceiver(onShowNotification)
-//    }
-    private fun startNotificationWorker() {
-
-            val constraints = Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build()
-
-            val workRequest = PeriodicWorkRequest
-                .Builder(Worker::class.java, 6, TimeUnit.SECONDS)
-                .setConstraints(constraints)
-                .build()
-
-            WorkManager.getInstance(requireContext())
-                .enqueueUniquePeriodicWork(
-                    WORK,
-                    ExistingPeriodicWorkPolicy.KEEP,
-                    workRequest
-                )
-
-        }
 
 
 

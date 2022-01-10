@@ -68,7 +68,7 @@ class LikePageFragment : Fragment() {
     }
 
 
-    private inner class FavoriteHolder(val binding: FavoriteListItemBinding): RecyclerView.ViewHolder(binding.root)  {
+    private inner class FavoriteHolder(val binding: FavoriteListItemBinding): RecyclerView.ViewHolder(binding.root) ,View.OnClickListener {
         private lateinit var book: Book
 
 
@@ -82,6 +82,14 @@ class LikePageFragment : Fragment() {
 
             }
 
+        override fun onClick(v: View?) {
+            if (v == binding.deleteFavBtn){
+
+               lifecycleScope.launch {
+                   viewModel.deleteFav(book.bookId)
+               }
+            }
+        }
 
 
     }

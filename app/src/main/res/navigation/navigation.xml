@@ -36,7 +36,11 @@
         android:id="@+id/chatPageFragment"
         android:name="com.example.books.fragments.chatfragment.ChatPageFragment"
         android:label="chat_page_fragment"
-        tools:layout="@layout/chat_page_fragment" />
+        tools:layout="@layout/chat_page_fragment" >
+        <action
+            android:id="@+id/action_chatPageFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.books.fragments.profilepagefragment.ProfileFragment"
@@ -45,6 +49,9 @@
         <action
             android:id="@+id/action_profileFragment_to_editFileFragment"
             app:destination="@id/editFileFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
     </fragment>
     <fragment
         android:id="@+id/likePageFragment"
@@ -98,5 +105,14 @@
         <argument
             android:name="bookId"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.example.books.fragments.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_settingFragment_to_profileFragment2"
+            app:destination="@id/profileFragment" />
     </fragment>
 </navigation>

@@ -35,10 +35,13 @@ class BookDatabaseRepo private constructor(context: Context){
 private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 private val firestore:FirebaseFirestore = FirebaseFirestore.getInstance()
 private val storge = FirebaseStorage.getInstance()
+    private val userCollectionRef = Firebase.firestore.collection("users")
+    val userCollectionRef1 = Firebase.firestore.collection("users").document(auth.currentUser!!.uid)
 private val storageRef = storge.reference
     private val booksCollectionRef = Firebase.firestore.collection("books")
     private val bookList = mutableListOf<Book>()
     lateinit var bookId: String
+    val userId = auth.currentUser!!.uid
 
     fun insertBook(book: Book){
 
@@ -126,24 +129,24 @@ private val storageRef = storge.reference
 
     }
 
-    fun addBookRating(bookId: String, ratingBook: RatingBook) {
+    fun addBookRating(bookId: String, ratingBook: RatingBook , userId: String) {
 
       booksCollectionRef.document(bookId ).update("rating",FieldValue.arrayUnion(ratingBook))
 
         }
 
-        fun deleteBookRating(bookId: String, ratingBook: RatingBook, userId: String) {
+        fun deleteBookRating(bookId: String, userId: String) {
 
 //        booksCollectionRef.document().update("rating", FieldValue.arrayRemove(ratingBook)).
             booksCollectionRef.whereEqualTo("bookId", bookId).get().addOnSuccessListener {
-
                 for (document in it) {
 
                     val book = document.toObject(Book::class.java)
                     book.rating.forEach {
-                        if (it.userId == userId)
+                        if (it.userId == auth.currentUser!!.uid)
                             booksCollectionRef.document(bookId)
-                                .update("rating", FieldValue.arrayUnion(it))
+                                .update("rating", FieldValue.arrayRemove(it))
+
 
                     }
 

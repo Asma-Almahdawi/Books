@@ -6,10 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.example.books.R
+import com.example.books.databinding.ChatPageFragmentBinding
 
 class ChatPageFragment : Fragment() {
-
+private lateinit var binding: ChatPageFragmentBinding
     companion object {
         fun newInstance() = ChatPageFragment()
     }
@@ -20,7 +22,12 @@ class ChatPageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.chat_page_fragment, container, false)
+        binding = ChatPageFragmentBinding.inflate(layoutInflater)
+
+        binding.textVi.setOnClickListener {
+            findNavController().navigate(R.id.action_chatPageFragment_to_settingFragment)
+        }
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

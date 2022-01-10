@@ -6,8 +6,9 @@
     tools:context=".fragments.chatfragment.ChatPageFragment">
 
     <TextView
+        android:id="@+id/textVi"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello" />
+        android:text="@string/hellooWo" />
 
 </FrameLayout>

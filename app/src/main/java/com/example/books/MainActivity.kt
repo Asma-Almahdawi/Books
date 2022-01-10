@@ -1,5 +1,6 @@
 package com.example.books
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -15,6 +16,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding:ActivityMainBinding
+    private lateinit var myPreferences: QueryPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -27,6 +29,14 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView.setupWithNavController(navController)
 //        setupActionBarWithNavController(navController, AppBarConfiguration(setOf( R.layout.home_page_fragment,R.layout.like_page_fragment,R.layout.chat_page_fragment,R.layout.profile_fragment)))
 
+
+
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+        myPreferences = QueryPreferences(newBase!!)
+        val lang : String? = myPreferences.getLoginCount()
+        super.attachBaseContext(lang?.let { MyContextWrapper.wrap(newBase, it) })
 
 
     }

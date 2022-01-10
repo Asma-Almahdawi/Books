@@ -22,6 +22,7 @@ import com.example.books.database.RatingBook
 import com.example.books.database.User
 import com.example.books.databinding.CommentListItemBinding
 import com.example.books.databinding.FragmentBookDetailsBinding
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -35,6 +36,7 @@ private lateinit var binding: FragmentBookDetailsBinding
 
     private lateinit var book: Book
     private lateinit var user: User
+    private lateinit var auth: FirebaseAuth
 
     var ratingAverage =0f
 
@@ -44,8 +46,9 @@ private lateinit var binding: FragmentBookDetailsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        auth= FirebaseAuth.getInstance()
 
-
+user=User()
          bookId = args.bookId as String
         Log.d(TAG, "onCreate: $bookId")
 
@@ -67,6 +70,7 @@ private lateinit var binding: FragmentBookDetailsBinding
             binding.authorNameTv.setText(book.bookOwner)
             binding.authorNameTv.setText(book.authorName)
             binding.imageBookTv.load(book.bookImage)
+            binding.yearOfBookTv.setText(book.yearOfPublication)
 
 
 
@@ -132,8 +136,8 @@ private lateinit var binding: FragmentBookDetailsBinding
 
         binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
 
-            val ratingBook = RatingBook(userRating =rating.toString(), userId = user.userId )
-            bookDetailsViewModel.addBookRating(bookId,ratingBook )
+            val ratingBook = RatingBook(userRating =rating.toString(), userId = auth.currentUser!!.uid)
+            bookDetailsViewModel.addBookRating(bookId,ratingBook ,userId =auth.currentUser!!.uid)
 
         }
 
@@ -144,7 +148,14 @@ private lateinit var binding: FragmentBookDetailsBinding
         }
 
 
+    binding.BookNameTv.setOnClickListener {
 
+        lifecycleScope.launch {
+
+            bookDetailsViewModel.deleteRating(bookId, user.userId)
+
+        }
+    }
 
         return binding.root
     }
@@ -201,39 +212,6 @@ private inner class CommentHolder(val binding: CommentListItemBinding):RecyclerV
 
 
     }
-
-
-//    private fun getBookData(){
-//        val firestore = Firebase.firestore.collection("books").whereEqualTo("bookId" ,book.bookId)
-//        firestore.get().addOnSuccessListener {
-//
-//            if (it != null){
-//                binding.imageBookTv.load(book.bookImage)
-//
-//                binding.BookNameTv.setText(it.toString())
-//                binding.authorNameTv.setText(it.toString())
-//                binding.yearOfBookTv.setText(it.toString())
-//
-//
-//
-//            }
-//        }
-
-
-//                val storageRef = storage.reference
-//
-//                val pdfFileRef = storageRef.child("pdfs/file.pdf")
-//
-//                val localFile = File.createTempFile("files", "pdf")
-//
-//                pdfFileRef.getFile(localFile).addOnSuccessListener {
-//                    // Local temp file has been created
-//                    Log.d("TAG", "File Downloaded")
-//                }.addOnFailureListener {
-//                    // Handle any errors
-//                    Log.d("TAG", "Something went wrong")
-//                }
-
 
     }
 

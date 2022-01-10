@@ -20,6 +20,8 @@
     <string name="notification_channel_name">اهلا</string>
     <string name="new_books_title">كتب جديده</string>
     <string name="new_books_text">لديك كتب جديده</string>
+    <string name="hello">اهلا</string>
+    <string name="hellooWo">اهلا</string>
 
 
 </resources>

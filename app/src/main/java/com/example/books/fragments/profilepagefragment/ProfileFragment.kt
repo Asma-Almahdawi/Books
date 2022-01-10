@@ -82,6 +82,9 @@ private lateinit var binding: ProfileFragmentBinding
 //            getProfileUserData()
             findNavController().navigate(R.id.action_profileFragment_to_editFileFragment)
         }
+        binding.settingVi.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_settingFragment)
+        }
 
         return binding.root
     }

@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import com.example.books.Book
 import com.example.books.commentFragment.Following
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -31,13 +32,16 @@ class DatabaseRepo private constructor(context: Context){
     private val userCollectionRef = Firebase.firestore.collection("users")
     val userCollectionRef1 = Firebase.firestore.collection("users").document(auth.currentUser!!.uid)
     private val booksCollectionRef = Firebase.firestore.collection("books")
-    fun flowers(flowers:String){
-        userCollectionRef1.update("flowers", FieldValue.arrayUnion(flowers))
-        userCollectionRef1.let {
 
+
+  suspend  fun getBookFromUser(userId:String):LiveData<List<Book>>{
+
+        return liveData {
+
+            booksCollectionRef.whereEqualTo("bookOwner",userId ).get().await()
         }
-
     }
+
 
 
     suspend fun uploadImage(curFile: Uri): Boolean{
