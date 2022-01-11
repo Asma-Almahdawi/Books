@@ -30,83 +30,97 @@ import java.util.*
 import kotlin.Exception
 
 private const val TAG = "BookDatabaseRepo"
-class BookDatabaseRepo private constructor(context: Context){
 
-private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-private val firestore:FirebaseFirestore = FirebaseFirestore.getInstance()
-private val storge = FirebaseStorage.getInstance()
-    private val userCollectionRef = Firebase.firestore.collection("users")
-    val userCollectionRef1 = Firebase.firestore.collection("users").document(auth.currentUser!!.uid)
-private val storageRef = storge.reference
+class BookDatabaseRepo private constructor(context: Context) {
+
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val storge = FirebaseStorage.getInstance()
+    private val storageRef = storge.reference
+
     private val booksCollectionRef = Firebase.firestore.collection("books")
-    private val bookList = mutableListOf<Book>()
+    private val userCollectionRef = firestore.collection("users")
+
     lateinit var bookId: String
-    val userId = auth.currentUser!!.uid
 
-    fun insertBook(book: Book){
+    fun insertBook(book: Book) {
+        booksCollectionRef.document(book.bookId).set(book)
+    }
 
+    suspend fun getUserBooks(): LiveData<List<Book>> {
 
-           val Id =  booksCollectionRef.document()
-                    book.bookId = Id.id
-                      Id.set(book)
+        return liveData {
 
+            val books = mutableListOf<Book>()
+            booksCollectionRef.whereEqualTo("bookOwner", auth.currentUser!!.uid).get().await()
+                .forEach {
+                    val book = Book()
+                    book.bookName = it.getString("bookName")!!
+                    Log.d(TAG, "getAllBook: ${book.bookName}")
+                    book.authorName = it.getString("authorName")!!
+                    book.bookImage = it.getString("bookImage")!!
+                    book.pdfFile = it.getString("pdfFile")!!
+                    book.bookOwner = it.getString("bookOwner")!!
+                    book.yearOfPublication = it.getString("yearOfPublication")!!
+//              comment.commentText=it.getString("comment")!!
+                    book.bookId = it.id
+//              bookId = it.id
+                    books += book
+
+                }
+
+            emit(books)
 
         }
-
-    fun deleteBook(book: Book){
-        Log.d(TAG, "deleteBook: ${book.bookId}")
-   val db = Firebase.firestore.collection("books")
-
-        db.document(book.bookId).delete()
+    }
 
 
-            }
+    fun deleteBook(book: Book) {
+
+        booksCollectionRef.document(book.bookId).delete()
 
 
+    }
 
-   suspend fun getAllBook(): LiveData<List<Book>> {
 
-       return liveData {
-           val books = mutableListOf<Book>()
-          booksCollectionRef.get().await().forEach {
-              val book =Book()
-              book.bookName = it.getString("bookName")!!
-              Log.d(TAG, "getAllBook: ${book.bookName}")
-              book.authorName= it.getString("authorName")!!
-              book.bookImage= it.getString("bookImage")!!
-              book.pdfFile=it.getString("pdfFile")!!
-              book.bookOwner= it.getString("bookOwner")!!
-              book.yearOfPublication=it.getString("yearOfPublication")!!
+    suspend fun getAllBook(): LiveData<List<Book>> {
+
+        return liveData {
+            val books = mutableListOf<Book>()
+            booksCollectionRef.get().await().forEach {
+                val book = Book()
+                book.bookName = it.getString("bookName")!!
+                Log.d(TAG, "getAllBook: ${book.bookName}")
+                book.authorName = it.getString("authorName")!!
+                book.bookImage = it.getString("bookImage")!!
+                book.pdfFile = it.getString("pdfFile")!!
+                book.bookOwner = it.getString("bookOwner")!!
+                book.yearOfPublication = it.getString("yearOfPublication")!!
 //              comment.commentText=it.getString("comment")!!
-              book.bookId = it.id
+                book.bookId = it.id
 //              bookId = it.id
-              books+=book
-          }
-           emit(books)
-       }
+                books += book
+            }
+            emit(books)
+        }
     }
 
 
-    fun addComment(comment: Comment , bookId: String){
+    fun addComment(comment: Comment, bookId: String) {
+          comment.useraId= auth.currentUser!!.uid
+        booksCollectionRef.document(bookId).update("comment", FieldValue.arrayUnion(comment))
 
-       booksCollectionRef.document(bookId ).update("comment",FieldValue.arrayUnion(comment))
-
-}
-
-
+    }
 
 
-  suspend fun getBook(bookId: String): Book? {
+    suspend fun getBook(bookId: String): Book? {
 
-        val bookRef = Firebase.firestore.collection("books").document(bookId)
-
-
-        return bookRef.get().await().toObject(Book::class.java)
+        return booksCollectionRef.document(bookId).get().await().toObject(Book::class.java)
 
 
     }
 
-    suspend fun getComment(bookId: String ):LiveData<List<UserComment>>{
+    suspend fun getComment(bookId: String): LiveData<List<UserComment>> {
 
         val book = Firebase.firestore.collection("books").document(bookId)
             .get().await().toObject(Book::class.java)
@@ -114,13 +128,13 @@ private val storageRef = storge.reference
         return liveData {
             book?.comment?.forEach {
                 val userComment = UserComment()
-                userComment.comment=it
+                userComment.comment = it
 
-               userComment.user = Firebase.firestore.collection("users").document(it.useraId)
+                userComment.user = Firebase.firestore.collection("users").document(it.useraId)
                     .get().await().toObject(User::class.java)
                 Log.d(TAG, "getComment: ${userComment.comment} , ${userComment.user}")
                 comment.add(userComment)
-             emit(comment)
+                emit(comment)
             }
 
 
@@ -129,77 +143,73 @@ private val storageRef = storge.reference
 
     }
 
-    fun addBookRating(bookId: String, ratingBook: RatingBook , userId: String) {
+    fun addBookRating(bookId: String, ratingBook: RatingBook, userId: String) {
 
-      booksCollectionRef.document(bookId ).update("rating",FieldValue.arrayUnion(ratingBook))
+        booksCollectionRef.document(bookId).update("rating", FieldValue.arrayUnion(ratingBook))
+
+    }
+
+    fun deleteBookRating(bookId: String, userId: String) {
+
+        booksCollectionRef.whereEqualTo("bookId", bookId).get().addOnSuccessListener {
+            for (document in it) {
+
+                val book = document.toObject(Book::class.java)
+                book.rating.forEach {
+                    if (it.userId == userId)
+                        booksCollectionRef.document(bookId)
+                            .update("rating", FieldValue.arrayRemove(it))
+
+
+                }
+
+            }
 
         }
 
-        fun deleteBookRating(bookId: String, userId: String) {
-
-//        booksCollectionRef.document().update("rating", FieldValue.arrayRemove(ratingBook)).
-            booksCollectionRef.whereEqualTo("bookId", bookId).get().addOnSuccessListener {
-                for (document in it) {
-
-                    val book = document.toObject(Book::class.java)
-                    book.rating.forEach {
-                        if (it.userId == auth.currentUser!!.uid)
-                            booksCollectionRef.document(bookId)
-                                .update("rating", FieldValue.arrayRemove(it))
+    }
 
 
+    suspend fun getFav(bookId: List<Favorite>): LiveData<List<Book>> {
+        val books = mutableListOf<Book>()
+        return liveData {
+
+            bookId.forEach { fav ->
+
+                booksCollectionRef.document(fav.bookId).get().await().toObject(Book::class.java)
+                    ?.let {
+                        books.add(
+                            it
+                        )
                     }
-
-                }
-
             }
 
-        }
-
-
-
-        suspend fun getFav(bookId: List<Favorite>): LiveData<List<Book>> {
-            val books = mutableListOf<Book>()
-            return liveData {
-
-                bookId.forEach { fav ->
-
-                    booksCollectionRef.document(fav.bookId).get().await().toObject(Book::class.java)
-                        ?.let {
-                            books.add(
-                                it
-                            )
-                        }
-                }
-
-                emit(books)
-
-            }
-
+            emit(books)
 
         }
 
-
-
-
-
-
-companion object {
-
-    private var INSTANT: BookDatabaseRepo? = null
-
-    fun initiliza(context: Context) {
-
-        if (INSTANT == null) {
-            INSTANT = BookDatabaseRepo(context)
-
-        }
 
     }
 
-    fun getInstant(): BookDatabaseRepo = INSTANT ?: throw IllegalStateException(" repo has not be init")
 
-}}
+    companion object {
+
+        private var INSTANT: BookDatabaseRepo? = null
+
+        fun initiliza(context: Context) {
+
+            if (INSTANT == null) {
+                INSTANT = BookDatabaseRepo(context)
+
+            }
+
+        }
+
+        fun getInstant(): BookDatabaseRepo =
+            INSTANT ?: throw IllegalStateException(" repo has not be init")
+
+    }
+}
 
 
 

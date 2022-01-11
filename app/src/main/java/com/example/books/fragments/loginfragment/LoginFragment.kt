@@ -13,9 +13,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.work.*
 import com.example.books.R
+import com.example.books.commentFragment.LoginValidation
+import com.example.books.commentFragment.Validation
 import com.example.books.commentFragment.Worker
 import com.example.books.databinding.LoginFragmentBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -25,16 +28,18 @@ private const val TAG = "LoginFragment"
 private const val WORK = "WORK"
 class LoginFragment : Fragment() {
 
+    val loginViewModel by lazy { ViewModelProvider(this) [LoginViewModel::class.java] }
+
     private lateinit var binding: LoginFragmentBinding
     private lateinit var auth:FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//startNotificationWorker()
         auth= FirebaseAuth.getInstance()
+//        startNotificationWorker()
+
 
     }
-
 
 
     override fun onCreateView(
@@ -51,10 +56,16 @@ class LoginFragment : Fragment() {
 
             email.isEmpty()->showToast("enter username")
             password.isEmpty()->showToast("enter password")
-            else->loginUser(email, password)
+            else-> {
+              val isSuccess = loginViewModel.loginUser(email, password, requireContext())
+                startNotificationWorker()
+                LoginValidation.validation("uu@gmail.com")
 
+                if (isSuccess){
+                    findNavController().popBackStack()
+                }
 
-
+            }
 
         }
        
@@ -68,6 +79,30 @@ class LoginFragment : Fragment() {
 
     }
 
+
+    private fun startNotificationWorker() {
+
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+
+            val workRequest = PeriodicWorkRequest
+                .Builder(Worker::class.java, 5, TimeUnit.SECONDS)
+                .setConstraints(constraints)
+                .build()
+
+            WorkManager.getInstance(requireContext())
+                .enqueueUniquePeriodicWork(
+                    WORK,
+                    ExistingPeriodicWorkPolicy.KEEP,
+                    workRequest
+                )
+        }
+
+
+
+
+
     override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
@@ -76,38 +111,6 @@ class LoginFragment : Fragment() {
         }
 
     }
-
-
-
-
-
-
-    private  fun loginUser(email:String , password:String){
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task->
-                if (task.isSuccessful) {
-//                    startNotificationWorker()
-          findNavController().navigate(R.id.action_loginFragment_to_booksFragment)
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithEmail:success")
-                    Toast.makeText(context, "Authentication Done.",
-                        Toast.LENGTH_SHORT).show()
-                    val user = auth.currentUser
-
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithEmail:failure", task.exception)
-                    Toast.makeText(context, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show()
-
-                }
-
-
-            }
-
-    }
-
-
 
 
 }

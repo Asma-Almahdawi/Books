@@ -214,7 +214,7 @@ findNavController().navigate(R.id.action_booksFragment_to_navigation_home)
 //                  Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!).set(
 //                      hashMapOf("imageUrl" to imageUrl))
                         if(Firebase.auth.currentUser != null){
-                            val userId = Firebase.auth.currentUser?.uid
+                            val  userId = Firebase.auth.currentUser?.uid
                             Firebase.firestore.collection("books").document(userId!!).update("bookImage",
                                 this@BooksFragment.book
                             )

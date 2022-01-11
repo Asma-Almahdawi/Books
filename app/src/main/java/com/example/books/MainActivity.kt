@@ -3,7 +3,9 @@ package com.example.books
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -15,6 +17,8 @@ import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
+
+    val mainActivityViewModel by lazy { ViewModelProvider (this) [MainActivityViewModel::class.java] }
     lateinit var binding:ActivityMainBinding
     private lateinit var myPreferences: QueryPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,11 +26,18 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val bottomNavigationView = binding.buttomNavMenu
+          if (!mainActivityViewModel.getCurrentUserId().isNullOrEmpty()){
 
-        val navController = findNavController(R.id.container)
+              val bottomNavigationView = binding.buttomNavMenu
 
-        bottomNavigationView.setupWithNavController(navController)
+              val navController = findNavController(R.id.container)
+
+              bottomNavigationView.setupWithNavController(navController)
+
+          }else{
+              binding.buttomNavMenu.visibility=View.GONE
+
+          }
 //        setupActionBarWithNavController(navController, AppBarConfiguration(setOf( R.layout.home_page_fragment,R.layout.like_page_fragment,R.layout.chat_page_fragment,R.layout.profile_fragment)))
 
 

@@ -49,6 +49,13 @@ val languageList:Array<String> = arrayOf("en" , "ar")
 
         }
 
+        binding.signOutBtn.setOnClickListener {
+
+//            viewModel.signOut()
+//            findNavController().navigate(R.id.action_settingFragment_to_navigation_home)
+
+        }
+
         return binding.root
     }
 

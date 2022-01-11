@@ -14,10 +14,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.example.books.Book
 import com.example.books.R
 import com.example.books.database.User
+import com.example.books.databinding.BookListItemUserBinding
+import com.example.books.databinding.BooksAddItemBinding
+import com.example.books.databinding.BooksListItemBinding
 import com.example.books.databinding.ProfileFragmentBinding
+import com.example.books.fragments.homepagefragment.HomePageFragmentDirections
 import com.example.books.fragments.homepagefragment.HomePageViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
@@ -66,20 +72,24 @@ private lateinit var binding: ProfileFragmentBinding
 
         }
 
-//        getProfileUserData()
+        binding.booksUserRv.layoutManager=LinearLayoutManager(context)
 
-//       lifecycleScope.launch {
-////           user=User(userId)
-//           profileViewModel.getUserData(user.userId)?:User()
-//       }
+        lifecycleScope.launch {
+
+            profileViewModel.getBookFromUserToProfile().observe(
+                viewLifecycleOwner,{
+
+                    binding.booksUserRv.adapter=BookUserAdapter(it)
+
+                }
+            )
+
+        }
+
+
 
         binding.editProfileBtn.setOnClickListener {
-//               lifecycleScope.launch {
-////                   binding.userImage.load(user.profileImageUrl)
-////                   binding.usernameTv.text=user.username
-//                   profileViewModel.getUserData()
-//               }
-//            getProfileUserData()
+
             findNavController().navigate(R.id.action_profileFragment_to_editFileFragment)
         }
         binding.settingVi.setOnClickListener {
@@ -90,10 +100,8 @@ private lateinit var binding: ProfileFragmentBinding
     }
 
     override fun onResume() {
-//binding.langBtn.setOnClickListener {
-    changeLanguage()
-//}
 
+    changeLanguage()
         super.onResume()
     }
     fun changeLanguage(){
@@ -122,7 +130,52 @@ private lateinit var binding: ProfileFragmentBinding
 
 
 
+    private inner class BookUserViewHolder(val binding: BookListItemUserBinding): RecyclerView.ViewHolder(binding.root){
+        private lateinit var book: Book
 
-//    private inner class ProfileHolder():RecyclerView.ViewHolder()
+        fun bind(book: Book){
+            this.book = book
+//            binding.bookNamesTv.text=book.bookName
+            binding.bookUserTv.load(book.bookImage)
+        }
+
+
+
+
+
+
+    }
+
+    private inner class BookUserAdapter(val books:List<Book>): RecyclerView.Adapter<BookUserViewHolder>() {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookUserViewHolder {
+
+            val binding= BookListItemUserBinding.inflate(
+
+                layoutInflater,
+                parent,
+                false
+
+            )
+            return BookUserViewHolder(binding)
+
+        }
+
+
+        override fun onBindViewHolder(holder: BookUserViewHolder, position: Int) {
+            val book =books[position]
+
+            holder.bind(book)
+            Log.d("items", " this item $book")
+        }
+
+        override fun getItemCount(): Int {
+            return books.size
+
+        }
+
+
+    }
+
+
 
 }

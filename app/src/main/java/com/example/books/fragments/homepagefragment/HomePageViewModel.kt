@@ -31,6 +31,12 @@ class HomePageViewModel : ViewModel() {
 
     }
 
+    fun getCurrentUserId():String?{
+
+        return database.getCurrentUserId()
+
+    }
+
     fun deleteBook(book: Book){
 
         bookRep.deleteBook(book)

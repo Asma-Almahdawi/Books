@@ -3,8 +3,11 @@ package com.example.books.database
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.books.Book
 import com.example.books.commentFragment.Following
 import com.google.firebase.auth.FirebaseAuth
@@ -30,9 +33,48 @@ class DatabaseRepo private constructor(context: Context){
     private val storageRef = storge.reference
 
     private val userCollectionRef = Firebase.firestore.collection("users")
-    val userCollectionRef1 = Firebase.firestore.collection("users").document(auth.currentUser!!.uid)
     private val booksCollectionRef = Firebase.firestore.collection("books")
 
+
+  suspend fun loginUser(email:String, password:String, context: Context):Boolean{
+        var isSuccess = false
+
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task->
+                if (task.isSuccessful) {
+
+                    isSuccess = true
+                    Log.d(TAG, "signInWithEmail:success")
+                    Toast.makeText(context, "Authentication Done.",
+                        Toast.LENGTH_SHORT).show()
+                    val user = auth.currentUser
+
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
+                    Toast.makeText(context, "Authentication failed.",
+                        Toast.LENGTH_SHORT).show()
+
+                }
+
+
+            }.await()
+return isSuccess
+
+    }
+
+
+
+
+    fun getCurrentUserId():String?{
+
+        return auth.currentUser?.uid
+
+    }
+
+
+
+    fun signOut() = auth.signOut()
 
   suspend  fun getBookFromUser(userId:String):LiveData<List<Book>>{
 
@@ -87,7 +129,7 @@ class DatabaseRepo private constructor(context: Context){
 
         return liveData {
 
-         val user =   userCollectionRef1.get().await().toObject(User::class.java)
+         val user =  userCollectionRef.document(auth.currentUser!!.uid).get().await().toObject(User::class.java)
 
             //to delete a FAVEROTE
 //            val newFav = user?.favorite!!.filter {
@@ -105,11 +147,11 @@ class DatabaseRepo private constructor(context: Context){
     suspend fun deleteFav(bookId:String){
 
 //        to delete a FAVEROTE
-        val user =   userCollectionRef1.get().await().toObject(User::class.java)
+        val user =   userCollectionRef.document(auth.currentUser!!.uid).get().await().toObject(User::class.java)
             val newFav = user?.favorite!!.filter {
                 it.bookId != bookId
             }
-            userCollectionRef1.set(newFav)
+            userCollectionRef.document(auth.currentUser!!.uid).set(newFav)
 
     }
 
@@ -146,7 +188,7 @@ class DatabaseRepo private constructor(context: Context){
     }
 
    suspend fun addToFavv(favorite: Favorite , bookId: String){
-       userCollectionRef1.update("favorite" , FieldValue.arrayUnion(favorite))
+       userCollectionRef.document(auth.currentUser!!.uid).update("favorite" , FieldValue.arrayUnion(favorite))
 
 
     }

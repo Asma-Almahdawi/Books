@@ -103,5 +103,5 @@ dependencies {
     implementation "com.pdfview:pdfview-android:1.0.0"
     implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
     implementation 'es.voghdev.pdfviewpager:library:1.1.2'
-
+    testImplementation "com.google.truth:truth:1.1.2"
 }

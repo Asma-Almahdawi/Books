@@ -7,20 +7,16 @@ import java.util.*
 import kotlin.collections.HashMap
 
 data class Book(
-//    val bookFile:String="",
     var bookImage:String="",
     var bookOwner:String="",
-
     var bookName:String="",
-//    var pdfFile :String="",
     var authorName:String="",
     var yearOfPublication:String="",
-    var bookId :String="",
+    var bookId :String=UUID.randomUUID().toString(),
     val comment :List<Comment> = listOf(),
-//    val rating: MutableMap<String, Float> = mutableMapOf(),
     val rating: List<RatingBook> = listOf(),
     var pdfFile :String="",
-//    val numberOfPages:String = ""
+
 
 ) {
 }

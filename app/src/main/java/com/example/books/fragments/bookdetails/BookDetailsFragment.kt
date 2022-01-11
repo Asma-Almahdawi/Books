@@ -107,7 +107,7 @@ user=User()
         binding.sendCommentBtn.setOnClickListener {
             user= User()
             val commentText =binding.commentTv.text.toString()
-            val comment = Comment( useraId = user.userId, commentText , commentId = UUID.randomUUID().toString())
+            val comment = Comment( commentText = commentText)
 
 
             bookDetailsViewModel.addComment(comment,bookId)

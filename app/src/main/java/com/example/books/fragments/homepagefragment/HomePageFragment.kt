@@ -42,6 +42,15 @@ class HomePageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
       binding= HomePageFragmentBinding.inflate(layoutInflater)
+
+        if (homePageViewModel.getCurrentUserId().isNullOrEmpty()){
+
+            findNavController().navigate(R.id.action_navigation_home_to_loginFragment)
+
+
+        }
+
+
         binding.booksRv.layoutManager=LinearLayoutManager(context , LinearLayoutManager.HORIZONTAL,false)
         book=Book()
 
@@ -78,7 +87,7 @@ class HomePageFragment : Fragment() {
         override fun onClick(v: View?) {
             when(v){
                 binding.bookDelete -> {
-                    if (homePageViewModel.userId== book.bookOwner) {
+                    if (homePageViewModel.getCurrentUserId()== book.bookOwner) {
                         homePageViewModel.deleteBook(book)
                     }
                 }
