@@ -157,7 +157,8 @@ user=User()
 
         lifecycleScope.launch {
 
-            bookDetailsViewModel.deleteRating(bookId, user.userId)
+            bookDetailsViewModel.getCurrentUserId()
+                ?.let { it1 -> bookDetailsViewModel.deleteRating(bookId, it1) }
 
         }
     }

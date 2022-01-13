@@ -83,15 +83,13 @@ class LikePageFragment : Fragment() {
             binding.BookFavNameTv.text =book.bookName
             binding.bookFavTv.load(book.bookImage)
 
-
-
             }
         override fun onClick(v: View?) {
             when(v){
                 binding.deleteFavBtn -> {
                   lifecycleScope.launch {
 
-                      viewModel.deleteFav(book.bookId)
+                      viewModel.deleteFavorite(book.bookId)
 
                   }
                 }

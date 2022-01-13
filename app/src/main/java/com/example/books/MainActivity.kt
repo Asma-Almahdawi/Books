@@ -25,19 +25,42 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.buttomNavMenu.background=null
+        binding.buttomNavMenu.menu.getItem(2).isEnabled = false
 
-          if (!mainActivityViewModel.getCurrentUserId().isNullOrEmpty()){
+        val bottomNavigationView = binding.buttomNavMenu
 
-              val bottomNavigationView = binding.buttomNavMenu
+        val navController = findNavController(R.id.container)
 
-              val navController = findNavController(R.id.container)
+        bottomNavigationView.setupWithNavController(navController)
+         navController.addOnDestinationChangedListener { _, destination, _ ->
 
-              bottomNavigationView.setupWithNavController(navController)
+             when(destination.id){
 
-          }else{
-              binding.buttomNavMenu.visibility=View.GONE
+                 R.id.loginFragment -> {
+                     binding.buttomNavMenu.visibility = View.GONE
+                     binding.fab.visibility=View.GONE
+                     binding.bottomAppBar.visibility=View.GONE
+                 }
+                 R.id.registerFragment -> {
+                     binding.buttomNavMenu.visibility = View.GONE
+                     binding.fab.visibility=View.GONE
+                     binding.bottomAppBar.visibility=View.GONE
+                 }
+                 else -> {
+                     binding.buttomNavMenu.visibility = View.VISIBLE
+                     binding.fab.visibility=View.VISIBLE
+                     binding.bottomAppBar.visibility=View.VISIBLE
+                 }
+             }
 
-          }
+         }
+
+        binding.fab.setOnClickListener {
+
+         findNavController(R.id.container).navigate(R.id.booksFragment)
+
+        }
 //        setupActionBarWithNavController(navController, AppBarConfiguration(setOf( R.layout.home_page_fragment,R.layout.like_page_fragment,R.layout.chat_page_fragment,R.layout.profile_fragment)))
 
 

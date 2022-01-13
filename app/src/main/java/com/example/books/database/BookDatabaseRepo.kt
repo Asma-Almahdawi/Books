@@ -143,9 +143,21 @@ class BookDatabaseRepo private constructor(context: Context) {
 
     }
 
-    fun addBookRating(bookId: String, ratingBook: RatingBook, userId: String) {
+   suspend fun addBookRating(bookId: String, ratingBook: RatingBook, userId: String) {
+        val book =  booksCollectionRef.document(bookId).get().await().toObject(Book::class.java)
 
-        booksCollectionRef.document(bookId).update("rating", FieldValue.arrayUnion(ratingBook))
+        val newRating:MutableList<RatingBook> = book?.rating!!.filter {
+           it.userId != userId
+        }.toMutableList()
+       if (book.rating == newRating){
+
+           booksCollectionRef.document(bookId).update("rating", FieldValue.arrayUnion(ratingBook))
+       }else{
+          newRating.add(ratingBook)
+
+           booksCollectionRef.document(bookId).update("rating",newRating)
+       }
+
 
     }
 

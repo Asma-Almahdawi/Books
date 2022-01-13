@@ -19,6 +19,12 @@ class LikePageViewModel : ViewModel() {
         return bookRebo.getFav(book)
 
     }
+    suspend fun deleteFavorite(bookId: String){
+
+
+        return userRepo.deleteFavorite(bookId)
+
+    }
 
     suspend fun deleteFav(bookId:String){
 

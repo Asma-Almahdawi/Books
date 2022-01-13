@@ -1,7 +1,10 @@
 package com.example.books.fragments.registerfragment
 
 import androidx.lifecycle.ViewModel
+import com.example.books.database.DatabaseRepo
 
 class RegisterViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
+    val repo = DatabaseRepo.getInstant()
+
+
 }

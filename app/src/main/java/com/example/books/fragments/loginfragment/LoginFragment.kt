@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.work.*
 import com.example.books.R
@@ -24,6 +25,7 @@ import com.example.books.commentFragment.Worker
 import com.example.books.databinding.LoginFragmentBinding
 import com.example.books.fragments.registerfragment.RegistrationUtil
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 private const val TAG = "LoginFragment"
@@ -52,6 +54,12 @@ class LoginFragment : Fragment() {
     ): View {
        binding= LoginFragmentBinding.inflate(layoutInflater)
 
+        binding.createAccountTv.setOnClickListener {
+
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+
+        }
+
         binding.loginBtn.setOnClickListener {
         val email=binding.emailLoginTv.text.toString()
         val password=binding.passwordLoginTv.text.toString()
@@ -64,13 +72,16 @@ class LoginFragment : Fragment() {
             }
 
             "you are logged"-> {
+lifecycleScope.launch {
 
-              val isSuccess = loginViewModel.loginUser(email, password)
-                startNotificationWorker()
+    val isSuccess = loginViewModel.loginUser(email, password)
+    startNotificationWorker()
 
-                if (isSuccess){
-                    findNavController().popBackStack()
-                }
+    if (isSuccess){
+        findNavController().popBackStack()
+    }
+
+}
 
 
             }

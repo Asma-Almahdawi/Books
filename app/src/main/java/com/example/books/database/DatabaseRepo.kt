@@ -40,7 +40,7 @@ class DatabaseRepo private constructor(context: Context){
   suspend fun loginUser(email:String, password:String):Boolean{
 
 
-        var isSuccess = false
+        var isSuccess :Boolean? = null
 
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task->
@@ -58,8 +58,12 @@ class DatabaseRepo private constructor(context: Context){
                 }
 
 
+            }.addOnFailureListener {
+
+                isSuccess= false
+
             }.await()
-return isSuccess
+return isSuccess!!
 
     }
 
@@ -144,14 +148,16 @@ return isSuccess
 
     }
 
-    suspend fun deleteFav(bookId:String){
+    suspend fun deleteFavorite(bookId:String){
 
 //        to delete a FAVEROTE
         val user =   userCollectionRef.document(auth.currentUser!!.uid).get().await().toObject(User::class.java)
             val newFav = user?.favorite!!.filter {
                 it.bookId != bookId
+
             }
-            userCollectionRef.document(auth.currentUser!!.uid).set(newFav)
+        Log.d(TAG, "deleteFavorite: $newFav")
+            userCollectionRef.document(auth.currentUser!!.uid).update("favorite",newFav)
 
     }
 

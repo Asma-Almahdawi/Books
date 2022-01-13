@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.books.QueryPreferences
 import com.example.books.R
@@ -16,7 +18,7 @@ class SettingFragment : Fragment() {
 
 
 private lateinit var binding:FragmentSettingBinding
-    private lateinit var viewModel: SettingViewModel
+    val viewModel: SettingViewModel by activityViewModels()
 lateinit var myPreference :QueryPreferences
 
 val languageList:Array<String> = arrayOf("en" , "ar")
@@ -37,7 +39,7 @@ val languageList:Array<String> = arrayOf("en" , "ar")
          binding.spinner.adapter =
              context?.let { ArrayAdapter(it, android.R.layout.simple_list_item_1 ,languageList) }
            val lang:String? = myPreference.getLoginCount()
- val index:Int = languageList.indexOf(lang)
+        val index:Int = languageList.indexOf(lang)
 
         if (index>= 0){
             binding.spinner.setSelection(index)
@@ -59,10 +61,5 @@ val languageList:Array<String> = arrayOf("en" , "ar")
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SettingViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
 
 }

@@ -35,11 +35,17 @@ class BookDetailsViewModel : ViewModel() {
 
 
 
+    fun getCurrentUserId():String?{
 
+        return userRepo.getCurrentUserId()
 
-    fun addBookRating(bookId: String, ratingBook: RatingBook , userId: String){
+    }
 
-        bookRep.addBookRating(bookId,ratingBook , userId)
+    fun addBookRating(bookId: String, ratingBook: RatingBook, userId: String){
+viewModelScope.launch {
+    bookRep.addBookRating(bookId,ratingBook , userId)
+}
+
 
     }
 

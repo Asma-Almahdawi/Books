@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.example.books.database.User
 import com.example.books.databinding.RegisterFragmentBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -169,6 +170,8 @@ private fun registerUser(email: String, password: String) {
                val  firestoreDB = FirebaseFirestore.getInstance()
                 firestoreDB.collection("users").document(auth.currentUser!!.uid).set(user)
 //                findNavController().navigate(R.id.action_registerFragment_to_booksFragment)
+                auth.signOut()
+                findNavController().popBackStack()
                 showToast("good job")
             }else{
 
