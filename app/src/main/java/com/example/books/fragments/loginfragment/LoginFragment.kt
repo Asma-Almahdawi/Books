@@ -17,10 +17,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.work.*
 import com.example.books.R
+import com.example.books.commentFragment.Constants
 import com.example.books.commentFragment.LoginValidation
 import com.example.books.commentFragment.Validation
 import com.example.books.commentFragment.Worker
 import com.example.books.databinding.LoginFragmentBinding
+import com.example.books.fragments.registerfragment.RegistrationUtil
 import com.google.firebase.auth.FirebaseAuth
 import java.util.concurrent.TimeUnit
 
@@ -33,9 +35,11 @@ class LoginFragment : Fragment() {
     private lateinit var binding: LoginFragmentBinding
     private lateinit var auth:FirebaseAuth
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth= FirebaseAuth.getInstance()
+
 //        startNotificationWorker()
 
 
@@ -52,18 +56,22 @@ class LoginFragment : Fragment() {
         val email=binding.emailLoginTv.text.toString()
         val password=binding.passwordLoginTv.text.toString()
 
-        when{
+        when(RegistrationUtil.validateRegistrationInput(email, password)){
 
-            email.isEmpty()->showToast("enter username")
-            password.isEmpty()->showToast("enter password")
-            else-> {
-              val isSuccess = loginViewModel.loginUser(email, password, requireContext())
+            Constants.usernameOrPasswordIsEmpty->
+            {showToast(" enter email or password")
+                Log.d(TAG, "onCreateView: enter email or password")
+            }
+
+            "you are logged"-> {
+
+              val isSuccess = loginViewModel.loginUser(email, password)
                 startNotificationWorker()
-                LoginValidation.validation("uu@gmail.com")
 
                 if (isSuccess){
                     findNavController().popBackStack()
                 }
+
 
             }
 
@@ -112,6 +120,14 @@ class LoginFragment : Fragment() {
 
     }
 
+//    private val EMAILE_PATTREN ="[a-zA-Z-9._-]+@[a-z]+\\.+[a-z]+"
+//    fun email(email:String):Boolean{
+//
+//        if(email.matches(EMAILE_PATTREN.toRegex()))
+//
+//            return true
+//        return false
+//    }
 
 }
 

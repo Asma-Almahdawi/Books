@@ -22,9 +22,10 @@ class LikePageViewModel : ViewModel() {
 
     suspend fun deleteFav(bookId:String){
 
-        userRepo.deleteFav(bookId)
+       bookRebo.deleteFav(bookId)
 
     }
+
 
     suspend fun getUserData():LiveData<User>{
 
@@ -32,6 +33,6 @@ class LikePageViewModel : ViewModel() {
         return  userRepo.getUserData()
 
     }
-
+    
 
 }

@@ -169,6 +169,28 @@ class BookDatabaseRepo private constructor(context: Context) {
 
     }
 
+    fun deleteBookFav(bookId: String) {
+
+        booksCollectionRef.whereEqualTo("bookId", bookId).get().addOnSuccessListener {
+            for (document in it) {
+
+                val user = document.toObject(User::class.java)
+                user.favorite.forEach {
+
+                    if (it.bookId == bookId){
+                        booksCollectionRef.document(auth.currentUser!!.uid)
+                            .update("favorite", FieldValue.arrayRemove(it))
+
+                    }
+                }
+
+
+            }
+
+        }
+
+    }
+
 
     suspend fun getFav(bookId: List<Favorite>): LiveData<List<Book>> {
         val books = mutableListOf<Book>()
@@ -188,6 +210,18 @@ class BookDatabaseRepo private constructor(context: Context) {
 
         }
 
+
+    }
+
+    suspend fun deleteFav(bookId:String){
+
+        val user = userCollectionRef.document(auth.currentUser!!.uid).get().await().toObject(User::class.java)
+       user?.favorite?.forEach {
+
+               booksCollectionRef.document(auth.currentUser!!.uid)
+                   .update("favorite", FieldValue.arrayRemove(it))
+
+       }
 
     }
 

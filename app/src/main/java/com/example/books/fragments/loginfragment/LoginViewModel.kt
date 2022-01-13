@@ -12,11 +12,11 @@ class LoginViewModel : ViewModel() {
     val repo = DatabaseRepo.getInstant()
 
 
-    fun loginUser(email:String, password:String, context: Context):Boolean{
+    fun loginUser(email:String, password:String):Boolean{
         var isSuccess = false
         viewModelScope.launch {
 
-         isSuccess = repo.loginUser(email,password,context)
+         isSuccess = repo.loginUser(email,password)
         }
         return isSuccess
     }

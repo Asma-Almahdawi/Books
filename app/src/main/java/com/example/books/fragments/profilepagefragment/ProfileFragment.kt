@@ -25,6 +25,7 @@ import com.example.books.databinding.BooksListItemBinding
 import com.example.books.databinding.ProfileFragmentBinding
 import com.example.books.fragments.homepagefragment.HomePageFragmentDirections
 import com.example.books.fragments.homepagefragment.HomePageViewModel
+import com.example.books.fragments.likespagefragment.LikePageFragmentDirections
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -130,18 +131,29 @@ private lateinit var binding: ProfileFragmentBinding
 
 
 
-    private inner class BookUserViewHolder(val binding: BookListItemUserBinding): RecyclerView.ViewHolder(binding.root){
+    private inner class BookUserViewHolder(val binding: BookListItemUserBinding): RecyclerView.ViewHolder(binding.root) , View.OnClickListener{
         private lateinit var book: Book
 
         fun bind(book: Book){
             this.book = book
 //            binding.bookNamesTv.text=book.bookName
             binding.bookUserTv.load(book.bookImage)
+            binding.bookNameUserTv.text=book.bookName
+
+        }
+        init {
+
+           itemView.setOnClickListener(this)
         }
 
+        override fun onClick(v: View?) {
+            if (v==itemView){
+                val action = ProfileFragmentDirections.actionProfileFragmentToBookDetailsFragment(book.bookId)
+                Log.d(TAG, "onClick: ${book.bookId}")
+                findNavController().navigate(action)
+            }
 
-
-
+        }
 
 
     }

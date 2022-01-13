@@ -107,7 +107,8 @@ user=User()
         binding.sendCommentBtn.setOnClickListener {
             user= User()
             val commentText =binding.commentTv.text.toString()
-            val comment = Comment( commentText = commentText)
+            val comment = Comment( commentText = commentText ,useraId = auth.currentUser!!.uid , username = user
+                .username)
 
 
             bookDetailsViewModel.addComment(comment,bookId)
@@ -119,10 +120,13 @@ user=User()
         book = Book()
 
         binding.ratingBar.setOnClickListener {
+ if (binding.ratingBar.isClickable){
 
+ }
 
 
         }
+
 
         binding.favBtn.setOnClickListener {
 
@@ -135,6 +139,7 @@ user=User()
 
 
         binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
+
 
             val ratingBook = RatingBook(userRating =rating.toString(), userId = auth.currentUser!!.uid)
             bookDetailsViewModel.addBookRating(bookId,ratingBook ,userId =auth.currentUser!!.uid)
@@ -175,6 +180,8 @@ private inner class CommentHolder(val binding: CommentListItemBinding):RecyclerV
         this.comment = comment.comment
         binding.commentTv.text= comment.comment?.commentText
          binding.imageUserTv.load(comment.user?.profileImageUrl)
+         binding.usernameTvComment.text=comment.comment?.username
+
 
 
 

@@ -15,6 +15,14 @@
     android:background="#FDFBFB"
     android:gravity="center"
     android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="135dp"
+        android:layout_height="36dp"
+        android:layout_gravity="top"
+        android:src="@drawable/love" />
+
     <ImageView
         android:id="@+id/imageBookTv"
         android:layout_width="200sp"
@@ -82,6 +90,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
+        android:layout_marginTop="1dp"
         android:layout_marginBottom="8dp"
         android:text="@string/sendrate"
         app:layout_constraintBottom_toTopOf="@+id/favBtn"
@@ -91,9 +100,12 @@
         android:id="@+id/commentRv"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="264dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageBookTv" />
+
+        android:layout_width="200sp"
+        android:layout_height="200sp"
 
     <EditText
         android:id="@+id/commentTv"
@@ -107,6 +119,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
+
 
     <Button
         android:id="@+id/sendCommentBtn"
@@ -158,6 +171,12 @@
         android:src="@android:drawable/star_big_on"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/love" />
 
 </LinearLayout>
 </ScrollView>

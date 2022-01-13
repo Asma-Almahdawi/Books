@@ -1,5 +1,6 @@
 package com.example.books.fragments.likespagefragment
 
+import android.content.res.Configuration
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -19,14 +21,14 @@ import com.example.books.database.Favorite
 import com.example.books.databinding.CommentListItemBinding
 import com.example.books.databinding.FavoriteListItemBinding
 import com.example.books.databinding.LikePageFragmentBinding
+import com.example.books.fragments.homepagefragment.HomePageFragmentDirections
 import kotlinx.coroutines.launch
 
 private const val TAG = "LikePageFragment"
 class LikePageFragment : Fragment() {
 
     private lateinit var binding: LikePageFragmentBinding
-
-
+//    lateinit var bookId:String
 
     private val  viewModel by lazy { ViewModelProvider(this) [LikePageViewModel::class.java] }
 
@@ -71,7 +73,10 @@ class LikePageFragment : Fragment() {
     private inner class FavoriteHolder(val binding: FavoriteListItemBinding): RecyclerView.ViewHolder(binding.root) ,View.OnClickListener {
         private lateinit var book: Book
 
-
+        init {
+            itemView.setOnClickListener(this)
+            binding.deleteFavBtn.setOnClickListener(this)
+        }
         fun bind(book: Book){
 
             this.book = book
@@ -81,15 +86,24 @@ class LikePageFragment : Fragment() {
 
 
             }
-
         override fun onClick(v: View?) {
-            if (v == binding.deleteFavBtn){
+            when(v){
+                binding.deleteFavBtn -> {
+                  lifecycleScope.launch {
 
-               lifecycleScope.launch {
-                   viewModel.deleteFav(book.bookId)
-               }
+                      viewModel.deleteFav(book.bookId)
+
+                  }
+                }
+                itemView->{
+                    val action = LikePageFragmentDirections.actionLikePageFragmentToBookDetailsFragment(book.bookId)
+                    Log.d(TAG, "onClick: ${book.bookId}")
+                    findNavController().navigate(action)
+                }
             }
+
         }
+
 
 
     }

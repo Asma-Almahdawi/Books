@@ -10,6 +10,7 @@ import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.books.Book
 import com.example.books.commentFragment.Following
+import com.example.books.commentFragment.Validation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
@@ -36,7 +37,9 @@ class DatabaseRepo private constructor(context: Context){
     private val booksCollectionRef = Firebase.firestore.collection("books")
 
 
-  suspend fun loginUser(email:String, password:String, context: Context):Boolean{
+  suspend fun loginUser(email:String, password:String):Boolean{
+
+
         var isSuccess = false
 
         auth.signInWithEmailAndPassword(email, password)
@@ -45,15 +48,12 @@ class DatabaseRepo private constructor(context: Context){
 
                     isSuccess = true
                     Log.d(TAG, "signInWithEmail:success")
-                    Toast.makeText(context, "Authentication Done.",
-                        Toast.LENGTH_SHORT).show()
                     val user = auth.currentUser
 
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
-                    Toast.makeText(context, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show()
+
 
                 }
 
