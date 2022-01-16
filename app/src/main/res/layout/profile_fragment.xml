@@ -10,12 +10,13 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/booksUser_Rv"
-        android:layout_width="380sp"
-        android:layout_height="200sp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="108dp"
+        android:layout_width="400sp"
+        android:layout_height="400sp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bioTv" />
+        app:layout_constraintTop_toBottomOf="@+id/bioTv"
+        app:layout_constraintVertical_bias="0.628" />
 
     <TextView
         android:id="@+id/usernameTv"
@@ -45,17 +46,17 @@
 
     <ImageView
         android:id="@+id/editProfileBtn"
-        android:layout_width="84dp"
-        android:layout_height="49dp"
+        android:layout_width="52dp"
+        android:layout_height="37dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/edit"
+        android:src="@drawable/editprofile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/user_image"
-        android:layout_width="129dp"
-        android:layout_height="110dp"
+        android:layout_width="150sp"
+        android:layout_height="150sp"
         android:layout_marginTop="28dp"
         android:src="@drawable/profileimage"
         app:layout_constraintEnd_toEndOf="parent"
@@ -65,11 +66,11 @@
 
     <ImageView
         android:id="@+id/settingVi"
-        android:layout_width="104dp"
-        android:layout_height="75dp"
+        android:layout_width="49dp"
+        android:layout_height="41dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:src="@drawable/love"
+        android:layout_marginEnd="76dp"
+        android:src="@drawable/setting"
         app:layout_constraintEnd_toStartOf="@+id/user_image"
         app:layout_constraintTop_toTopOf="parent" />
 

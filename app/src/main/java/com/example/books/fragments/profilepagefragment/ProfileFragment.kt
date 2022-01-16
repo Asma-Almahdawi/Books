@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -73,7 +74,7 @@ private lateinit var binding: ProfileFragmentBinding
 
         }
 
-        binding.booksUserRv.layoutManager=LinearLayoutManager(context)
+        binding.booksUserRv.layoutManager=GridLayoutManager(context,2)
 
         lifecycleScope.launch {
 
@@ -96,6 +97,7 @@ private lateinit var binding: ProfileFragmentBinding
         binding.settingVi.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_settingFragment)
         }
+
 
         return binding.root
     }
@@ -138,7 +140,7 @@ private lateinit var binding: ProfileFragmentBinding
             this.book = book
 //            binding.bookNamesTv.text=book.bookName
             binding.bookUserTv.load(book.bookImage)
-            binding.bookNameUserTv.text=book.bookName
+//            binding.bookNameUserTv.text=book.bookName
 
         }
         init {

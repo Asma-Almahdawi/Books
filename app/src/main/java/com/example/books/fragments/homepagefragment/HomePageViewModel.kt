@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.books.Book
 import com.example.books.database.BookDatabaseRepo
 import com.example.books.database.DatabaseRepo
+import com.example.books.database.User
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
@@ -45,6 +46,12 @@ class HomePageViewModel : ViewModel() {
    private suspend fun getUserUid():String?{
        return database.getUserData().value?.userId
    }
+
+    suspend fun getUserInfo():LiveData<User> {
+
+        return database.getUserData()
+
+    }
 
 
 

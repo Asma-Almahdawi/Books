@@ -15,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.books.Book
 import com.example.books.R
 import com.example.books.databinding.FragmentBooksBinding
-import com.example.books.fragments.editfilefragment.REQUEST_CODE_IMAGE
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
@@ -30,7 +29,7 @@ import java.util.*
 
 private const val TAG = "BooksFragment"
 private const val REQUEST_CODE_PDF = 1
-private const val  REQUEST_CODE_IMAGEE =9
+private const val  REQUEST_CODE_BOOK_IMAGE =9
 class BooksFragment : Fragment() {
 
     private val booksViewModel by lazy { ViewModelProvider(this)[BooksViewModel::class.java] }
@@ -61,26 +60,30 @@ class BooksFragment : Fragment() {
        bindig= FragmentBooksBinding.inflate(layoutInflater)
 
         bindig.addBtn.setOnClickListener {
-//            val bookOwner = bindig.bookownerTv.text.toString()
             book.bookOwner= auth.currentUser!!.uid
             book.bookName= bindig.bookNameTv.text.toString()
-//            book.pdfFile=bindig.filePDFBtn.text.toString()
             book.authorName=bindig.autherNameTv.text.toString()
             book.yearOfPublication= bindig.yearOfPublicationTv.text.toString()
-               bindig.filePDFBtn.text = book.pdfFile
+            bindig.filePDFBtn.text = book.pdfFile
 
+            if (book.bookName.isEmpty()){
+                Toast.makeText(context,"please enter the book name",Toast.LENGTH_SHORT).show()
+            }else if (book.authorName.isEmpty()){
+                Toast.makeText(context,"please enter the author name",Toast.LENGTH_SHORT).show()
+            }else if (  book.yearOfPublication.isEmpty()){
+                Toast.makeText(context,"please enter the year",Toast.LENGTH_SHORT).show()
+            }else if (book.bookImage.isEmpty()){
+                Toast.makeText(context,"please enter the book image",Toast.LENGTH_SHORT).show()
+            }else if (book.pdfFile.isEmpty()){
 
-
-//            val book = Book( bookImage ,bookOwner=auth.currentUser!!.uid,bookName,pdfFile,autherName,yearOfPublication )
-            booksViewModel.insertBook(book)
+                Toast.makeText(context,"please enter the pdf file",Toast.LENGTH_SHORT).show()
+            }else{
+                booksViewModel.insertBook(book)
+                findNavController().navigate(R.id.action_booksFragment_to_navigation_home)
+            }
 
 
             firestore.document(auth.currentUser!!.uid).update("books",FieldValue.arrayUnion(book))
-//            uploadPdfFile(book)
-
-
-findNavController().navigate(R.id.action_booksFragment_to_navigation_home)
-
         }
 
         bindig.filePDFBtn.setOnClickListener {
@@ -99,7 +102,7 @@ findNavController().navigate(R.id.action_booksFragment_to_navigation_home)
 
                 it.type = "image/*"
 
-                startActivityForResult(it, REQUEST_CODE_IMAGEE)
+                startActivityForResult(it, REQUEST_CODE_BOOK_IMAGE)
 
             }
 
@@ -115,12 +118,12 @@ findNavController().navigate(R.id.action_booksFragment_to_navigation_home)
             data?.data.let {
 
                 cruPdfFile= it
-//                bindig.filePDFBtn.set
+
 
             }
             uploadPdfFile(book)
         }
-        if (resultCode==Activity.RESULT_OK && requestCode ==REQUEST_CODE_IMAGEE){
+        if (resultCode==Activity.RESULT_OK && requestCode ==REQUEST_CODE_BOOK_IMAGE){
 
             data?.data.let {
                 cruImage = it

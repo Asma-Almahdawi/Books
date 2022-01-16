@@ -1,10 +1,12 @@
 package com.example.books.fragments.bookdetails
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -30,7 +32,6 @@ import java.util.*
 private const val TAG = "BookDetailsFragment"
 class BookDetailsFragment : Fragment() {
 
-
     private val bookDetailsViewModel by lazy { ViewModelProvider(this)[BookDetailsViewModel::class.java] }
 private lateinit var binding: FragmentBookDetailsBinding
 
@@ -55,6 +56,7 @@ user=User()
 
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -71,6 +73,7 @@ user=User()
             binding.authorNameTv.setText(book.authorName)
             binding.imageBookTv.load(book.bookImage)
             binding.yearOfBookTv.setText(book.yearOfPublication)
+            binding.descerption.setText(book.summary)
 
 
 
@@ -80,7 +83,9 @@ user=User()
             lifecycleScope.launch {
                  bookDetailsViewModel.getComment(bookId).observe(
                      viewLifecycleOwner ,{
+
                          binding.commentRv.adapter=CommentAdapter(it)
+
                          Log.d(TAG, "onCreateView: ${it.forEach {
                              Log.d(TAG, "onCreateView: $it")
                          }}")
@@ -105,6 +110,7 @@ user=User()
 
         }
         binding.sendCommentBtn.setOnClickListener {
+
             user= User()
             val commentText =binding.commentTv.text.toString()
             val comment = Comment( commentText = commentText ,useraId = auth.currentUser!!.uid , username = user
@@ -112,6 +118,10 @@ user=User()
 
 
             bookDetailsViewModel.addComment(comment,bookId)
+//            binding.commentRv.addOnLayoutChangeListener()
+
+
+            binding.commentTv.text.clear()
 
         }
         binding.commentRv.layoutManager=LinearLayoutManager(context)
@@ -128,6 +138,7 @@ user=User()
         }
 
 
+
         binding.favBtn.setOnClickListener {
 
             lifecycleScope.launch {
@@ -136,6 +147,18 @@ user=User()
             }
 
         }
+
+//        binding.checkBoxFav.setOnCheckedChangeListener { _, isChecked ->
+//
+//            if (isChecked){
+//
+//                lifecycleScope.launch {
+//                    val favorite=Favorite(bookId)
+//                    bookDetailsViewModel.addToFavv(favorite , bookId)
+//                }
+//            }
+//
+//        }
 
 
         binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
@@ -153,15 +176,6 @@ user=User()
         }
 
 
-    binding.BookNameTv.setOnClickListener {
-
-        lifecycleScope.launch {
-
-            bookDetailsViewModel.getCurrentUserId()
-                ?.let { it1 -> bookDetailsViewModel.deleteRating(bookId, it1) }
-
-        }
-    }
 
         return binding.root
     }
@@ -170,7 +184,7 @@ user=User()
 
 
 
-private inner class CommentHolder(val binding: CommentListItemBinding):RecyclerView.ViewHolder(binding.root){
+private inner class CommentHolder(val binding: CommentListItemBinding):RecyclerView.ViewHolder(binding.root) {
     private var comment: Comment? = null
 
 
@@ -181,8 +195,8 @@ private inner class CommentHolder(val binding: CommentListItemBinding):RecyclerV
         this.comment = comment.comment
         binding.commentTv.text= comment.comment?.commentText
          binding.imageUserTv.load(comment.user?.profileImageUrl)
-         binding.usernameTvComment.text=comment.comment?.username
-
+         binding.usernameTvComment.text=comment.user?.username
+         Log.d(TAG, "bind: ${user.username}")
 
 
 

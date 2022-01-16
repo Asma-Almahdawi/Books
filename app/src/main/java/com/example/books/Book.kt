@@ -15,6 +15,7 @@ data class Book(
     var bookId :String=UUID.randomUUID().toString(),
     val comment :List<Comment> = listOf(),
     val rating: List<RatingBook> = listOf(),
+    val summary:String="",
     var pdfFile :String="",
 
 

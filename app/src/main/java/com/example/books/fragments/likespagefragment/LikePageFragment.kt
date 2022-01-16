@@ -1,5 +1,6 @@
 package com.example.books.fragments.likespagefragment
 
+import android.app.AlertDialog
 import android.content.res.Configuration
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -28,6 +29,7 @@ private const val TAG = "LikePageFragment"
 class LikePageFragment : Fragment() {
 
     private lateinit var binding: LikePageFragmentBinding
+    private lateinit var builder:AlertDialog.Builder
 //    lateinit var bookId:String
 
     private val  viewModel by lazy { ViewModelProvider(this) [LikePageViewModel::class.java] }
@@ -87,11 +89,24 @@ class LikePageFragment : Fragment() {
         override fun onClick(v: View?) {
             when(v){
                 binding.deleteFavBtn -> {
-                  lifecycleScope.launch {
 
-                      viewModel.deleteFavorite(book.bookId)
+                      builder=AlertDialog.Builder(context)
+                      builder.setTitle("Delete book")
+                          .setMessage("Are you sure you want to delete the book?")
+                          .setCancelable(true)
+                          .setPositiveButton("yes"){dialogInterface ,it ->
 
+                              lifecycleScope.launch {
+                                  viewModel.deleteFavorite(book.bookId)
+                              }
                   }
+
+                          .setNegativeButton("no"){dialogInterface ,it ->
+
+                              dialogInterface.cancel()
+
+                          }.show()
+
                 }
                 itemView->{
                     val action = LikePageFragmentDirections.actionLikePageFragmentToBookDetailsFragment(book.bookId)

@@ -14,7 +14,9 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import coil.load
+import com.example.books.R
 import com.example.books.database.User
 import com.example.books.databinding.EditFileFragmentBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -92,6 +94,8 @@ class EditFileFragment : Fragment() {
             if (cruFile != null){
                 uploadProfileImage(cruFile!!)
             }
+
+            findNavController().navigate(R.id.action_editFileFragment_to_profileFragment)
 
         }
 

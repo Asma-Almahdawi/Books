@@ -3,12 +3,12 @@
 
     <item
         android:drawable="@drawable/heart"
-        android:state_checked="false"
+        android:state_checked="true"
         />
 
     <item
         android:drawable="@drawable/love"
-        android:state_checked="true"
+        android:state_checked="false"
         />
 
     <item android:drawable="@drawable/love"/>

@@ -3,35 +3,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="200sp"
-    android:layout_margin="@android:dimen/app_icon_size"
-    android:background="@drawable/button_default">
+    android:layout_height="220sp"
 
-    <ImageView
+   >
+
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/bookImageTv"
-        android:layout_width="120sp"
-        android:layout_height="120sp"
-        android:layout_marginTop="8dp"
+        android:layout_width="150sp"
+        android:layout_height="150sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/roundSquer"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/bookNamesTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="8dp"
         android:text="TextView"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@+id/bookImageTv"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintEnd_toEndOf="@+id/bookImageTv"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bookImageTv" />
 
     <ImageView
         android:id="@+id/bookDelete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="21dp"
+        android:layout_height="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginEnd="184dp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

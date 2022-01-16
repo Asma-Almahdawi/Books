@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.books.Book
 import com.example.books.R
 import com.example.books.databinding.FragmentPdfViewBinding
 import com.google.firebase.firestore.ktx.firestore
@@ -20,6 +22,7 @@ class PdfViewFragment : Fragment() {
     private lateinit var binding: FragmentPdfViewBinding
     private val args: PdfViewFragmentArgs by navArgs()
     private lateinit var bookId:String
+    private lateinit var book:Book
     companion object {
         fun newInstance() = PdfViewFragment()
     }
@@ -28,6 +31,7 @@ class PdfViewFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        book=Book()
 
         bookId = args.bookId
     }
@@ -36,6 +40,13 @@ class PdfViewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding= FragmentPdfViewBinding.inflate(layoutInflater)
+
+        binding.back.setOnClickListener {
+
+            val action =PdfViewFragmentDirections.actionPdfViewFragmentToBookDetailsFragment(book.bookId)
+            findNavController().navigate(action)
+
+        }
         loadPdfDetails()
 
 

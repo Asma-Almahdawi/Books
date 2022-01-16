@@ -9,12 +9,12 @@
         android:id="@+id/likePageFragment"
         android:icon="@drawable/love"
         android:title="like" />
-    <item
-        android:id="@+id/chatPageFragment"
-        android:icon="@drawable/talking"
-        android:title="chat" />
+
     <item
         android:id="@+id/profileFragment"
         android:icon="@drawable/account"
         android:title="profile" />
+
+    <item android:id="@+id/nothing"
+        android:title=""/>
 </menu>

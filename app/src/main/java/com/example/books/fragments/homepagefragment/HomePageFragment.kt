@@ -11,11 +11,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.books.Book
 import com.example.books.R
+import com.example.books.database.User
 import com.example.books.databinding.BooksAddItemBinding
 import com.example.books.databinding.HomePageFragmentBinding
 import com.example.books.fragments.editfilefragment.EditFileViewModel
@@ -33,6 +35,7 @@ class HomePageFragment : Fragment() {
    private lateinit var book: Book
    private val bookList = mutableListOf<Book>()
     lateinit var bookId:String
+    private lateinit var user: User
 
 
 
@@ -42,16 +45,32 @@ class HomePageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
       binding= HomePageFragmentBinding.inflate(layoutInflater)
-
+user=User()
         if (homePageViewModel.getCurrentUserId().isNullOrEmpty()){
 
             findNavController().navigate(R.id.action_navigation_home_to_loginFragment)
 
 
         }
+        lifecycleScope.launch {
+            homePageViewModel.getUserInfo().observe(
+
+                viewLifecycleOwner,{
+
+                    binding.usernameTv.setText(it.username)
+                    binding.userImage.load(it.profileImageUrl)
+
+                }
+
+            )
+        }
 
 
-        binding.booksRv.layoutManager=LinearLayoutManager(context , LinearLayoutManager.HORIZONTAL,false)
+
+
+
+binding.booksRv.layoutManager=GridLayoutManager(context,2)
+//        binding.booksRv.layoutManager=LinearLayoutManager(context , LinearLayoutManager.HORIZONTAL,false)
         book=Book()
 
         lifecycleScope.launch {

@@ -13,6 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.example.books.databinding.ActivityMainBinding
 import com.google.android.gms.common.util.CollectionUtils.setOf
+import com.google.android.material.bottomappbar.BottomAppBar
 import java.util.*
 
 
@@ -26,7 +27,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.buttomNavMenu.background=null
-        binding.buttomNavMenu.menu.getItem(2).isEnabled = false
+
+//        binding.buttomNavMenu.menu.getItem(2).isEnabled = false
 
         val bottomNavigationView = binding.buttomNavMenu
 

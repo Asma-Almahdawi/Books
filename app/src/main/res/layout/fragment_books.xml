@@ -34,27 +34,16 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10sp"
 
-            android:backgroundTint="#3F45B5"
+            android:backgroundTint="@color/teal_700"
             android:text="@string/takephoto" />
-
 
         <Button
             android:id="@+id/filePDFBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="13dp"
-            android:backgroundTint="#3F45B5"
+            android:backgroundTint="@color/teal_700"
             android:text="@string/uoload_pdf_file" />
-
-        <EditText
-            android:id="@+id/bookownerTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="44dp"
-            android:ems="10"
-            android:hint="@string/book_owner"
-            android:inputType="textPersonName"
-            android:minHeight="48dp" />
 
         <EditText
             android:id="@+id/bookNameTv"
@@ -98,17 +87,10 @@
                 android:id="@+id/addBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#3F45B5"
+                android:backgroundTint="@color/teal_700"
                 android:text="@string/add" />
 
 
-            <Button
-                android:id="@+id/save_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10sp"
-                android:backgroundTint="#3F45B5"
-                android:text="@string/save" />
         </LinearLayout>
 
 
