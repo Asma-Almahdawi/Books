@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_navigation_home_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_audioBookDetailsFragment"
+            app:destination="@id/audioBookDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -61,6 +64,9 @@
         <action
             android:id="@+id/action_profileFragment_to_bookDetailsFragment"
             app:destination="@id/bookDetailsFragment" />
+        <argument
+            android:name="userId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/likePageFragment"
@@ -109,6 +115,9 @@
         <action
             android:id="@+id/action_bookDetailsFragment_to_pdfViewFragment"
             app:destination="@id/pdfViewFragment" />
+        <action
+            android:id="@+id/action_bookDetailsFragment_to_editBookFragment"
+            app:destination="@id/editBookFragment" />
     </fragment>
     <action
         android:id="@+id/action_global_booksFragment"
@@ -136,5 +145,32 @@
         <action
             android:id="@+id/action_settingFragment_to_navigation_home"
             app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_settingFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/audioBookFragment"
+        android:name="com.example.books.fragments.AudioBookFragment"
+        android:label="AudioBookFragment" >
+        <action
+            android:id="@+id/action_audioBookFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/audioBookDetailsFragment"
+        android:name="com.example.books.fragments.AudioBookDetail.AudioBookDetailsFragment"
+        android:label="AudioBookDetailsFragment" >
+        <argument
+            android:name="audioBookId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/editBookFragment"
+        android:name="com.example.books.fragments.bookdetails.EditBookFragment"
+        android:label="EditBookFragment" >
+        <argument
+            android:name="bookId"
+            app:argType="string" />
     </fragment>
 </navigation>

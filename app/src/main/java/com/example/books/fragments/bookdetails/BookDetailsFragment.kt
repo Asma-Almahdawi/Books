@@ -1,6 +1,8 @@
 package com.example.books.fragments.bookdetails
 
 import android.annotation.SuppressLint
+import android.media.AudioManager
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,12 +13,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.books.Book
+import com.example.books.R
 import com.example.books.commentFragment.Comment
 import com.example.books.commentFragment.UserComment
 import com.example.books.database.Favorite
@@ -25,6 +29,7 @@ import com.example.books.database.User
 import com.example.books.databinding.CommentListItemBinding
 import com.example.books.databinding.FragmentBookDetailsBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -38,6 +43,7 @@ private lateinit var binding: FragmentBookDetailsBinding
     private lateinit var book: Book
     private lateinit var user: User
     private lateinit var auth: FirebaseAuth
+    private lateinit var mediaPlayer: MediaPlayer
 
     var ratingAverage =0f
 
@@ -45,9 +51,13 @@ private lateinit var binding: FragmentBookDetailsBinding
     private val args: BookDetailsFragmentArgs by navArgs()
     lateinit var bookId:String
 
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth= FirebaseAuth.getInstance()
+        mediaPlayer= MediaPlayer()
 
 user=User()
          bookId = args.bookId as String
@@ -74,6 +84,7 @@ user=User()
             binding.imageBookTv.load(book.bookImage)
             binding.yearOfBookTv.setText(book.yearOfPublication)
             binding.descerption.setText(book.summary)
+//            binding.audioBookBtn.urls
 
 
 
@@ -82,15 +93,23 @@ user=User()
 
             lifecycleScope.launch {
                  bookDetailsViewModel.getComment(bookId).observe(
-                     viewLifecycleOwner ,{
+                     viewLifecycleOwner
+                 ) {
 
-                         binding.commentRv.adapter=CommentAdapter(it)
+                     binding.commentRv.adapter = CommentAdapter(it)
+//                     findNavController().navigate(R.id.bookDetailsFragment , arguments,NavOptions.Builder()
+//                         .setPopUpTo(R.id.bookDetailsFragment,true)
+//                         .build()
+//                     )
 
-                         Log.d(TAG, "onCreateView: ${it.forEach {
-                             Log.d(TAG, "onCreateView: $it")
-                         }}")
-                     }
-                 )
+                     Log.d(
+                         TAG, "onCreateView: ${
+                             it.forEach {
+                                 Log.d(TAG, "onCreateView: $it")
+                             }
+                         }"
+                     )
+                 }
 
             }
 
@@ -170,6 +189,17 @@ user=User()
         }
 
 
+
+//        binding.audioBookBtn.setOnClickListener {
+//            playAudio()
+//        }
+
+        binding.editBookBtn.setOnClickListener {
+            val action =BookDetailsFragmentDirections.actionBookDetailsFragmentToEditBookFragment(book.bookId)
+            findNavController().navigate(action)
+        }
+
+
         binding.pdfView.setOnClickListener {
             val action =BookDetailsFragmentDirections.actionBookDetailsFragmentToPdfViewFragment(book.bookId)
             findNavController().navigate(action)
@@ -180,11 +210,17 @@ user=User()
         return binding.root
     }
 
+//    private fun playAudio() {
+//        binding.audioBookBtn.isEnabled=false
+//        mediaPlayer.setDataSource(book.audioFile)
+//        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC)
+//        mediaPlayer.prepare()
+//        mediaPlayer.start()
+//
+//    }
 
 
-
-
-private inner class CommentHolder(val binding: CommentListItemBinding):RecyclerView.ViewHolder(binding.root) {
+    private inner class CommentHolder(val binding: CommentListItemBinding):RecyclerView.ViewHolder(binding.root) {
     private var comment: Comment? = null
 
 
@@ -231,7 +267,6 @@ private inner class CommentHolder(val binding: CommentListItemBinding):RecyclerV
             return comments.size
             Log.d(TAG, "getItemCount:${comments.size} ")
         }
-
 
     }
 

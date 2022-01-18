@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.books.Book
+import com.example.books.database.AudioBook
 import com.example.books.database.BookDatabaseRepo
 import com.example.books.database.DatabaseRepo
 import com.example.books.database.User
@@ -30,6 +31,9 @@ class HomePageViewModel : ViewModel() {
       return bookRep.getAllBook()
 
 
+    }
+    suspend fun getAllAudioBook(): LiveData<List<AudioBook>> {
+        return bookRep.getAllAudioBook()
     }
 
     fun getCurrentUserId():String?{

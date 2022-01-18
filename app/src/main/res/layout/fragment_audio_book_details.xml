@@ -36,19 +36,39 @@
             android:id="@+id/imageBookTv"
             android:layout_width="200sp"
             android:layout_height="150sp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="64dp"
             app:layout_constraintEnd_toEndOf="@+id/BookNameTv"
-            app:layout_constraintHorizontal_bias="0.443"
+            app:layout_constraintHorizontal_bias="0.45"
             app:layout_constraintStart_toStartOf="@+id/BookNameTv"
-            app:layout_constraintTop_toBottomOf="@+id/BookNameTv"
+            app:layout_constraintTop_toBottomOf="@+id/authorNameTv"
             tools:src="@tools:sample/avatars" />
 
+        <SeekBar
+            android:id="@+id/seekbar"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="76dp"
+            android:layout_marginTop="8dp"
+            android:progress="50"
+            android:layout_marginVertical="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageBookTv" />
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+
+            tools:ignore="MissingConstraints">
+
+        </LinearLayout>
         <TextView
             android:id="@+id/BookNameTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="164dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="188dp"
+            android:layout_marginTop="328dp"
             android:text="TextView"
             android:textColor="#050505"
             app:layout_constraintStart_toStartOf="parent"
@@ -85,12 +105,12 @@
             android:id="@+id/yearOfBookTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="332dp"
             android:text="TextView"
             android:textColor="#0B0B0B"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/authorNameTv"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/authorNameTv"
             app:layout_constraintTop_toBottomOf="@+id/authorNameTv" />
 
@@ -131,15 +151,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/commentTv" />
 
-        <Button
-            android:id="@+id/pdfView"
-            android:layout_width="161dp"
-            android:layout_height="42dp"
-            android:text="@string/readpdf"
-            app:layout_constraintEnd_toEndOf="@+id/imageBookTv"
-            app:layout_constraintStart_toStartOf="@+id/imageBookTv"
-            app:layout_constraintTop_toBottomOf="@+id/imageBookTv" />
-
         <TextView
             android:id="@+id/rateTv"
             android:layout_width="wrap_content"
@@ -176,8 +187,8 @@
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="120dp"
-            android:layout_marginTop="124dp"
+            android:layout_marginStart="128dp"
+            android:layout_marginTop="216dp"
             android:text="Author:"
             android:textColor="#29315E"
             android:textSize="17sp"
@@ -212,8 +223,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
             android:text="Year:"
             android:textColor="#29315E"
             android:textSize="17sp"
@@ -231,13 +242,39 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/editBookBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/audioBookBtn" />
+        <ImageButton
+            android:id="@+id/skip_pre_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/btn_bg"
+            android:src="@drawable/ic_baseline_skip_previous_24"
+            app:layout_constraintStart_toEndOf="@+id/textView7"
+            app:layout_constraintTop_toTopOf="@+id/seekbar" />
+
+        <ImageButton
+            android:id="@+id/play_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginStart="36dp"
+            android:background="@drawable/btn_bg"
+            android:src="@drawable/ic_baseline_play_arrow_24"
+            app:layout_constraintStart_toEndOf="@+id/skip_pre_btn"
+            app:layout_constraintTop_toBottomOf="@+id/seekbar" />
+
+        <ImageButton
+            android:id="@+id/skip_next_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginStart="40dp"
+            android:background="@drawable/btn_bg"
+            android:src="@drawable/ic_baseline_skip_next_24"
+            app:layout_constraintStart_toEndOf="@+id/play_btn"
+            app:layout_constraintTop_toTopOf="@+id/play_btn" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

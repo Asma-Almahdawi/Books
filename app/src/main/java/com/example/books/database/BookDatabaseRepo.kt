@@ -1,6 +1,7 @@
 package com.example.books.database
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.media.Rating
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -33,6 +34,8 @@ private const val TAG = "BookDatabaseRepo"
 
 class BookDatabaseRepo private constructor(context: Context) {
 
+
+
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val storge = FirebaseStorage.getInstance()
@@ -40,12 +43,25 @@ class BookDatabaseRepo private constructor(context: Context) {
 
     private val booksCollectionRef = Firebase.firestore.collection("books")
     private val userCollectionRef = firestore.collection("users")
-
+    private val audioBookCollectionRe= Firebase.firestore.collection("audioBooks")
+lateinit var audioBookId: String
     lateinit var bookId: String
+
+    fun insertAudioBook(audioBook: AudioBook){
+
+        audioBookCollectionRe.document(audioBook.audioBookId).set(audioBook)
+    }
+
 
     fun insertBook(book: Book) {
         booksCollectionRef.document(book.bookId).set(book)
     }
+    fun updateBook(book: Book) {
+        booksCollectionRef.document(book.bookId).update("bookName",book.bookName ,"authorName" , book.authorName)
+
+
+    }
+
 
     suspend fun getUserBooks(): LiveData<List<Book>> {
 
@@ -106,9 +122,39 @@ class BookDatabaseRepo private constructor(context: Context) {
     }
 
 
+    suspend fun getAllAudioBook(): LiveData<List<AudioBook>> {
+
+        return liveData {
+            val audioBooks = mutableListOf<AudioBook>()
+            audioBookCollectionRe.get().await().forEach {
+                val audioBook = AudioBook()
+                audioBook.bookName = it.getString("bookName")!!
+                Log.d(TAG, "getAllBook: ${audioBook.bookName}")
+                audioBook.authorName = it.getString("authorName")!!
+                audioBook.bookImage = it.getString("bookImage")!!
+                audioBook.audioFile = it.getString("audioFile")!!
+                Log.d(TAG, "getAllAudioBook: ${audioBook.audioFile}")
+                audioBook.bookOwner = it.getString("bookOwner")!!
+                audioBook.yearOfPublication = it.getString("yearOfPublication")!!
+//              comment.commentText=it.getString("comment")!!
+                audioBook.audioBookId = it.id
+//              bookId = it.id
+                audioBooks += audioBook
+            }
+            emit(audioBooks)
+        }
+    }
+
+
     fun addComment(comment: Comment, bookId: String) {
           comment.useraId= auth.currentUser!!.uid
         booksCollectionRef.document(bookId).update("comment", FieldValue.arrayUnion(comment))
+
+    }
+
+    fun addAudioBookComment(comment: Comment, audioBookId: String) {
+        comment.useraId= auth.currentUser!!.uid
+        audioBookCollectionRe.document(audioBookId).update("comment", FieldValue.arrayUnion(comment))
 
     }
 
@@ -117,6 +163,32 @@ class BookDatabaseRepo private constructor(context: Context) {
 
         return booksCollectionRef.document(bookId).get().await().toObject(Book::class.java)
 
+
+    }
+
+    suspend fun getAudioBook(audioBookId: String): AudioBook? {
+
+        return audioBookCollectionRe.document(audioBookId).get().await().toObject(AudioBook::class.java)
+
+
+    }
+    suspend fun getBookData(bookId: String): LiveData<Book> {
+
+        return liveData {
+
+            val book = booksCollectionRef.document(bookId).get().await()
+                .toObject(Book::class.java)
+
+            //to delete a FAVEROTE
+//            val newFav = user?.favorite!!.filter {
+//                it.bookId != id
+//            }
+//            userCollectionRef1.set(newFav)
+
+            if (book != null) {
+                emit(book)
+            }
+        }
 
     }
 

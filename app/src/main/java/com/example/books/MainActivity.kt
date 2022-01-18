@@ -63,6 +63,14 @@ class MainActivity : AppCompatActivity() {
          findNavController(R.id.container).navigate(R.id.booksFragment)
 
         }
+
+        binding.floatingBookActionButton2.setOnClickListener {
+            findNavController(R.id.container).navigate(R.id.booksFragment)
+        }
+        binding.floatingAudioActionButton.setOnClickListener {
+            findNavController(R.id.container).navigate(R.id.audioBookFragment)
+
+        }
 //        setupActionBarWithNavController(navController, AppBarConfiguration(setOf( R.layout.home_page_fragment,R.layout.like_page_fragment,R.layout.chat_page_fragment,R.layout.profile_fragment)))
 
 

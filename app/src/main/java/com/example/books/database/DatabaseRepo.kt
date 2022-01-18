@@ -26,10 +26,8 @@ private const val TAG = "DatabaseRepo"
 class DatabaseRepo private constructor(context: Context){
 
 
-
-
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val firestore:FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val storge = FirebaseStorage.getInstance()
     private val storageRef = storge.reference
 
@@ -37,13 +35,13 @@ class DatabaseRepo private constructor(context: Context){
     private val booksCollectionRef = Firebase.firestore.collection("books")
 
 
-  suspend fun loginUser(email:String, password:String):Boolean{
+    suspend fun loginUser(email: String, password: String): Boolean {
 
 
-        var isSuccess :Boolean? = null
+        var isSuccess: Boolean? = null
 
         auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task->
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
 
                     isSuccess = true
@@ -60,86 +58,80 @@ class DatabaseRepo private constructor(context: Context){
 
             }.addOnFailureListener {
 
-                isSuccess= false
+                isSuccess = false
 
             }.await()
-return isSuccess!!
+        return isSuccess!!
 
     }
 
 
-
-
-    fun getCurrentUserId():String?{
+    fun getCurrentUserId(): String? {
 
         return auth.currentUser?.uid
 
     }
 
 
-
     fun signOut() = auth.signOut()
 
-  suspend  fun getBookFromUser(userId:String):LiveData<List<Book>>{
+    suspend fun getBookFromUser(userId: String): LiveData<List<Book>> {
 
         return liveData {
 
-            booksCollectionRef.whereEqualTo("bookOwner",userId ).get().await()
+            booksCollectionRef.whereEqualTo("bookOwner", userId).get().await()
         }
     }
 
 
-
-    suspend fun uploadImage(curFile: Uri): Boolean{
+    suspend fun uploadImage(curFile: Uri): Boolean {
 
         var isSuccess = false
-            val ref =  storageRef.child("image/img_${Calendar.getInstance().time}.jpg")
-            val task =ref.putFile(curFile)
+        val ref = storageRef.child("image/img_${Calendar.getInstance().time}.jpg")
+        val task = ref.putFile(curFile)
 
-            val uriTask = task.continueWithTask{task ->
+        val uriTask = task.continueWithTask { task ->
 
-                if (!task.isSuccessful){
-                    task.exception?.let {
-                        throw it
-                    }
-
+            if (!task.isSuccessful) {
+                task.exception?.let {
+                    throw it
                 }
 
-                ref.downloadUrl
             }
-                .addOnSuccessListener {
 
-                    val imageUrl = it.toString()
+            ref.downloadUrl
+        }
+            .addOnSuccessListener {
+
+                val imageUrl = it.toString()
 //                  Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!).set(
 //                      hashMapOf("imageUrl" to imageUrl))
-                    if(Firebase.auth.currentUser != null){
+                if (Firebase.auth.currentUser != null) {
 
-                        firestore.collection("users").document(auth.currentUser?.uid!!).update("profileImageUrl",
-                            imageUrl)
-                    }
+                    firestore.collection("users").document(auth.currentUser?.uid!!).update(
+                        "profileImageUrl",
+                        imageUrl
+                    )
+                }
 
 //                      .update("profileImageUrl",imageUrl)
 
-                    isSuccess = true
-                }.addOnFailureListener {
-                    Log.d(TAG,"error url ")
-                }.await()
+                isSuccess = true
+            }.addOnFailureListener {
+                Log.d(TAG, "error url ")
+            }.await()
 
         return isSuccess
 
 
-        }
+    }
+
     suspend fun getUserData(): LiveData<User> {
 
         return liveData {
 
-         val user =  userCollectionRef.document(auth.currentUser!!.uid).get().await().toObject(User::class.java)
-
-            //to delete a FAVEROTE
-//            val newFav = user?.favorite!!.filter {
-//                it.bookId != id
-//            }
-//            userCollectionRef1.set(newFav)
+            val user = userCollectionRef.document(auth.currentUser!!.uid).get().await()
+                .toObject(User::class.java)
 
             if (user != null) {
                 emit(user)
@@ -148,34 +140,34 @@ return isSuccess!!
 
     }
 
-    suspend fun deleteFavorite(bookId:String){
+
+
+    suspend fun deleteFavorite(bookId: String) {
 
 //        to delete a FAVEROTE
-        val user =   userCollectionRef.document(auth.currentUser!!.uid).get().await().toObject(User::class.java)
-            val newFav = user?.favorite!!.filter {
-                it.bookId != bookId
+        val user = userCollectionRef.document(auth.currentUser!!.uid).get().await()
+            .toObject(User::class.java)
+        val newFav = user?.favorite!!.filter {
+            it.bookId != bookId
 
-            }
+        }
         Log.d(TAG, "deleteFavorite: $newFav")
-            userCollectionRef.document(auth.currentUser!!.uid).update("favorite",newFav)
+        userCollectionRef.document(auth.currentUser!!.uid).update("favorite", newFav)
 
     }
 
 
+    fun saveUser(user: User) {
 
 
-
-    fun saveUser(user: User){
-
-
-        val Id =  userCollectionRef.document(auth.currentUser!!.uid)
-       user.userId = Id.id
+        val Id = userCollectionRef.document(auth.currentUser!!.uid)
+        user.userId = Id.id
         Id.set(user)
 
 
     }
 
-    fun savaProfileUserData(user: User){
+    fun savaProfileUserData(user: User) {
 
 
         val uidRef = userCollectionRef.document(user.userId)
@@ -193,28 +185,57 @@ return isSuccess!!
 
     }
 
-   suspend fun addToFavv(favorite: Favorite , bookId: String){
-       userCollectionRef.document(auth.currentUser!!.uid).update("favorite" , FieldValue.arrayUnion(favorite))
+    suspend fun addToFavv(favorite: Favorite, bookId: String) {
+        userCollectionRef.document(auth.currentUser!!.uid)
+            .update("favorite", FieldValue.arrayUnion(favorite))
+
+
+    }
+    
+    suspend fun followers(followers: String, userId: String){
+
+        userCollectionRef.document(auth.currentUser!!.uid)
+            .update("followers", FieldValue.arrayUnion(followers))
+        
+    }
+
+    suspend fun getUser(userId: List<String>): LiveData<List<User>> {
+        val users = mutableListOf<User>()
+        return liveData {
+
+            userId.forEach {
+
+                booksCollectionRef.document(it).get().await().toObject(User::class.java)
+                    ?.let {
+                        users.add(
+                            it
+                        )
+                    }
+            }
+
+            emit(users)
+
+        }
 
 
     }
 
 
+    companion object {
 
-    companion object{
+        private var INSTANT: DatabaseRepo? = null
 
-        private var INSTANT : DatabaseRepo? = null
+        fun initiliza(context: Context) {
 
-        fun initiliza(context: Context){
-
-            if (INSTANT == null){
+            if (INSTANT == null) {
                 INSTANT = DatabaseRepo(context)
 
             }
 
         }
 
-        fun getInstant():DatabaseRepo = INSTANT ?: throw IllegalStateException(" repo has not be init")
+        fun getInstant(): DatabaseRepo =
+            INSTANT ?: throw IllegalStateException(" repo has not be init")
 
     }
 }

@@ -31,5 +31,11 @@ class ProfileViewModel : ViewModel() {
 
     }
 
+  suspend fun followers(followers:String , userId: String){
+
+    return userRepo.followers(followers , userId)
+
+  }
+
 
 }

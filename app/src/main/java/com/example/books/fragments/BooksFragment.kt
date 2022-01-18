@@ -30,6 +30,7 @@ import java.util.*
 private const val TAG = "BooksFragment"
 private const val REQUEST_CODE_PDF = 1
 private const val  REQUEST_CODE_BOOK_IMAGE =9
+private const val REQUEST_CODE_BOOK_AUDIO =0
 class BooksFragment : Fragment() {
 
     private val booksViewModel by lazy { ViewModelProvider(this)[BooksViewModel::class.java] }
@@ -42,6 +43,7 @@ class BooksFragment : Fragment() {
    var cruPdfFile:Uri?= null
 
     var cruImage :Uri? = null
+    var cruAudio:Uri?=null
     private val pdfRef = Firebase.storage.reference
   private lateinit var book: Book
 
@@ -63,6 +65,7 @@ class BooksFragment : Fragment() {
             book.bookOwner= auth.currentUser!!.uid
             book.bookName= bindig.bookNameTv.text.toString()
             book.authorName=bindig.autherNameTv.text.toString()
+            bindig.audioBtn.text=book.audioFile
             book.yearOfPublication= bindig.yearOfPublicationTv.text.toString()
             bindig.filePDFBtn.text = book.pdfFile
 
@@ -109,6 +112,20 @@ class BooksFragment : Fragment() {
 
         }
 
+        bindig.audioBtn.setOnClickListener {
+
+            Intent(Intent.ACTION_GET_CONTENT).also {
+
+                it.type = "audio/*"
+
+                startActivityForResult(it, REQUEST_CODE_BOOK_AUDIO)
+
+            }
+
+        }
+
+
+
         return bindig.root
     }
 
@@ -131,7 +148,13 @@ class BooksFragment : Fragment() {
             }
             uploadImage(book)
         }
+        if (resultCode==Activity.RESULT_OK && requestCode == REQUEST_CODE_BOOK_AUDIO){
 
+            data?.data.let {
+                cruAudio = it
+            }
+            uploadAudio()
+        }
 
 
         }
@@ -220,6 +243,57 @@ class BooksFragment : Fragment() {
                             val  userId = Firebase.auth.currentUser?.uid
                             Firebase.firestore.collection("books").document(userId!!).update("bookImage",
                                 this@BooksFragment.book
+                            )
+                        }
+
+//                      .update("profileImageUrl",imageUrl)
+
+
+                    }.addOnFailureListener {
+//                        Log.d(com.example.books.fragments.editfilefragment.TAG,"error url ")
+                    }
+                withContext(Dispatchers.Main){
+                    Toast.makeText(context,"true save",Toast.LENGTH_SHORT).show()
+                }
+            }}
+        catch (e:Exception){
+            withContext(Dispatchers.Main){
+                Toast.makeText(context,e.message,Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+    }
+
+    private fun uploadAudio() = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            cruAudio?.let {
+                val ref =  imageBookRef.child("audio/${this@BooksFragment.book}/${Calendar.getInstance().time}")
+                val task =ref.putFile(it)
+
+                val uriTask = task.continueWithTask{task ->
+
+                    if (!task.isSuccessful){
+                        task.exception?.let {
+                            throw it
+                        }
+
+                    }
+
+                    ref.downloadUrl
+                }
+                    .addOnSuccessListener {
+
+                        val bookAudioUrl = it.toString()
+                        this@BooksFragment.book.audioFile = bookAudioUrl
+                        Log.d(TAG,"Image url $bookAudioUrl")
+
+//                  Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!).set(
+//                      hashMapOf("imageUrl" to imageUrl))
+                        if(Firebase.auth.currentUser != null){
+                            val  userId = Firebase.auth.currentUser?.uid
+                            Firebase.firestore.collection("books").document(userId!!).update("audioFile",
+                               book.audioFile
                             )
                         }
 

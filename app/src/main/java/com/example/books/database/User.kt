@@ -11,7 +11,7 @@ data class User(
     var profileImageUrl: String?= "",
     var books:List<Book> = listOf(),
     var flowers:List<String> = listOf(),
-    var following: List<Following>? = listOf(),
+    var following: List<String> = listOf(),
     var favorite:List<Favorite> = listOf()
 
 

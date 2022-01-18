@@ -19,11 +19,13 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.books.Book
 import com.example.books.R
+import com.example.books.commentFragment.Comment
 import com.example.books.database.User
 import com.example.books.databinding.BookListItemUserBinding
 import com.example.books.databinding.BooksAddItemBinding
 import com.example.books.databinding.BooksListItemBinding
 import com.example.books.databinding.ProfileFragmentBinding
+import com.example.books.fragments.bookdetails.PdfViewFragmentArgs
 import com.example.books.fragments.homepagefragment.HomePageFragmentDirections
 import com.example.books.fragments.homepagefragment.HomePageViewModel
 import com.example.books.fragments.likespagefragment.LikePageFragmentDirections
@@ -42,11 +44,15 @@ class ProfileFragment : Fragment() {
 private lateinit var binding: ProfileFragmentBinding
 
     private lateinit var user: User
+//    private val args: ProfileFragmentArgs by navArgs()
+     lateinit var userId:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        userId=args.userId
         user=User()
+
+//        userId =args.userId
     }
 
     override fun onCreateView(
@@ -86,6 +92,17 @@ private lateinit var binding: ProfileFragmentBinding
                 }
             )
 
+        }
+
+        binding.followBtn.setOnClickListener {
+
+            user= User(userId)
+
+            lifecycleScope.launch {
+//
+//                profileViewModel.followers(userId)
+
+            }
         }
 
 
