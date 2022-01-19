@@ -28,6 +28,7 @@
         <activity
             android:name=".SplashScreenActivity"
             android:theme="@style/Theme.Design.Light.NoActionBar"
+            android:windowSoftInputMode="adjustPan"
             android:exported="true" >
 
         <intent-filter>

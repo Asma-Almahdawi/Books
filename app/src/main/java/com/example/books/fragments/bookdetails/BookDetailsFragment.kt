@@ -1,6 +1,7 @@
 package com.example.books.fragments.bookdetails
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -44,6 +46,7 @@ private lateinit var binding: FragmentBookDetailsBinding
     private lateinit var user: User
     private lateinit var auth: FirebaseAuth
     private lateinit var mediaPlayer: MediaPlayer
+    private lateinit var favorite: Favorite
 
     var ratingAverage =0f
 
@@ -58,9 +61,9 @@ private lateinit var binding: FragmentBookDetailsBinding
         super.onCreate(savedInstanceState)
         auth= FirebaseAuth.getInstance()
         mediaPlayer= MediaPlayer()
-
-user=User()
-         bookId = args.bookId as String
+        favorite= Favorite()
+        user=User()
+        bookId = args.bookId
         Log.d(TAG, "onCreate: $bookId")
 
 
@@ -85,8 +88,16 @@ user=User()
             binding.yearOfBookTv.setText(book.yearOfPublication)
             binding.descerption.setText(book.summary)
 //            binding.audioBookBtn.urls
-
-
+            Log.d(TAG, "onCreateView:before loop $bookId")
+            for (i in user.favorite.indices){
+                Log.d(TAG, "onCreateView: in loop ${book.bookId}")
+                if (user.favorite[i].bookId == bookId){
+                    Log.d(TAG, "onCreateView: in condition ${book.bookId}")
+                    binding.addToFav.setBackgroundColor(Color.RED)
+                    Toast.makeText(requireContext(),"condition fullfiled", Toast.LENGTH_LONG).show()
+                }
+            }
+            Log.d(TAG, "onCreateView: after loop $bookId")
 
             Log.d(TAG, "Book: $book")
         }.invokeOnCompletion {
@@ -124,8 +135,10 @@ user=User()
 
             }
             ratingAverage /= book.rating.size
+            
 //            binding.ratingBar.rating = ratingAverage
             binding.rateTv.text= ratingAverage.toString()
+            Log.d(TAG, "onCreateView: $ratingAverage")
 
         }
         binding.sendCommentBtn.setOnClickListener {
@@ -137,10 +150,44 @@ user=User()
 
 
             bookDetailsViewModel.addComment(comment,bookId)
+
+            lifecycleScope.launch {
+
+                bookDetailsViewModel.getComment(bookId).observe(
+
+                    viewLifecycleOwner,{
+
+                        binding.commentRv.adapter=CommentAdapter(it)
+
+                    }
+
+                )
+
+            }
 //            binding.commentRv.addOnLayoutChangeListener()
 
 
             binding.commentTv.text.clear()
+
+        }
+
+        binding.addToFav.setOnCheckedChangeListener {_, isChecked ->
+
+            if (isChecked){
+
+                lifecycleScope.launch {
+                    val favorite=Favorite(bookId)
+                    bookDetailsViewModel.addToFavv(favorite , bookId)
+                }
+
+            }else{
+
+                lifecycleScope.launch {
+                    bookDetailsViewModel.deleteFavorite(bookId)
+                }
+            }
+
+
 
         }
         binding.commentRv.layoutManager=LinearLayoutManager(context)
@@ -148,13 +195,6 @@ user=User()
 
         book = Book()
 
-        binding.ratingBar.setOnClickListener {
- if (binding.ratingBar.isClickable){
-
- }
-
-
-        }
 
 
 

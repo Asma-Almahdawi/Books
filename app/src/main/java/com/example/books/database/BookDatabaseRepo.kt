@@ -18,6 +18,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -52,15 +53,76 @@ lateinit var audioBookId: String
         audioBookCollectionRe.document(audioBook.audioBookId).set(audioBook)
     }
 
+    suspend fun searchBookName(letter:String):LiveData<List<Book>>{
+
+        return liveData {
+
+            val books = mutableListOf<Book>()
+            booksCollectionRef.whereEqualTo("bookName",letter)
+                .get().await().documents.forEach {
+
+                    val book = it.toObject(Book::class.java)
+                    if (book != null) {
+book.bookId=it.id
+                        books+=book
+                    }
+
+                    emit(books)
+
+                }
+
+        }
+
+    }
+
 
     fun insertBook(book: Book) {
         booksCollectionRef.document(book.bookId).set(book)
     }
-    fun updateBook(book: Book) {
-        booksCollectionRef.document(book.bookId).update("bookName",book.bookName ,"authorName" , book.authorName)
+    fun updateBook(
+        book: Book,
+        bookImage:String ,
+        bookName:String,
+        authorName:String,
+        yearOfPublication:String,
+        pdfFile :String
+    ) {
 
+        booksCollectionRef.document(book.bookId).update("bookImage", bookImage ,
+            "bookName",bookName,
+            "authorName",authorName,
+            "yearOfPublication",yearOfPublication,
+            "pdfFile",pdfFile
+
+        )
 
     }
+
+//
+//        if (book.bookImage.isNotEmpty()){
+//            book.bookImage = book.bookImage
+//        }
+//        if (book.bookName.isNotEmpty()){
+//            book.bookName = book.bookName
+//        }
+//        if (book.yearOfPublication.isNotEmpty()){
+//            book.yearOfPublication = book.yearOfPublication
+//        }
+//        if (book.authorName.isNotEmpty()){
+//            book.authorName = book.authorName
+//        }
+//        if (book.pdfFile.isNotEmpty()){
+//            book.pdfFile = book.pdfFile
+//        }
+//        if (book.bookOwner.isNotEmpty()){
+//            book.bookOwner = book.bookOwner
+//        }
+//
+//booksCollectionRef.document(book.bookId).set(book, SetOptions.merge())
+
+
+
+
 
 
     suspend fun getUserBooks(): LiveData<List<Book>> {
@@ -215,6 +277,29 @@ lateinit var audioBookId: String
 
     }
 
+    suspend fun getAudioBookComment(audioBookId: String): LiveData<List<UserComment>> {
+
+        val audioBook =audioBookCollectionRe.document(audioBookId)
+            .get().await().toObject(AudioBook::class.java)
+        val comment = mutableListOf<UserComment>()
+        return liveData {
+            audioBook?.comment?.forEach {
+                val userComment = UserComment()
+                userComment.comment = it
+
+                userComment.user = Firebase.firestore.collection("users").document(it.useraId)
+                    .get().await().toObject(User::class.java)
+                Log.d(TAG, "getComment: ${userComment.comment} , ${userComment.user}")
+                comment.add(userComment)
+                emit(comment)
+            }
+
+
+        }
+
+
+    }
+
    suspend fun addBookRating(bookId: String, ratingBook: RatingBook, userId: String) {
         val book =  booksCollectionRef.document(bookId).get().await().toObject(Book::class.java)
 
@@ -229,6 +314,24 @@ lateinit var audioBookId: String
 
            booksCollectionRef.document(bookId).update("rating",newRating)
        }
+
+
+    }
+
+    suspend fun audioBookRating(audioBookId:String, ratingBook: RatingBook, userId: String) {
+        val audioBook =  audioBookCollectionRe.document(audioBookId).get().await().toObject(AudioBook::class.java)
+
+        val newRating:MutableList<RatingBook> = audioBook?.rating!!.filter {
+            it.userId != userId
+        }.toMutableList()
+        if (audioBook.rating == newRating){
+
+            audioBookCollectionRe.document(audioBookId).update("rating", FieldValue.arrayUnion(ratingBook))
+        }else{
+            newRating.add(ratingBook)
+
+            audioBookCollectionRe.document(audioBookId).update("rating",newRating)
+        }
 
 
     }

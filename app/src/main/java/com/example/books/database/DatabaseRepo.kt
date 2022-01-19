@@ -23,7 +23,8 @@ import kotlinx.coroutines.tasks.await
 import java.util.*
 
 private const val TAG = "DatabaseRepo"
-class DatabaseRepo private constructor(context: Context){
+
+class DatabaseRepo private constructor(context: Context) {
 
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -141,7 +142,6 @@ class DatabaseRepo private constructor(context: Context){
     }
 
 
-
     suspend fun deleteFavorite(bookId: String) {
 
 //        to delete a FAVEROTE
@@ -185,18 +185,17 @@ class DatabaseRepo private constructor(context: Context){
 
     }
 
-    suspend fun addToFavv(favorite: Favorite, bookId: String) {
+    suspend fun addToFavv(favorite: Favorite, bookId: String ) {
         userCollectionRef.document(auth.currentUser!!.uid)
             .update("favorite", FieldValue.arrayUnion(favorite))
 
-
     }
-    
-    suspend fun followers(followers: String, userId: String){
+
+    suspend fun followers(followers: String, userId: String) {
 
         userCollectionRef.document(auth.currentUser!!.uid)
             .update("followers", FieldValue.arrayUnion(followers))
-        
+
     }
 
     suspend fun getUser(userId: List<String>): LiveData<List<User>> {

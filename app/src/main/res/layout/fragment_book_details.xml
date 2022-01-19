@@ -43,6 +43,16 @@
             app:layout_constraintTop_toBottomOf="@+id/BookNameTv"
             tools:src="@tools:sample/avatars" />
 
+        <CheckBox
+            android:id="@+id/addToFav"
+            android:layout_width="62dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:button="@drawable/fav_checkbox"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editBookBtn" />
+
         <TextView
             android:id="@+id/BookNameTv"
             android:layout_width="wrap_content"

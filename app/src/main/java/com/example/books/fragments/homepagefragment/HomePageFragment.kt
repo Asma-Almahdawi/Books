@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -26,6 +27,7 @@ import com.google.android.gms.auth.api.Auth
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import kotlinx.coroutines.launch
+import java.util.*
 
 private const val TAG = "HomePageFragment"
 
@@ -41,6 +43,8 @@ class HomePageFragment : Fragment() {
     private lateinit var audioBook: AudioBook
 
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,6 +55,32 @@ class HomePageFragment : Fragment() {
 
             findNavController().navigate(R.id.action_navigation_home_to_loginFragment)
         }
+
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+
+                if (newText!!.isNotEmpty()){
+
+                    val search = newText.lowercase(Locale.getDefault())
+lifecycleScope.launch {
+    homePageViewModel.searchBookName(search).observeForever {bookList->
+        binding.booksRv.adapter=BookAdapter(bookList)
+    }
+}
+
+                }
+
+                return true
+            }
+
+
+        })
+
+
 
         lifecycleScope.launch {
             homePageViewModel.getUserInfo().observe(

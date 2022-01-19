@@ -36,9 +36,9 @@
             android:id="@+id/imageBookTv"
             android:layout_width="200sp"
             android:layout_height="150sp"
-            android:layout_marginTop="64dp"
+            android:layout_marginTop="68dp"
             app:layout_constraintEnd_toEndOf="@+id/BookNameTv"
-            app:layout_constraintHorizontal_bias="0.45"
+            app:layout_constraintHorizontal_bias="0.584"
             app:layout_constraintStart_toStartOf="@+id/BookNameTv"
             app:layout_constraintTop_toBottomOf="@+id/authorNameTv"
             tools:src="@tools:sample/avatars" />
@@ -83,10 +83,9 @@
             android:text="TextView"
             android:textColor="#0B0B0B"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/pdfView"
+
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView5"
-            app:layout_constraintTop_toBottomOf="@+id/pdfView" />
+            app:layout_constraintStart_toStartOf="@+id/textView5" />
 
         <TextView
             android:id="@+id/descerption"
@@ -105,12 +104,12 @@
             android:id="@+id/yearOfBookTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="332dp"
+            android:layout_marginTop="344dp"
             android:text="TextView"
             android:textColor="#0B0B0B"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/authorNameTv"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/authorNameTv"
             app:layout_constraintTop_toBottomOf="@+id/authorNameTv" />
 
@@ -130,16 +129,18 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
         <EditText
             android:id="@+id/commentTv"
             android:layout_width="317sp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:minHeight="48dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/commentRv"
 
+            app:layout_constraintTop_toBottomOf="@+id/commentRv"
             tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
         <Button
@@ -173,6 +174,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <CheckBox
+            android:layout_width="62dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="56dp"
+            android:button="@drawable/fav_checkbox"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="17dp"
@@ -201,7 +210,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="176dp"
+            android:layout_marginTop="304dp"
             android:text="Summary:"
             android:textColor="#29315E"
             android:textSize="17sp"
@@ -231,16 +240,6 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/yearOfBookTv"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
-
-        <Button
-            android:id="@+id/audioBookBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
-            android:text="Button"
-            android:onClick="playAudio"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/skip_pre_btn"

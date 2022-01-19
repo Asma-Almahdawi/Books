@@ -66,10 +66,18 @@ bookId=args.bookId
             binding.yearOfPublicationTv.setText(book.yearOfPublication)
 
             binding.addBtn.setOnClickListener {
-                editBookViewModel.updateBook(book)
 
-                binding.bookNameTv.text.toString()
-                binding.autherNameTv.text.toString()
+                editBookViewModel.updateBook(
+                    book,
+                    binding.takePhoto.text.toString(),
+                    binding.bookNameTv.text.toString(),
+                        binding.autherNameTv.text.toString(),
+                    binding.yearOfPublicationTv.text.toString(),
+                    binding.filePDFBtn.text.toString(),
+
+                )
+
+
 
             }
 

@@ -13,12 +13,16 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.books.Book
 import com.example.books.R
 import com.example.books.commentFragment.Comment
+import com.example.books.commentFragment.UserComment
 import com.example.books.database.AudioBook
+import com.example.books.database.RatingBook
 import com.example.books.database.User
+import com.example.books.databinding.CommentListItemBinding
 import com.example.books.databinding.FragmentAudioBookDetailsBinding
 import com.example.books.fragments.bookdetails.BookDetailsFragmentArgs
 import com.example.books.fragments.bookdetails.BookDetailsViewModel
@@ -35,23 +39,25 @@ class AudioBookDetailsFragment : Fragment() {
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var audioBook: AudioBook
     private val args: AudioBookDetailsFragmentArgs by navArgs()
-    lateinit var audioBookId:String
+    lateinit var audioBookId: String
     private lateinit var user: User
     private lateinit var auth: FirebaseAuth
-    private lateinit var runnable:Runnable
+    private lateinit var runnable: Runnable
     private var handler: Handler = Handler()
-    private var pause:Boolean = false
+    private var pause: Boolean = false
+    var ratingAverage =0f
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        audioBook= AudioBook()
+        audioBook = AudioBook()
         mediaPlayer = MediaPlayer()
-        auth= FirebaseAuth.getInstance()
-        audioBookId= args.audioBookId
+        auth = FirebaseAuth.getInstance()
+        audioBookId = args.audioBookId
         Log.d(TAG, "onCreate: $audioBookId")
 
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,14 +68,74 @@ class AudioBookDetailsFragment : Fragment() {
 
         lifecycleScope.launch {
 
-          audioBook=  audioBookDetailsViewModel.getAudioBook(audioBookId)?: AudioBook()
+            audioBook = audioBookDetailsViewModel.getAudioBook(audioBookId) ?: AudioBook()
             binding.BookNameTv.setText(audioBook.bookName)
             binding.authorNameTv.setText(audioBook.bookOwner)
             binding.authorNameTv.setText(audioBook.authorName)
             binding.imageBookTv.load(audioBook.bookImage)
             binding.yearOfBookTv.setText(audioBook.yearOfPublication)
             binding.descerption.setText(audioBook.summary)
-            binding.audioBookBtn.urls
+//            binding.audioBookBtn.urls
+
+
+        }.invokeOnCompletion {
+
+            lifecycleScope.launch {
+               audioBookDetailsViewModel.getAudioBookComment(audioBookId).observe(
+                    viewLifecycleOwner
+                ) {
+
+                    binding.commentRv.adapter = CommentAdapter(it)
+//                     findNavController().navigate(R.id.bookDetailsFragment , arguments,NavOptions.Builder()
+//                         .setPopUpTo(R.id.bookDetailsFragment,true)
+//                         .build()
+//                     )
+
+                    Log.d(
+                       TAG, "onCreateView: ${
+                            it.forEach {
+                                Log.d(TAG, "onCreateView: $it")
+                            }
+                        }"
+                    )
+                }
+
+            }
+
+
+//            lifecycleScope.launch {
+//
+//                audioBookDetailsViewModel.getAudioBookComment(audioBookId).observe(
+//
+//
+//                    viewLifecycleOwner,{
+//
+//                        binding.commentRv.adapter=CommentAdapter(it)
+////                        Log.d(TAG, "onCreateView: $it")
+//
+//
+//
+//                )
+//
+//                Log.d(TAG, "onCreateView: ${
+//                        it.forEach {
+//                            Log.d(TAG, "onCreateView: $it")
+//                        }
+//                    }"
+//                )
+//                    }
+//            }
+
+            audioBook.rating.forEach {
+
+                ratingAverage += it.userRating.toFloat()
+
+
+
+            }
+            ratingAverage /= audioBook.rating.size
+            binding.rateTv.text= ratingAverage.toString()
+
         }
 
 
@@ -79,12 +145,12 @@ class AudioBookDetailsFragment : Fragment() {
 
         binding.playBtn.setOnClickListener {
 
-            if (!mediaPlayer.isPlaying){
+            if (!mediaPlayer.isPlaying) {
                 playAudio()
                 initSeekbar()
                 binding.playBtn.setImageResource(R.drawable.ic_baseline_pause_24)
-            }else{
-               pauseAudio()
+            } else {
+                pauseAudio()
                 binding.playBtn.setImageResource(R.drawable.ic_baseline_play_arrow_24)
             }
 
@@ -93,8 +159,8 @@ class AudioBookDetailsFragment : Fragment() {
             binding.seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(p0: SeekBar?, currentValue: Int, p2: Boolean) {
 
-                    if (p2){
-mediaPlayer.seekTo(currentValue)
+                    if (p2) {
+                        mediaPlayer.seekTo(currentValue)
 
                     }
 
@@ -106,7 +172,6 @@ mediaPlayer.seekTo(currentValue)
             })
 
 
-
         }
 
         binding.skipNextBtn.setOnClickListener {
@@ -115,10 +180,9 @@ mediaPlayer.seekTo(currentValue)
 
         }
 
-        binding.seekbar.progress=0
+        binding.seekbar.progress = 0
 
         binding.seekbar.max = mediaPlayer.duration
-
 
 
 //        binding.audioBookBtn.setOnClickListener {
@@ -127,19 +191,34 @@ mediaPlayer.seekTo(currentValue)
 
         binding.sendCommentBtn.setOnClickListener {
 
-            user= User()
-            val commentText =binding.commentTv.text.toString()
-            val comment = Comment( commentText = commentText ,useraId =auth.currentUser!!.uid , username = user
-                .username)
+            user = User()
+            val commentText = binding.commentTv.text.toString()
+            val comment = Comment(
+                commentText = commentText, useraId = auth.currentUser!!.uid, username = user
+                    .username
+            )
 
+            audioBookDetailsViewModel.addAudioBookComment(comment, audioBookId)
 
-            audioBookDetailsViewModel.addAudioBookComment(comment,audioBookId)
-//            binding.commentRv.addOnLayoutChangeListener()
-
-
-//            binding.commentTv.text.clear()
 
         }
+
+
+
+        binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
+
+
+            val ratingBook =
+                RatingBook(userRating = rating.toString(), userId = auth.currentUser!!.uid)
+            audioBookDetailsViewModel.audioBookRating(
+                audioBookId,
+                ratingBook,
+                userId = auth.currentUser!!.uid
+            )
+
+
+        }
+
         return binding.root
     }
 
@@ -159,16 +238,16 @@ mediaPlayer.seekTo(currentValue)
             mediaPlayer.prepare()
             mediaPlayer.start()
 
-        }catch (e:IOException){
+        } catch (e: IOException) {
 
         }
 
 
     }
 
-    fun pauseAudio(){
+    fun pauseAudio() {
 
-        if (mediaPlayer.isPlaying){
+        if (mediaPlayer.isPlaying) {
 
             mediaPlayer.pause()
             mediaPlayer.stop()
@@ -176,44 +255,115 @@ mediaPlayer.seekTo(currentValue)
 //            mediaPlayer.reset()
 //            mediaPlayer.release()
 
-    }else{
+        } else {
 
-
-    }
 
         }
 
-    private fun initSeekbar(){
+    }
 
-        binding.seekbar.max=mediaPlayer.duration
+    private fun initSeekbar() {
+
+        binding.seekbar.max = mediaPlayer.duration
         val handler = Handler()
-        handler.postDelayed(object :Runnable{
+        handler.postDelayed(object : Runnable {
             override fun run() {
                 try {
-                    binding.seekbar.progress=mediaPlayer.currentPosition
-                    handler.postDelayed(this,1000)
-                }catch (e:Exception){
+                    binding.seekbar.progress = mediaPlayer.currentPosition
+                    handler.postDelayed(this, 1000)
+                } catch (e: Exception) {
 
-                    binding.seekbar.progress=0
+                    binding.seekbar.progress = 0
                 }
             }
 
 
-        },0)
+        }, 0)
 
 
     }
 
-    fun relaseAudio(){
+    fun relaseAudio() {
 
-        if (!mediaPlayer.isPlaying){
+        if (!mediaPlayer.isPlaying) {
 
             mediaPlayer.reset()
 
+        }
+
+    }
+
+
+    private inner class CommentHolder(val binding: CommentListItemBinding): RecyclerView.ViewHolder(binding.root) {
+        private var comment: Comment? = null
+
+
+
+
+        fun bind(comment: UserComment){
+
+            this.comment = comment.comment
+            binding.commentTv.text= comment.comment?.commentText
+            binding.imageUserTv.load(comment.user?.profileImageUrl)
+            binding.usernameTvComment.text=comment.user?.username
+
+
+
+
+        }
+
+
+
+
+    }
+
+    private inner class CommentAdapter(val comments :List<UserComment>): RecyclerView.Adapter<CommentHolder> (){
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentHolder {
+            val binding = CommentListItemBinding.inflate(
+                layoutInflater,
+                parent,
+                false
+            )
+
+            return CommentHolder(binding)
+        }
+
+        override fun onBindViewHolder(holder: CommentHolder, position: Int) {
+
+            val comment = comments[position]
+            holder.bind(comment)
+
+
+        }
+
+        override fun getItemCount(): Int {
+
+            return comments.size
+
+            Log.d(TAG, "getItemCount:${comments.size} ")
+        }
+
+    }
+
+
+    fun audioBookRating(){
+
+//
+//        audioBook.rating.forEach {
+//
+//            ratingAverage += it.userRating.toFloat()
+//
+//
+//
+//        }
+//        ratingAverage /= audioBook.rating.size
+////            binding.ratingBar.rating = ratingAverage
+//        binding.rateTv.text= ratingAverage.toString()
+
     }
 
 
 
+    }
 
 
-}}

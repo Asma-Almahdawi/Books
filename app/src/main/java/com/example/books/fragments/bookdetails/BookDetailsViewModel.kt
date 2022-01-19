@@ -60,9 +60,17 @@ viewModelScope.launch {
    }
 
 
+
     suspend fun getBook(bookId: String): Book?{
 
         return bookRep.getBook(bookId)
+
+    }
+
+    suspend fun deleteFavorite(bookId: String){
+
+
+        return userRepo.deleteFavorite(bookId)
 
     }
 

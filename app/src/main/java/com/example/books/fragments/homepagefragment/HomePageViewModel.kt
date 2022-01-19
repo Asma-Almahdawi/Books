@@ -50,6 +50,10 @@ class HomePageViewModel : ViewModel() {
    private suspend fun getUserUid():String?{
        return database.getUserData().value?.userId
    }
+    suspend fun searchBookName(letter:String):LiveData<List<Book>>{
+
+        return bookRep.searchBookName(letter)
+    }
 
     suspend fun getUserInfo():LiveData<User> {
 

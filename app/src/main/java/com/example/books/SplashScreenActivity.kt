@@ -16,7 +16,6 @@ class SplashScreenActivity : AppCompatActivity() {
 binding= ActivitySplashScreenBinding.inflate(layoutInflater)
 val sideAnimation = AnimationUtils.loadAnimation(this,R.anim.side)
 
-
         binding.animationView.startAnimation(sideAnimation)
         Handler().postDelayed(
 

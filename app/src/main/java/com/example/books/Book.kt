@@ -2,6 +2,7 @@ package com.example.books
 
 import android.media.Rating
 import com.example.books.commentFragment.Comment
+import com.example.books.database.Favorite
 import com.example.books.database.RatingBook
 import java.util.*
 import kotlin.collections.HashMap
@@ -17,6 +18,7 @@ data class Book(
     val rating: List<RatingBook> = listOf(),
     val summary:String="",
     var pdfFile :String="",
+    var favorite:List<String> = listOf(),
     var audioFile:String = ""
 
 

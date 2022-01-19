@@ -20,9 +20,18 @@ class EditBookViewModel : ViewModel() {
 
 
     }
-    fun updateBook(book: Book){
+    fun updateBook(book:Book,
+                   bookImage:String ,
+                   bookName:String,
+                   authorName:String,
+                   yearOfPublication:String,
+                   pdfFile :String){
 
-        return bookRepo.updateBook(book)
+        return bookRepo.updateBook(bookImage = bookImage,book = book ,
+           bookName= bookName,
+            authorName=authorName,
+            yearOfPublication=yearOfPublication,
+            pdfFile=pdfFile )
     }
 
     fun insertBook(book: Book){
