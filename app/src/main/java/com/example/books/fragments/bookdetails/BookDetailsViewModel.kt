@@ -74,5 +74,12 @@ viewModelScope.launch {
 
     }
 
+    suspend fun getUserData():LiveData<User>{
+
+
+        return  userRepo.getUserData()
+
+    }
+
 
 }
