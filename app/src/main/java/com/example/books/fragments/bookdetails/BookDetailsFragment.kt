@@ -88,18 +88,21 @@ private lateinit var binding: FragmentBookDetailsBinding
             binding.yearOfBookTv.setText(book.yearOfPublication)
             binding.descerption.setText(book.summary)
 //            binding.audioBookBtn.urls
-            Log.d(TAG, "onCreateView:before loop $bookId")
-            for (i in user.favorite.indices){
-                Log.d(TAG, "onCreateView: in loop ${book.bookId}")
-                if (user.favorite[i].bookId == bookId){
-                    Log.d(TAG, "onCreateView: in condition ${book.bookId}")
-                    binding.addToFav.setBackgroundColor(Color.RED)
-                    Toast.makeText(requireContext(),"condition fullfiled", Toast.LENGTH_LONG).show()
-                }
-            }
-            Log.d(TAG, "onCreateView: after loop $bookId")
 
-            Log.d(TAG, "Book: $book")
+
+
+//            Log.d(TAG, "onCreateView:before loop $bookId")
+//            for (i in user.favorite.indices){
+//                Log.d(TAG, "onCreateView: in loop ${book.bookId}")
+//                if (user.favorite[i].bookId == bookId){
+//                    Log.d(TAG, "onCreateView: in condition ${book.bookId}")
+//                    binding.addToFav.setBackgroundColor(Color.RED)
+//                    Toast.makeText(requireContext(),"condition fullfiled", Toast.LENGTH_LONG).show()
+//                }
+//            }
+//            Log.d(TAG, "onCreateView: after loop $bookId")
+//
+//            Log.d(TAG, "Book: $book")
         }.invokeOnCompletion {
 
             lifecycleScope.launch {
@@ -123,6 +126,10 @@ private lateinit var binding: FragmentBookDetailsBinding
                  }
 
             }
+
+            Log.d(TAG, "onCreateView: fav ${user.favorite}")
+            Log.d(TAG, "onCreateView: condition ${user.favorite.contains(Favorite(book.bookId))}")
+            Log.d(TAG, "onCreateView: reverse condition ${!user.favorite.contains(Favorite(book.bookId))}")
 
             Log.d(TAG, "onCreateView: ${book.comment}")
 
@@ -197,15 +204,15 @@ private lateinit var binding: FragmentBookDetailsBinding
 
 
 
-
-        binding.favBtn.setOnClickListener {
-
-            lifecycleScope.launch {
-                val favorite=Favorite(bookId)
-                bookDetailsViewModel.addToFavv(favorite , bookId)
-            }
-
-        }
+//
+//        binding.favBtn.setOnClickListener {
+//
+//            lifecycleScope.launch {
+//                val favorite=Favorite(bookId)
+//                bookDetailsViewModel.addToFavv(favorite , bookId)
+//            }
+//
+//        }
 
 //        binding.checkBoxFav.setOnCheckedChangeListener { _, isChecked ->
 //
@@ -245,7 +252,7 @@ private lateinit var binding: FragmentBookDetailsBinding
             findNavController().navigate(action)
         }
 
-
+        favCheck()
 
         return binding.root
     }
@@ -309,6 +316,13 @@ private lateinit var binding: FragmentBookDetailsBinding
         }
 
     }
-
+    private fun favCheck(){
+        lifecycleScope.launch{
+            bookDetailsViewModel.getUserData().observe(viewLifecycleOwner){ currentUser ->
+                Log.d(TAG, "favCheck: ${currentUser.favorite}")
+                binding.addToFav.isChecked = currentUser.favorite.contains(Favorite(bookId))
+            }
+        }
     }
+}
 

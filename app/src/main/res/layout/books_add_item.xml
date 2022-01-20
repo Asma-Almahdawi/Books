@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="200sp"
-    android:layout_height="250sp"
+    android:layout_height="200sp"
 
     >
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/bookImageTv"
-        android:layout_width="150sp"
-        android:layout_height="150sp"
+        android:layout_width="100sp"
+        android:layout_height="100sp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,15 +20,14 @@
 
     <TextView
         android:id="@+id/bookNamesTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="40sp"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:text="TextView"
         app:layout_constraintEnd_toEndOf="@+id/bookImageTv"
-        app:layout_constraintHorizontal_bias="0.453"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/bookImageTv"
-        app:layout_constraintTop_toBottomOf="@+id/bookImageTv"
-        app:layout_constraintVertical_bias="0.142" />
+        app:layout_constraintTop_toBottomOf="@+id/bookImageTv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
