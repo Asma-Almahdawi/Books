@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -40,7 +41,7 @@ class LikePageFragment : Fragment() {
     ): View? {
      binding= LikePageFragmentBinding.inflate(layoutInflater)
 
-        binding.favRv.layoutManager=LinearLayoutManager(context)
+        binding.favRv.layoutManager=GridLayoutManager(context,2)
 
 
 
@@ -82,7 +83,7 @@ class LikePageFragment : Fragment() {
         fun bind(book: Book){
 
             this.book = book
-            binding.BookFavNameTv.text =book.bookName
+//            binding.BookFavNameTv.text =book.bookName
             binding.bookFavTv.load(book.bookImage)
 
             }

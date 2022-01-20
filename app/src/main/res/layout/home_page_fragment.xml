@@ -10,70 +10,56 @@
     tools:context=".fragments.homepagefragment.HomePageFragment">
 
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="84dp"
-        android:text="@string/hello"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/usernameTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="Asma"
-        android:textColor="@color/black"
-        android:textSize="26dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-    <ImageView
-        android:id="@+id/user_image"
-        android:layout_width="71dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="84dp"
-        android:layout_marginEnd="100dp"
-        android:src="@drawable/profileimage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/booksRv"
         android:layout_width="400sp"
-        android:layout_height="wrap_content"
+        android:layout_height="190sp"
         android:layout_marginStart="4dp"
-        android:layout_marginBottom="52dp"
-        app:layout_constraintBottom_toTopOf="@+id/audioBookRv"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView11"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/audioBookRv"
         android:layout_width="400sp"
-        android:layout_height="195dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginBottom="24dp"
+        android:layout_height="190sp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <SearchView
         android:id="@+id/searchView"
         android:layout_width="351dp"
-        android:layout_height="13dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="50sp"
+        android:layout_marginBottom="100dp"
+        app:layout_constraintBottom_toTopOf="@+id/booksRv"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.448"
+        app:layout_constraintHorizontal_bias="0.116"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="Read book"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/booksRv"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/searchView"
+        app:layout_constraintVertical_bias="0.455" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="32dp"
+        android:text="Audio book"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/audioBookRv"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <!--    <com.jackandphantom.carouselrecyclerview.CarouselRecyclerview-->

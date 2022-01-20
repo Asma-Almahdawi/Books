@@ -93,17 +93,17 @@ private lateinit var binding: ProfileFragmentBinding
             )
 
         }
-
-        binding.followBtn.setOnClickListener {
-
-            user= User(userId)
-
-            lifecycleScope.launch {
 //
-//                profileViewModel.followers(userId)
-
-            }
-        }
+//        binding.followBtn.setOnClickListener {
+//
+//            user= User(userId)
+//
+//            lifecycleScope.launch {
+////
+////                profileViewModel.followers(userId)
+//
+//            }
+//        }
 
 
 

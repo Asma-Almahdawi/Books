@@ -1,5 +1,6 @@
 package com.example.books.fragments.AudioBookDetail
 
+import android.annotation.SuppressLint
 import android.media.AudioManager
 import android.media.MediaPlayer
 import androidx.lifecycle.ViewModelProvider
@@ -75,6 +76,7 @@ class AudioBookDetailsFragment : Fragment() {
             binding.imageBookTv.load(audioBook.bookImage)
             binding.yearOfBookTv.setText(audioBook.yearOfPublication)
             binding.descerption.setText(audioBook.summary)
+//            binding.backgroundImage.load(audioBook.bookImage)
 //            binding.audioBookBtn.urls
 
 
@@ -174,11 +176,11 @@ class AudioBookDetailsFragment : Fragment() {
 
         }
 
-        binding.skipNextBtn.setOnClickListener {
-
-            relaseAudio()
-
-        }
+//        binding.skipNextBtn.setOnClickListener {
+//
+//            relaseAudio()
+//
+//        }
 
         binding.seekbar.progress = 0
 
@@ -202,6 +204,9 @@ class AudioBookDetailsFragment : Fragment() {
 
 
         }
+//
+//        var handler = @SuppressLint("HandlerLeak")
+//        object :Handler()
 
 
 
@@ -279,9 +284,14 @@ class AudioBookDetailsFragment : Fragment() {
 
 
         }, 0)
-
-
     }
+
+//    }
+//    @SuppressLint("Handlir")
+//    var handlerr = object :Handler(){
+//        override fun HandleMassage(msg:Massage)
+//
+//    }
 
     fun relaseAudio() {
 

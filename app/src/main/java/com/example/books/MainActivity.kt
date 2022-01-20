@@ -4,7 +4,9 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.constraintlayout.motion.widget.MotionScene
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -22,13 +24,13 @@ class MainActivity : AppCompatActivity() {
     val mainActivityViewModel by lazy { ViewModelProvider (this) [MainActivityViewModel::class.java] }
     lateinit var binding:ActivityMainBinding
     private lateinit var myPreferences: QueryPreferences
+    private var clicked = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.buttomNavMenu.background=null
-
-//        binding.buttomNavMenu.menu.getItem(2).isEnabled = false
 
         val bottomNavigationView = binding.buttomNavMenu
 
@@ -60,19 +62,75 @@ class MainActivity : AppCompatActivity() {
 
         binding.fab.setOnClickListener {
 
-         findNavController(R.id.container).navigate(R.id.booksFragment)
+//         findNavController(R.id.container).navigate(R.id.booksFragment)
+            onAddButtonClicked()
+
+        }
+
+        binding.floatingAudioActionButton.setOnClickListener {
+
+            Toast.makeText(this, "edit button", Toast.LENGTH_SHORT).show()
 
         }
 
         binding.floatingBookActionButton2.setOnClickListener {
-            findNavController(R.id.container).navigate(R.id.booksFragment)
-        }
-        binding.floatingAudioActionButton.setOnClickListener {
-            findNavController(R.id.container).navigate(R.id.audioBookFragment)
+            Toast.makeText(this, "add button", Toast.LENGTH_SHORT).show()
 
         }
+
+//        binding.floatingBookActionButton2.setOnClickListener {
+//            findNavController(R.id.container).navigate(R.id.booksFragment)
+//        }
+//        binding.floatingAudioActionButton.setOnClickListener {
+//            findNavController(R.id.container).navigate(R.id.audioBookFragment)
+//
+//        }
 //        setupActionBarWithNavController(navController, AppBarConfiguration(setOf( R.layout.home_page_fragment,R.layout.like_page_fragment,R.layout.chat_page_fragment,R.layout.profile_fragment)))
 
+
+
+    }
+
+    private fun onAddButtonClicked() {
+
+        setVisibility(clicked)
+        setAnimation(clicked)
+        clicked = !clicked
+
+    }
+
+    private fun setAnimation(clicked:Boolean) {
+        val rotateOpen = AnimationUtils.loadAnimation(this,R.anim.rotate_open_anim)
+        val rotateClose = AnimationUtils.loadAnimation(this,R.anim.rotate_close_anim)
+        //        binding.buttomNavMenu.menu.getItem(2).isEnabled = false
+        val fromButton = AnimationUtils.loadAnimation(this,R.anim.from_bottom_anim)
+        val toButton = AnimationUtils.loadAnimation(this,R.anim.to_bottom_anim)
+        if (!clicked){
+
+            binding.floatingAudioActionButton.startAnimation(fromButton)
+
+            binding.floatingBookActionButton2.startAnimation(fromButton)
+            binding.fab.startAnimation(rotateOpen)
+        }else{
+
+            binding.floatingAudioActionButton.startAnimation(toButton)
+binding.floatingBookActionButton2.startAnimation(toButton)
+            binding.fab.startAnimation(rotateClose)
+        }
+
+
+    }
+
+    private fun setVisibility(clicked:Boolean) {
+
+if (!clicked){
+    binding.floatingAudioActionButton.visibility=View.VISIBLE
+    binding.floatingBookActionButton2.visibility=View.VISIBLE
+
+
+}
+        binding.floatingBookActionButton2.visibility=View.INVISIBLE
+        binding.floatingAudioActionButton.visibility=View.INVISIBLE
 
 
     }

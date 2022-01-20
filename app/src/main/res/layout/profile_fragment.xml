@@ -48,7 +48,8 @@
         android:id="@+id/editProfileBtn"
         android:layout_width="52dp"
         android:layout_height="37dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="104dp"
+        android:layout_marginEnd="16dp"
         android:src="@drawable/editprofile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -57,10 +58,10 @@
         android:id="@+id/user_image"
         android:layout_width="150sp"
         android:layout_height="150sp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="132dp"
         android:src="@drawable/profileimage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -68,20 +69,12 @@
         android:id="@+id/settingVi"
         android:layout_width="49dp"
         android:layout_height="41dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="104dp"
         android:layout_marginEnd="76dp"
         android:src="@drawable/setting"
         app:layout_constraintEnd_toStartOf="@+id/user_image"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/followBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="40dp"
-        android:text="Follow"
+        app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settingVi" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

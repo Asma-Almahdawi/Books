@@ -34,12 +34,12 @@
 
         <ImageView
             android:id="@+id/imageBookTv"
-            android:layout_width="200sp"
-            android:layout_height="150sp"
-            android:layout_marginTop="68dp"
-            app:layout_constraintEnd_toEndOf="@+id/BookNameTv"
-            app:layout_constraintHorizontal_bias="0.584"
-            app:layout_constraintStart_toStartOf="@+id/BookNameTv"
+            android:layout_width="150sp"
+            android:layout_height="250sp"
+            android:layout_marginTop="28dp"
+            app:layout_constraintEnd_toEndOf="@+id/authorNameTv"
+            app:layout_constraintHorizontal_bias="0.388"
+            app:layout_constraintStart_toStartOf="@+id/authorNameTv"
             app:layout_constraintTop_toBottomOf="@+id/authorNameTv"
             tools:src="@tools:sample/avatars" />
 
@@ -47,51 +47,52 @@
             android:id="@+id/seekbar"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="76dp"
-            android:layout_marginTop="8dp"
-            android:progress="50"
             android:layout_marginVertical="12dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="28dp"
+            android:progress="50"
+            app:layout_constraintEnd_toEndOf="@+id/imageBookTv"
+            app:layout_constraintStart_toStartOf="@+id/imageBookTv"
             app:layout_constraintTop_toBottomOf="@+id/imageBookTv" />
 
         <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center"
 
+            android:orientation="horizontal"
             tools:ignore="MissingConstraints">
 
         </LinearLayout>
+
         <TextView
             android:id="@+id/BookNameTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="188dp"
-            android:layout_marginTop="328dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="36dp"
             android:text="TextView"
             android:textColor="#050505"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/textView5"
+            app:layout_constraintTop_toBottomOf="@+id/play_btn" />
 
         <TextView
             android:id="@+id/authorNameTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="64dp"
+
+            android:layout_marginEnd="132dp"
             android:text="TextView"
             android:textColor="#0B0B0B"
             android:textSize="16sp"
-
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView5" />
+            app:layout_constraintEnd_toStartOf="@+id/checkBox"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/descerption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
             android:layout_marginTop="12dp"
             android:text="TextView"
             android:textColor="#090909"
@@ -104,21 +105,19 @@
             android:id="@+id/yearOfBookTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="344dp"
+            android:layout_marginTop="5dp"
             android:text="TextView"
             android:textColor="#0B0B0B"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/authorNameTv"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/authorNameTv"
-            app:layout_constraintTop_toBottomOf="@+id/authorNameTv" />
+            app:layout_constraintEnd_toEndOf="@+id/BookNameTv"
+            app:layout_constraintStart_toStartOf="@+id/BookNameTv"
+            app:layout_constraintTop_toBottomOf="@+id/BookNameTv" />
 
         <RatingBar
             android:id="@+id/ratingBar"
             android:layout_width="235dp"
             android:layout_height="43dp"
 
-            android:layout_marginStart="4dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView10"
             tools:ignore="SpeakableTextPresentCheck" />
@@ -127,102 +126,96 @@
             android:id="@+id/commentRv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            app:layout_constraintStart_toStartOf="parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
         <EditText
             android:id="@+id/commentTv"
             android:layout_width="317sp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:minHeight="48dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="4dp"
 
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/commentRv"
+            app:layout_constraintVertical_bias="1.0"
             tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
         <Button
             android:id="@+id/sendCommentBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
             android:text="@string/send"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/commentTv" />
+            app:layout_constraintStart_toEndOf="@+id/commentTv"
+            app:layout_constraintTop_toBottomOf="@+id/commentRv" />
 
         <TextView
             android:id="@+id/rateTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginTop="92dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="24dp"
             android:text="TextView"
             android:textColor="#070707"
             android:textColorHint="#000000"
             android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/imageView3"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/favBtn"
-            android:layout_width="110dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="48dp"
-            android:text="@string/addtofav"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@+id/yearOfBookTv"
+            app:layout_constraintEnd_toStartOf="@+id/imageView3" />
 
         <CheckBox
+            android:id="@+id/checkBox"
             android:layout_width="62dp"
             android:layout_height="48dp"
-            android:layout_marginTop="56dp"
+            android:layout_marginTop="28dp"
             android:button="@drawable/fav_checkbox"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="17dp"
             android:layout_height="26dp"
-            android:layout_marginTop="88dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="60dp"
             android:src="@drawable/star"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/play_btn" />
 
         <TextView
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="128dp"
-            android:layout_marginTop="216dp"
+            android:layout_marginStart="96dp"
+            android:layout_marginTop="36dp"
             android:text="Author:"
             android:textColor="#29315E"
             android:textSize="17sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rateTv" />
+            app:layout_constraintTop_toBottomOf="@+id/play_btn" />
 
         <TextView
             android:id="@+id/textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="304dp"
+            android:layout_marginTop="528dp"
             android:text="Summary:"
             android:textColor="#29315E"
             android:textSize="17sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rateTv" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
             android:text="Review"
             android:textColor="#29315E"
             android:textSize="17sp"
@@ -230,50 +223,30 @@
             app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
         <TextView
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginTop="1dp"
             android:text="Year:"
             android:textColor="#29315E"
             android:textSize="17sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/yearOfBookTv"
+            app:layout_constraintEnd_toStartOf="@+id/BookNameTv"
+            app:layout_constraintHorizontal_bias="0.041"
+            app:layout_constraintStart_toStartOf="@+id/textView5"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
-
-        <ImageButton
-            android:id="@+id/skip_pre_btn"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="12dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/btn_bg"
-            android:src="@drawable/ic_baseline_skip_previous_24"
-            app:layout_constraintStart_toEndOf="@+id/textView7"
-            app:layout_constraintTop_toTopOf="@+id/seekbar" />
 
         <ImageButton
             android:id="@+id/play_btn"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginHorizontal="12dp"
-            android:layout_marginStart="36dp"
             android:background="@drawable/btn_bg"
             android:src="@drawable/ic_baseline_play_arrow_24"
-            app:layout_constraintStart_toEndOf="@+id/skip_pre_btn"
+            app:layout_constraintEnd_toEndOf="@+id/seekbar"
+            app:layout_constraintHorizontal_bias="0.516"
+            app:layout_constraintStart_toStartOf="@+id/seekbar"
             app:layout_constraintTop_toBottomOf="@+id/seekbar" />
-
-        <ImageButton
-            android:id="@+id/skip_next_btn"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="12dp"
-            android:layout_marginStart="40dp"
-            android:background="@drawable/btn_bg"
-            android:src="@drawable/ic_baseline_skip_next_24"
-            app:layout_constraintStart_toEndOf="@+id/play_btn"
-            app:layout_constraintTop_toTopOf="@+id/play_btn" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
