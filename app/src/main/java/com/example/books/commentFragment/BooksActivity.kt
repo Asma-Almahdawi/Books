@@ -21,9 +21,7 @@ class BooksActivity :AppCompatActivity(){
             return Intent(context , BooksActivity::class.java)
 
         }
-        init {
-//        initupdateConfig(this)
-        }
+
         fun updateConfig(wrapper: ContextThemeWrapper) {
             if(dLocale== Locale("") ) // Do nothing if dLocale is null
                 return

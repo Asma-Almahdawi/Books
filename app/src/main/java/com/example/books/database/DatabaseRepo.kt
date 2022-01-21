@@ -191,6 +191,12 @@ class DatabaseRepo private constructor(context: Context) {
 
     }
 
+    suspend fun addAudioBookToFavorite(favorite: Favorite, audioBookId: String ) {
+        userCollectionRef.document(auth.currentUser!!.uid)
+            .update("favorite", FieldValue.arrayUnion(favorite))
+
+    }
+
     suspend fun followers(followers: String, userId: String) {
 
         userCollectionRef.document(auth.currentUser!!.uid)

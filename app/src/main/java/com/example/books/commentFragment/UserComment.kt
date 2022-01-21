@@ -4,7 +4,7 @@ import com.example.books.database.User
 
 class UserComment(
 
-    var user :User? = null,
+    var user: User? = null,
     var comment: Comment? = null
 
 

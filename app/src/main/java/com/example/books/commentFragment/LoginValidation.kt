@@ -4,7 +4,7 @@ import android.provider.ContactsContract
 
 object LoginValidation {
 
-    fun validation(email: String):Boolean{
+    fun validation(email: String): Boolean {
 
         return true
 

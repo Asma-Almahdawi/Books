@@ -20,6 +20,20 @@ class ProfileViewModel : ViewModel() {
 
     }
 
+  fun getCurrentUserId():String?{
+
+    return userRepo.getCurrentUserId()
+
+  }
+  fun deleteBook(book: Book){
+
+    bookRepo.deleteBook(book)
+  }
+
+  private suspend fun getUserUid():String?{
+    return userRepo.getUserData().value?.userId
+  }
+
     suspend fun getBookFromUser(userId:String):LiveData<List<Book>>{
 
         return userRepo.getBookFromUser(userId)

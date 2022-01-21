@@ -27,8 +27,6 @@ class PdfViewFragment : Fragment() {
         fun newInstance() = PdfViewFragment()
     }
 
-    private lateinit var viewModel: PdfViewViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         book=Book()
@@ -41,12 +39,6 @@ class PdfViewFragment : Fragment() {
     ): View? {
         binding= FragmentPdfViewBinding.inflate(layoutInflater)
 
-        binding.back.setOnClickListener {
-
-            val action =PdfViewFragmentDirections.actionPdfViewFragmentToBookDetailsFragment(book.bookId)
-            findNavController().navigate(action)
-
-        }
         loadPdfDetails()
 
 
@@ -72,8 +64,6 @@ class PdfViewFragment : Fragment() {
                 binding.pdfView.fromBytes(bytes)
                     .swipeHorizontal(false)
                     .onPageChange{page,pageCount->
-
-                        val currentPage = page+1
                         Log.d(TAG, "loadBookFromUrl: ")
 
                     }.onError { t->

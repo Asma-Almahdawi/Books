@@ -49,6 +49,7 @@ private lateinit var binding: FragmentBookDetailsBinding
     private lateinit var favorite: Favorite
 
     var ratingAverage =0f
+    var favoriteAverage=0
 
 
     private val args: BookDetailsFragmentArgs by navArgs()
@@ -148,6 +149,13 @@ private lateinit var binding: FragmentBookDetailsBinding
             Log.d(TAG, "onCreateView: $ratingAverage")
 
         }
+
+        book.favorite.forEach {
+
+
+
+        }
+
         binding.sendCommentBtn.setOnClickListener {
 
             user= User()
@@ -162,13 +170,13 @@ private lateinit var binding: FragmentBookDetailsBinding
 
                 bookDetailsViewModel.getComment(bookId).observe(
 
-                    viewLifecycleOwner,{
+                    viewLifecycleOwner
 
-                        binding.commentRv.adapter=CommentAdapter(it)
+                ) {
 
-                    }
+                    binding.commentRv.adapter = CommentAdapter(it)
 
-                )
+                }
 
             }
 //            binding.commentRv.addOnLayoutChangeListener()
@@ -177,6 +185,8 @@ private lateinit var binding: FragmentBookDetailsBinding
             binding.commentTv.text.clear()
 
         }
+
+
 
         binding.addToFav.setOnCheckedChangeListener {_, isChecked ->
 

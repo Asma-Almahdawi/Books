@@ -54,11 +54,11 @@ class LikePageFragment : Fragment() {
             viewModel.getUserData().observe(
                 viewLifecycleOwner, Observer {
                     lifecycleScope.launch {
-                        viewModel.getFav(it.favorite).observe(viewLifecycleOwner, { books ->
+                        viewModel.getFav(it.favorite).observe(viewLifecycleOwner) { books ->
                             Log.d(TAG, "onViewCreated: $books")
-                            binding.favRv.adapter=FavoriteAdapter(books)
+                            binding.favRv.adapter = FavoriteAdapter(books)
 
-                        })
+                        }
                     }
 
 

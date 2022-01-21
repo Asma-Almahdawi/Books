@@ -11,10 +11,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.books.Book
 import com.example.books.R
 import com.example.books.database.AudioBook
+import com.example.books.database.Favorite
 import com.example.books.databinding.FragmentAudioBookkBinding
 import com.example.books.databinding.FragmentBooksBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -81,6 +83,26 @@ class AudioBookFragment : Fragment() {
 
             firestore.document(auth.currentUser!!.uid).update("audioBooks", FieldValue.arrayUnion(audioBook))
         }
+
+//        binding.addToFav.setOnCheckedChangeListener {_, isChecked ->
+//
+//            if (isChecked){
+//
+//                lifecycleScope.launch {
+//                    val favorite= Favorite(audioBookId)
+//                    audioBookViewModel.addToFavv(favorite , bookId)
+//                }
+//
+//            }else{
+//
+//                lifecycleScope.launch {
+//                    bookDetailsViewModel.deleteFavorite(bookId)
+//                }
+//            }
+//
+//
+//
+//        }
 
         bindig.takePhoto.setOnClickListener {
 

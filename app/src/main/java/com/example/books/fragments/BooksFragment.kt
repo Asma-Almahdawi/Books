@@ -65,7 +65,7 @@ class BooksFragment : Fragment() {
             book.bookOwner= auth.currentUser!!.uid
             book.bookName= bindig.bookNameTv.text.toString()
             book.authorName=bindig.autherNameTv.text.toString()
-            bindig.audioBtn.text=book.audioFile
+//            bindig.audioBtn.text=book.audioFile
             book.yearOfPublication= bindig.yearOfPublicationTv.text.toString()
             bindig.filePDFBtn.text = book.pdfFile
 
@@ -112,17 +112,17 @@ class BooksFragment : Fragment() {
 
         }
 
-        bindig.audioBtn.setOnClickListener {
-
-            Intent(Intent.ACTION_GET_CONTENT).also {
-
-                it.type = "audio/*"
-
-                startActivityForResult(it, REQUEST_CODE_BOOK_AUDIO)
-
-            }
-
-        }
+//        bindig.audioBtn.setOnClickListener {
+//
+//            Intent(Intent.ACTION_GET_CONTENT).also {
+//
+//                it.type = "audio/*"
+//
+//                startActivityForResult(it, REQUEST_CODE_BOOK_AUDIO)
+//
+//            }
+//
+//        }
 
 
 

@@ -21,5 +21,19 @@
     <string name="new_books_text">You have new book.</string>
     <string name="hello">Hello</string>
     <string name="hellooWo">helloo</string>
+    <string name="year">Year:</string>
+    <string name="review">Review</string>
+    <string name="summary">Summary:</string>
+    <string name="author">Author:</string>
+    <string name="enter_email">enter email</string>
+    <string name="enter_password">enter password</string>
+    <string name="register">register</string>
+    <string name="read_book">Read book</string>
+    <string name="audio_book">Audio book</string>
+    <string name="change_language">Change Language</string>
+    <string name="logout">Logout</string>
+    <string name="audio">audio</string>
+    <string name="upload_audio">Download audio</string>
+    <string name="click_to_rate">Click to rate</string>
 
 </resources>

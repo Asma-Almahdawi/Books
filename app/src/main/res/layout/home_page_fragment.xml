@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginBottom="16dp"
-        android:text="Read book"
+        android:text="@string/read_book"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/booksRv"
         app:layout_constraintStart_toStartOf="parent" />
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginBottom="28dp"
-        android:text="Audio book"
+        android:text="@string/audio_book"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/audioBookRv"
         app:layout_constraintStart_toStartOf="parent" />

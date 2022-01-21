@@ -85,12 +85,12 @@ private lateinit var binding: ProfileFragmentBinding
         lifecycleScope.launch {
 
             profileViewModel.getBookFromUserToProfile().observe(
-                viewLifecycleOwner,{
+                viewLifecycleOwner
+            ) {
 
-                    binding.booksUserRv.adapter=BookUserAdapter(it)
+                binding.booksUserRv.adapter = BookUserAdapter(it)
 
-                }
-            )
+            }
 
         }
 //
@@ -166,21 +166,36 @@ private lateinit var binding: ProfileFragmentBinding
         }
 
         override fun onClick(v: View?) {
-            if (v==itemView){
-                val action = ProfileFragmentDirections.actionProfileFragmentToBookDetailsFragment(book.bookId)
-                Log.d(TAG, "onClick: ${book.bookId}")
-                findNavController().navigate(action)
+//            if (v==itemView){
+//                val action = ProfileFragmentDirections.actionProfileFragmentToBookDetailsFragment(book.bookId)
+//                Log.d(TAG, "onClick: ${book.bookId}")
+//                findNavController().navigate(action)
+//            }
+
+            when (v) {
+                binding.deleteFavBtn -> {
+                    if (profileViewModel.getCurrentUserId() == book.bookOwner) {
+                        profileViewModel.deleteBook(book)
+                    }
+                }
+                itemView -> {
+                    val action =
+                        ProfileFragmentDirections.actionProfileFragmentToBookDetailsFragment(book.bookId)
+                    findNavController().navigate(action)
+                }
             }
 
         }
 
+        }
 
-    }
+
+
 
     private inner class BookUserAdapter(val books:List<Book>): RecyclerView.Adapter<BookUserViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookUserViewHolder {
 
-            val binding= BookListItemUserBinding.inflate(
+            val binding = BookListItemUserBinding.inflate(
 
                 layoutInflater,
                 parent,

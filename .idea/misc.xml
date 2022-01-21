@@ -16,7 +16,7 @@
         <entry key="..\:/Users/asus/AndroidStudioProjects/Books/app/src/main/res/drawable/ic_launcher_background.xml" value="0.23425925925925925" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Books/app/src/main/res/drawable/like_red.xml" value="0.166" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Books/app/src/main/res/drawable/style.xml" value="0.214" />
-        <entry key="..\:/Users/asus/AndroidStudioProjects/Books/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Books/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Books/app/src/main/res/layout/activity_splash_screen.xml" value="0.1" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Books/app/src/main/res/layout/book_list_item_user.xml" value="0.176" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Books/app/src/main/res/layout/books_add_item.xml" value="0.2" />
@@ -24,10 +24,10 @@
         <entry key="..\:/Users/asus/AndroidStudioProjects/Books/app/src/main/res/layout/chat_page_fragment.xml" value="0.2006340579710145" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Books/app/src/main/res/layout/comment_list_item.xml" value="0.25" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Books/app/src/main/res/layout/edit_file_fragment.xml" value="0.264" />
-        <entry key="..\:/Users/asus/AndroidStudioProjects/Books/app/src/main/res/layout/favorite_list_item.xml" value="0.16" />
-        <entry key="..\:/Users/asus/AndroidStudioProjects/Books/app/src/main/res/layout/fragment_audio_book_details.xml" value="0.264" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Books/app/src/main/res/layout/favorite_list_item.xml" value="0.4" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Books/app/src/main/res/layout/fragment_audio_book_details.xml" value="0.176" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Books/app/src/main/res/layout/fragment_audio_bookk.xml" value="0.20521590423257802" />
-        <entry key="..\:/Users/asus/AndroidStudioProjects/Books/app/src/main/res/layout/fragment_book_details.xml" value="0.264" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Books/app/src/main/res/layout/fragment_book_details.xml" value="0.1" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Books/app/src/main/res/layout/fragment_books.xml" value="0.11087420042643924" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Books/app/src/main/res/layout/fragment_edit_book.xml" value="0.10688328345446772" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Books/app/src/main/res/layout/fragment_pdf_view.xml" value="0.18888888888888888" />

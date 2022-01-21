@@ -67,14 +67,14 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        binding.floatingAudioActionButton.setOnClickListener {
+        binding.addBook.setOnClickListener {
+         findNavController(R.id.container).navigate(R.id.booksFragment)
 
-            Toast.makeText(this, "edit button", Toast.LENGTH_SHORT).show()
 
         }
 
-        binding.floatingBookActionButton2.setOnClickListener {
-            Toast.makeText(this, "add button", Toast.LENGTH_SHORT).show()
+        binding.addAudioBook.setOnClickListener {
+            findNavController(R.id.container).navigate(R.id.audioBookFragment)
 
         }
 
@@ -107,14 +107,14 @@ class MainActivity : AppCompatActivity() {
         val toButton = AnimationUtils.loadAnimation(this,R.anim.to_bottom_anim)
         if (!clicked){
 
-            binding.floatingAudioActionButton.startAnimation(fromButton)
+            binding.addAudioBook.startAnimation(fromButton)
 
-            binding.floatingBookActionButton2.startAnimation(fromButton)
+            binding.addBook.startAnimation(fromButton)
             binding.fab.startAnimation(rotateOpen)
         }else{
 
-            binding.floatingAudioActionButton.startAnimation(toButton)
-binding.floatingBookActionButton2.startAnimation(toButton)
+            binding.addAudioBook.startAnimation(toButton)
+binding.addBook.startAnimation(toButton)
             binding.fab.startAnimation(rotateClose)
         }
 
@@ -124,13 +124,13 @@ binding.floatingBookActionButton2.startAnimation(toButton)
     private fun setVisibility(clicked:Boolean) {
 
 if (!clicked){
-    binding.floatingAudioActionButton.visibility=View.VISIBLE
-    binding.floatingBookActionButton2.visibility=View.VISIBLE
+    binding.addAudioBook.visibility=View.VISIBLE
+    binding.addBook.visibility=View.VISIBLE
 
 
 }
-        binding.floatingBookActionButton2.visibility=View.INVISIBLE
-        binding.floatingAudioActionButton.visibility=View.INVISIBLE
+        binding.addAudioBook.visibility=View.INVISIBLE
+        binding.addBook.visibility=View.INVISIBLE
 
 
     }

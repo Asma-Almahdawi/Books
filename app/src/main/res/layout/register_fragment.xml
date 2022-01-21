@@ -16,11 +16,12 @@
         android:layout_marginTop="200dp"
         android:background="#F6ECF0"
         android:ems="10"
-        android:hint="enter email"
+        android:hint="@string/enter_email"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TextFields" />
 
     <EditText
         android:id="@+id/password_tv"
@@ -30,7 +31,7 @@
         android:layout_marginTop="72dp"
         android:background="#F6ECF0"
         android:ems="10"
-        android:hint="enter password"
+        android:hint="@string/enter_password"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +45,7 @@
         android:layout_marginTop="68dp"
         android:background="@drawable/button_default"
         android:backgroundTint="#E4DCDC"
-        android:text="register"
+        android:text="@string/register"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password_tv" />
 

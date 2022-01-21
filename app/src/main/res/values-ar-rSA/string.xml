@@ -22,6 +22,20 @@
     <string name="new_books_text">لديك كتب جديده</string>
     <string name="hello">اهلا</string>
     <string name="hellooWo">اهلا</string>
+    <string name="year">سنة التأليف:</string>
+    <string name="review">مراجعه:</string>
+    <string name="summary">ملخص:</string>
+    <string name="author">الكاتب:</string>
+    <string name="enter_email">اكتب ايميل</string>
+    <string name="enter_password">اكتب الرقم السري</string>
+    <string name="register">تسجيل</string>
+    <string name="read_book">كتب مقروئه</string>
+    <string name="audio_book">كتب مسموعه</string>
+    <string name="change_language">تغيير اللغه</string>
+    <string name="logout">تسجيل خروج</string>
+    <string name="audio">تحميل صوت</string>
+    <string name="upload_audio">ارفاق ملف صوتي</string>
+    <string name="click_to_rate">اضغط للتقييم</string>
 
 
 </resources>

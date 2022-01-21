@@ -80,7 +80,7 @@
             android:id="@+id/audioBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="audio" />
+            android:text="@string/audio" />
 
         <LinearLayout
             android:layout_width="wrap_content"
