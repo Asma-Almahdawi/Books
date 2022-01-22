@@ -153,6 +153,33 @@ book.bookId=it.id
     }
 
 
+    suspend fun getAudioBooksFromUserToProfile(): LiveData<List<AudioBook>> {
+
+        return liveData {
+
+            val audioBooks = mutableListOf<AudioBook>()
+            booksCollectionRef.whereEqualTo("bookOwner", auth.currentUser!!.uid).get().await()
+                .forEach {
+                    val audioBook = AudioBook()
+                    audioBook.bookName = it.getString("bookName")!!
+                    audioBook.authorName = it.getString("authorName")!!
+                    audioBook.bookImage = it.getString("bookImage")!!
+                    audioBook.audioFile = it.getString("audioFile")!!
+                   audioBook.bookOwner = it.getString("bookOwner")!!
+                    audioBook.yearOfPublication = it.getString("yearOfPublication")!!
+//              comment.commentText=it.getString("comment")!!
+                    audioBook.audioBookId= it.id
+//              bookId = it.id
+                    audioBooks += audioBook
+
+                }
+
+            emit(audioBooks)
+
+        }
+    }
+
+
     fun deleteBook(book: Book) {
 
         booksCollectionRef.document(book.bookId).delete()

@@ -3,6 +3,7 @@ package com.example.books.fragments.profilepagefragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.books.Book
+import com.example.books.database.AudioBook
 import com.example.books.database.BookDatabaseRepo
 import com.example.books.database.DatabaseRepo
 import com.example.books.database.User
@@ -44,6 +45,12 @@ class ProfileViewModel : ViewModel() {
         return bookRepo.getUserBooks()
 
     }
+
+  suspend fun getAudioBooksFromUserToProfile(): LiveData<List<AudioBook>> {
+
+    return bookRepo.getAudioBooksFromUserToProfile()
+
+  }
 
   suspend fun followers(followers:String , userId: String){
 

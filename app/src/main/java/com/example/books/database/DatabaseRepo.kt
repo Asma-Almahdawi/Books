@@ -84,6 +84,14 @@ class DatabaseRepo private constructor(context: Context) {
         }
     }
 
+    suspend fun getAudioBookFromUser(userId: String): LiveData<List<AudioBook>> {
+
+        return liveData {
+
+            booksCollectionRef.whereEqualTo("bookOwner", userId).get().await()
+        }
+    }
+
 
     suspend fun uploadImage(curFile: Uri): Boolean {
 

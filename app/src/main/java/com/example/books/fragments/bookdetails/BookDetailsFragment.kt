@@ -150,11 +150,7 @@ private lateinit var binding: FragmentBookDetailsBinding
 
         }
 
-        book.favorite.forEach {
 
-
-
-        }
 
         binding.sendCommentBtn.setOnClickListener {
 

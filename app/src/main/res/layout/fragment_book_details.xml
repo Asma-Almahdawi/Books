@@ -17,7 +17,6 @@
         android:gravity="center"
         android:orientation="vertical">
 
-
         android:layout_width="200sp"
         android:layout_height="200sp"
 
@@ -27,66 +26,73 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="Click to rate"
+            android:text="@string/click_to_rate"
             android:textColor="#29315E"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/descerption" />
 
+
         <ImageView
             android:id="@+id/imageBookTv"
-            android:layout_width="200sp"
-            android:layout_height="150sp"
-            android:layout_marginTop="136dp"
-            app:layout_constraintEnd_toEndOf="@+id/BookNameTv"
-            app:layout_constraintHorizontal_bias="0.471"
-            app:layout_constraintStart_toStartOf="@+id/BookNameTv"
+            android:layout_width="300sp"
+            android:layout_height="250sp"
+            android:layout_marginTop="76dp"
+            android:foregroundGravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.504"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/avatars" />
 
         <CheckBox
             android:id="@+id/addToFav"
-            android:layout_width="38dp"
-            android:layout_height="42dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="40dp"
+            android:layout_width="40dp"
+            android:layout_height="31dp"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="44dp"
+            android:layout_marginEnd="60dp"
             android:button="@drawable/fav_checkbox"
+            android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rateTv" />
-
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/pdfView"
+            app:layout_constraintTop_toBottomOf="@+id/yearOfBookTv" />
 
         <TextView
             android:id="@+id/BookNameTv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:gravity="center"
             android:text="TextView"
             android:textColor="#050505"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.467"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/imageBookTv"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="@+id/imageBookTv"
             app:layout_constraintTop_toBottomOf="@+id/imageBookTv" />
 
         <TextView
             android:id="@+id/authorNameTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
             android:text="TextView"
             android:textColor="#0B0B0B"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/pdfView"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView5"
-            app:layout_constraintTop_toBottomOf="@+id/pdfView" />
+            app:layout_constraintEnd_toStartOf="@+id/textView12"
+            app:layout_constraintTop_toBottomOf="@+id/BookNameTv" />
 
         <TextView
             android:id="@+id/descerption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="20dp"
             android:text="TextView"
             android:textColor="#090909"
             android:textSize="16sp"
@@ -97,14 +103,15 @@
             android:id="@+id/yearOfBookTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
             android:text="TextView"
             android:textColor="#0B0B0B"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/authorNameTv"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/authorNameTv"
-            app:layout_constraintTop_toBottomOf="@+id/authorNameTv" />
+            app:layout_constraintEnd_toEndOf="@+id/imageBookTv"
+            app:layout_constraintHorizontal_bias="0.029"
+            app:layout_constraintStart_toEndOf="@+id/textView13"
+            app:layout_constraintTop_toBottomOf="@+id/BookNameTv" />
 
         <RatingBar
             android:id="@+id/ratingBar"
@@ -120,7 +127,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="32dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
@@ -146,90 +153,95 @@
         <Button
             android:id="@+id/pdfView"
             android:layout_width="154dp"
-            android:layout_height="36dp"
-            android:layout_marginTop="4dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
             android:text="@string/readpdf"
-            app:layout_constraintEnd_toEndOf="@+id/imageBookTv"
-            app:layout_constraintHorizontal_bias="0.304"
-            app:layout_constraintStart_toStartOf="@+id/imageBookTv"
-            app:layout_constraintTop_toBottomOf="@+id/BookNameTv" />
+            app:layout_constraintEnd_toStartOf="@+id/textView13"
+            app:layout_constraintHorizontal_bias="0.526"
+            app:layout_constraintStart_toEndOf="@+id/authorNameTv"
+            app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
         <TextView
             android:id="@+id/rateTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginTop="88dp"
-            android:layout_marginEnd="12dp"
-            android:text="TextView"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="52dp"
+            android:gravity="center"
+            android:text="0"
             android:textColor="#070707"
             android:textColorHint="#000000"
             android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/imageView3"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/imageView3"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="17dp"
-            android:layout_height="26dp"
-            android:layout_marginTop="88dp"
-            android:layout_marginEnd="20dp"
+            android:layout_width="13dp"
+            android:layout_height="17dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="52dp"
+            android:foregroundGravity="center"
             android:src="@drawable/star"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
         <TextView
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="4dp"
+
+            android:gravity="center"
             android:text="@string/author"
             android:textColor="#29315E"
             android:textSize="17sp"
-
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/pdfView"
-            app:layout_constraintHorizontal_bias="0.206"
-            app:layout_constraintStart_toStartOf="@+id/pdfView"
-            app:layout_constraintTop_toBottomOf="@+id/pdfView" />
+            app:layout_constraintEnd_toStartOf="@+id/authorNameTv"
+            app:layout_constraintTop_toBottomOf="@+id/BookNameTv" />
 
         <TextView
             android:id="@+id/textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="280dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
             android:text="@string/summary"
             android:textColor="#29315E"
             android:textSize="17sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rateTv" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
         <TextView
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:text="@string/review"
-            android:textColor="#29315E"
 
+            android:textColor="#29315E"
             android:textSize="17sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
         <TextView
+            android:id="@+id/textView13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
             android:text="@string/year"
             android:textColor="#29315E"
             android:textSize="17sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/authorNameTv"
-            app:layout_constraintHorizontal_bias="0.708"
-            app:layout_constraintStart_toStartOf="@+id/textView5"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            app:layout_constraintStart_toEndOf="@+id/textView12"
+            app:layout_constraintTop_toBottomOf="@+id/BookNameTv" />
 
         <ImageView
             android:id="@+id/editBookBtn"
@@ -241,6 +253,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/add" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="6dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="|"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="@+id/BookNameTv"
+            app:layout_constraintHorizontal_bias="0.505"
+            app:layout_constraintStart_toStartOf="@+id/BookNameTv"
+            app:layout_constraintTop_toBottomOf="@+id/BookNameTv" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
