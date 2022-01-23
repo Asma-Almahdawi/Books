@@ -49,7 +49,6 @@ private lateinit var binding: FragmentBookDetailsBinding
     private lateinit var favorite: Favorite
 
     var ratingAverage =0f
-    var favoriteAverage=0
 
 
     private val args: BookDetailsFragmentArgs by navArgs()
@@ -76,7 +75,7 @@ private lateinit var binding: FragmentBookDetailsBinding
         savedInstanceState: Bundle?
     ): View? {
        binding = FragmentBookDetailsBinding.inflate(layoutInflater)
-//        getBookData()
+//
 
         lifecycleScope.launch(){
              book = bookDetailsViewModel.getBook(bookId) ?: Book()
@@ -183,6 +182,13 @@ private lateinit var binding: FragmentBookDetailsBinding
         }
 
 
+//        binding.usernameTv.setOnClickListener {
+//
+//            val action =BookDetailsFragmentDirections.actionBookDetailsFragmentToProfileFragment(user.userId)
+//            findNavController().navigate(action)
+//
+//        }
+
 
         binding.addToFav.setOnCheckedChangeListener {_, isChecked ->
 
@@ -246,9 +252,16 @@ private lateinit var binding: FragmentBookDetailsBinding
 //        binding.audioBookBtn.setOnClickListener {
 //            playAudio()
 //        }
+        Log.d(TAG, "onCreateViewggggghhhhh:${auth.currentUser!!.uid},${book.bookOwner} ")
+        if (auth.currentUser!!.uid.equals(book.bookOwner)) {
+            binding.editBookBtn.visibility = View.VISIBLE
+            Log.d(TAG, "onCreateViewggggg:${auth.currentUser!!.uid},${book.bookOwner} ")
+
+        }
 
         binding.editBookBtn.setOnClickListener {
-            val action =BookDetailsFragmentDirections.actionBookDetailsFragmentToEditBookFragment(book.bookId)
+            val action =
+                BookDetailsFragmentDirections.actionBookDetailsFragmentToEditBookFragment(book.bookId)
             findNavController().navigate(action)
         }
 
@@ -273,14 +286,16 @@ private lateinit var binding: FragmentBookDetailsBinding
 //    }
 
 
-    private inner class CommentHolder(val binding: CommentListItemBinding):RecyclerView.ViewHolder(binding.root) {
+    private inner class CommentHolder(val binding: CommentListItemBinding):RecyclerView.ViewHolder(binding.root),View.OnClickListener {
     private var comment: Comment? = null
 
 
+init {
+    itemView.setOnClickListener(this)
 
+}
 
      fun bind(comment: UserComment){
-
         this.comment = comment.comment
         binding.commentTv.text= comment.comment?.commentText
          binding.imageUserTv.load(comment.user?.profileImageUrl)
@@ -291,10 +306,18 @@ private lateinit var binding: FragmentBookDetailsBinding
 
     }
 
+        override fun onClick(v: View?) {
+
+            if (v==itemView){
+
+                val action =BookDetailsFragmentDirections.actionBookDetailsFragmentToProfileFragment(user.userId)
+                findNavController().navigate(action)
+
+            }
+        }
 
 
-
-}
+    }
 
     private inner class CommentAdapter(val comments :List<UserComment>):RecyclerView.Adapter<CommentHolder> (){
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentHolder {
@@ -327,6 +350,7 @@ private lateinit var binding: FragmentBookDetailsBinding
             bookDetailsViewModel.getUserData().observe(viewLifecycleOwner){ currentUser ->
                 Log.d(TAG, "favCheck: ${currentUser.favorite}")
                 binding.addToFav.isChecked = currentUser.favorite.contains(Favorite(bookId))
+                binding.usernameTv.text=currentUser.username
             }
         }
     }

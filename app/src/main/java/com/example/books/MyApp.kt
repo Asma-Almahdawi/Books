@@ -6,7 +6,7 @@ import android.app.NotificationManager
 import androidx.preference.PreferenceManager
 import com.example.books.commentFragment.BooksActivity
 import com.example.books.database.BookDatabaseRepo
-import com.example.books.database.DatabaseRepo
+import com.example.books.database.UserRepo
 import java.util.*
 
 const val CHANNEL_NOTIFICATION_ID = "HELLO"
@@ -15,7 +15,7 @@ class MyApp :Application(){
     override fun onCreate() {
         super.onCreate()
 
-        DatabaseRepo.initiliza(this)
+        UserRepo.initiliza(this)
         BookDatabaseRepo.initiliza(this)
 
         var change = ""

@@ -9,7 +9,4 @@ data class Comment(
     var commentId: String = UUID.randomUUID().toString(),
     var username: String = ""
 
-) {
-
-
-}
+)

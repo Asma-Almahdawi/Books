@@ -6,7 +6,4 @@ class UserComment(
 
     var user: User? = null,
     var comment: Comment? = null
-
-
-) {
-}
+)

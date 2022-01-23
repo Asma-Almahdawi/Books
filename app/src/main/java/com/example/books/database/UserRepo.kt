@@ -3,19 +3,13 @@ package com.example.books.database
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import androidx.navigation.fragment.NavHostFragment.findNavController
-import androidx.navigation.fragment.findNavController
 import com.example.books.Book
-import com.example.books.commentFragment.Following
-import com.example.books.commentFragment.Validation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -24,7 +18,7 @@ import java.util.*
 
 private const val TAG = "DatabaseRepo"
 
-class DatabaseRepo private constructor(context: Context) {
+class UserRepo private constructor(context: Context) {
 
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -236,18 +230,18 @@ class DatabaseRepo private constructor(context: Context) {
 
     companion object {
 
-        private var INSTANT: DatabaseRepo? = null
+        private var INSTANT: UserRepo? = null
 
         fun initiliza(context: Context) {
 
             if (INSTANT == null) {
-                INSTANT = DatabaseRepo(context)
+                INSTANT = UserRepo(context)
 
             }
 
         }
 
-        fun getInstant(): DatabaseRepo =
+        fun getInstant(): UserRepo =
             INSTANT ?: throw IllegalStateException(" repo has not be init")
 
     }

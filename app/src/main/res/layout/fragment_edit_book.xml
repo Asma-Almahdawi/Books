@@ -1,104 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout6"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#D6B3BF"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical"
     tools:context=".fragments.BooksFragment">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
+
+    <EditText
+        android:id="@+id/bookNameTv"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#FDFBFB"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_marginTop="184dp"
+        android:ems="10"
+        android:hint="@string/book_name"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TouchTargetSizeCheck" />
 
-        <ImageView
-            android:id="@+id/bookTv"
-            android:layout_width="120sp"
-            android:layout_height="120sp"
-            tools:src="@tools:sample/avatars"
+    <EditText
+        android:id="@+id/autherName_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/auther_name"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bookNameTv" />
 
+    <EditText
+        android:id="@+id/yearOfPublicationTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/yearofpublication"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:textColorHint="#757575"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/autherName_tv" />
 
-            />
-
-
-        <Button
-            android:id="@+id/takePhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10sp"
-
-            android:backgroundTint="@color/teal_700"
-            android:text="@string/takephoto" />
-
-        <Button
-            android:id="@+id/filePDFBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="13dp"
-            android:backgroundTint="@color/teal_700"
-            android:text="@string/uoload_pdf_file" />
-
-        <EditText
-            android:id="@+id/bookNameTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="44dp"
-            android:ems="10"
-            android:hint="@string/book_name"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <EditText
-            android:id="@+id/autherName_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="54dp"
-            android:ems="10"
-            android:hint="@string/auther_name"
-            android:inputType="textPersonName"
-            android:minHeight="48dp" />
-
-        <EditText
-            android:id="@+id/yearOfPublicationTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/yearofpublication"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:textColorHint="#757575" />
-
-        <Button
-            android:id="@+id/audioBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/audio" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10sp"
-            android:layout_marginBottom="100sp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/addBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/teal_700"
-                android:text="@string/add" />
-
-
-        </LinearLayout>
-
-
-    </LinearLayout>
-</ScrollView>
+    <Button
+        android:id="@+id/addBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@color/teal_700"
+        android:text="@string/add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/yearOfPublicationTv" />
+</androidx.constraintlayout.widget.ConstraintLayout>

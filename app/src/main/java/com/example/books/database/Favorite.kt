@@ -4,5 +4,4 @@ data class Favorite(
 
     var bookId:String=""
 
-) {
-}
+)

@@ -25,6 +25,7 @@ import com.example.books.databinding.BookListItemUserBinding
 import com.example.books.databinding.BooksAddItemBinding
 import com.example.books.databinding.BooksListItemBinding
 import com.example.books.databinding.ProfileFragmentBinding
+import com.example.books.fragments.bookdetails.BookDetailsFragmentArgs
 import com.example.books.fragments.bookdetails.PdfViewFragmentArgs
 import com.example.books.fragments.homepagefragment.HomePageFragmentDirections
 import com.example.books.fragments.homepagefragment.HomePageViewModel
@@ -42,14 +43,14 @@ class ProfileFragment : Fragment() {
     private val profileViewModel by lazy { ViewModelProvider(this)[ProfileViewModel::class.java] }
 
 private lateinit var binding: ProfileFragmentBinding
-
+//    private val args: ProfileFragmentArgs by navArgs()
     private lateinit var user: User
 //    private val args: ProfileFragmentArgs by navArgs()
      lateinit var userId:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        userId=args.userId
+//       userId=args.userId
         user=User()
 
 //        userId =args.userId

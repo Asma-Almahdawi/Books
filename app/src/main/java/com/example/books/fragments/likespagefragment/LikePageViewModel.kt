@@ -4,13 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.books.Book
 import com.example.books.database.BookDatabaseRepo
-import com.example.books.database.DatabaseRepo
+import com.example.books.database.UserRepo
 import com.example.books.database.Favorite
 import com.example.books.database.User
 
 class LikePageViewModel : ViewModel() {
     val bookRebo = BookDatabaseRepo.getInstant()
-    val userRepo = DatabaseRepo.getInstant()
+    val userRepo = UserRepo.getInstant()
 
     suspend fun getFav(book: List<Favorite>):LiveData<List<Book>>{
 

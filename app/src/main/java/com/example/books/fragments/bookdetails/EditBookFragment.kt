@@ -39,22 +39,6 @@ bookId=args.bookId
     ): View? {
      binding= FragmentEditBookBinding.inflate(layoutInflater)
 
-        lifecycleScope.launch {
-
-//            editBookViewModel.getBookData(book.bookId).observe(
-//                viewLifecycleOwner,{
-//                    book=it
-//                    binding.bookNameTv.setText(it.bookName)
-//                    binding.bookTv.load(it.bookImage)
-//                    binding.yearOfPublicationTv.setText(it.yearOfPublication)
-//                    binding.autherNameTv.setText(it.authorName)
-//
-//                }
-//
-//            )
-
-        }
-
         lifecycleScope.launch(){
             book = editBookViewModel.getBook(bookId) ?: Book()
             Log.d(TAG, "onCreateView: ")
@@ -62,18 +46,15 @@ bookId=args.bookId
             Log.d(TAG, "onCreateView: ${book.bookName}")
             binding.autherNameTv.setText(book.bookOwner)
             binding.autherNameTv.setText(book.authorName)
-            binding.bookTv.load(book.bookImage)
             binding.yearOfPublicationTv.setText(book.yearOfPublication)
 
             binding.addBtn.setOnClickListener {
 
                 editBookViewModel.updateBook(
                     book,
-                    binding.takePhoto.text.toString(),
                     binding.bookNameTv.text.toString(),
                         binding.autherNameTv.text.toString(),
                     binding.yearOfPublicationTv.text.toString(),
-                    binding.filePDFBtn.text.toString(),
 
                 )
 

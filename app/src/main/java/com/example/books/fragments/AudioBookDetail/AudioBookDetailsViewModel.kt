@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 class AudioBookDetailsViewModel : ViewModel() {
    private val bookRepo = BookDatabaseRepo.getInstant()
-    private var userRepo= DatabaseRepo.getInstant()
+    private var userRepo= UserRepo.getInstant()
 
 
     suspend fun getAudioBook(audioBookId: String): AudioBook? {
@@ -22,6 +22,7 @@ class AudioBookDetailsViewModel : ViewModel() {
 
         return userRepo.getCurrentUserId()
     }
+//
 
     fun addAudioBookComment(comment: Comment, audioBookId: String) {
 
@@ -33,13 +34,14 @@ class AudioBookDetailsViewModel : ViewModel() {
         return bookRepo.getAudioBookComment(audioBookId)
 
     }
+    suspend fun getUserData(): LiveData<User> {
 
-//
-//    suspend fun addToFavv(favorite: Favorite, bookId: String, audioBookId:String) {
-//
-//        return userRepo.addToFavv(favorite, bookId, audioBookId)
-//
-//    }
+
+        return  userRepo.getUserData()
+
+    }
+
+
 
     fun audioBookRating(audioBookId:String, ratingBook: RatingBook, userId: String) {
 viewModelScope.launch {

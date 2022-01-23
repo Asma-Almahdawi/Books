@@ -47,10 +47,12 @@ class AudioBookFragment : Fragment() {
     var cruImage : Uri? = null
     var cruAudio: Uri?=null
     private lateinit var audioBook:AudioBook
+    private lateinit var audioBookId:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         audioBook = AudioBook()
+        audioBookId=audioBookId
         auth = FirebaseAuth.getInstance()
     }
 
@@ -91,6 +93,26 @@ class AudioBookFragment : Fragment() {
 //                lifecycleScope.launch {
 //                    val favorite= Favorite(audioBookId)
 //                    audioBookViewModel.addToFavv(favorite , bookId)
+//                }
+//
+//            }else{
+//
+//                lifecycleScope.launch {
+//                    bookDetailsViewModel.deleteFavorite(bookId)
+//                }
+//            }
+//
+//
+//
+//        }
+
+//        binding.addToFav.setOnCheckedChangeListener {_, isChecked ->
+//
+//            if (isChecked){
+//
+//                lifecycleScope.launch {
+//                    val favorite=Favorite(audioBookId)
+//                    audioBook.addToFavv(favorite , bookId)
 //                }
 //
 //            }else{
@@ -254,6 +276,16 @@ class AudioBookFragment : Fragment() {
 
 
     }
+//
+//    private fun favCheck(){
+//        lifecycleScope.launch{
+//            audioBookViewModel.getUserData().observe(viewLifecycleOwner){ currentUser ->
+//                Log.d(TAG, "favCheck: ${currentUser.favorite}")
+//                binding.addToFav.isChecked = currentUser.favorite.contains(Favorite(bookId))
+//                binding.usernameTv.text=currentUser.username
+//            }
+//        }
+//    }
 
 
 

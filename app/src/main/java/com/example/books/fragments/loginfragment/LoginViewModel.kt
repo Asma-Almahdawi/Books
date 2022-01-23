@@ -1,15 +1,11 @@
 package com.example.books.fragments.loginfragment
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.books.commentFragment.Validation
-import com.example.books.database.DatabaseRepo
-import kotlinx.coroutines.launch
+import com.example.books.database.UserRepo
 
 class LoginViewModel : ViewModel() {
 
-    val repo = DatabaseRepo.getInstant()
+    val repo = UserRepo.getInstant()
 
 
     suspend fun loginUser(email:String, password:String):Boolean{

@@ -1,22 +1,19 @@
 package com.example.books.fragments.homepagefragment
 
-import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.books.Book
 import com.example.books.database.AudioBook
 import com.example.books.database.BookDatabaseRepo
-import com.example.books.database.DatabaseRepo
+import com.example.books.database.UserRepo
 import com.example.books.database.User
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
 class HomePageViewModel : ViewModel() {
 
     private val bookRep = BookDatabaseRepo.getInstant()
-    private val database = DatabaseRepo.getInstant()
+    private val database = UserRepo.getInstant()
     var userId: String? = ""
 
     init {

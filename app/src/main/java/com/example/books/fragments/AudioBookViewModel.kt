@@ -1,15 +1,12 @@
 package com.example.books.fragments
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.example.books.Book
-import com.example.books.database.AudioBook
-import com.example.books.database.BookDatabaseRepo
-import com.example.books.database.DatabaseRepo
-import com.example.books.database.Favorite
+import com.example.books.database.*
 
 class AudioBookViewModel : ViewModel() {
     val bookRepo = BookDatabaseRepo.getInstant()
-    val userRepo = DatabaseRepo.getInstant()
+    val userRepo = UserRepo.getInstant()
 
 
     fun insertAudioBook(audioBook: AudioBook){
@@ -22,6 +19,13 @@ class AudioBookViewModel : ViewModel() {
     suspend fun addAudioBookToFavorite(favorite: Favorite, audioBookId: String ) {
 
         return userRepo.addAudioBookToFavorite(favorite, audioBookId)
+
+    }
+
+    suspend fun getUserData(): LiveData<User> {
+
+
+        return  userRepo.getUserData()
 
     }
 }

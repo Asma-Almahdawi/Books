@@ -1,10 +1,10 @@
 package com.example.books.fragments
 
 import androidx.lifecycle.ViewModel
-import com.example.books.database.DatabaseRepo
+import com.example.books.database.UserRepo
 
 class SettingViewModel : ViewModel() {
-    val repo= DatabaseRepo.getInstant()
+    val repo= UserRepo.getInstant()
 
 
 

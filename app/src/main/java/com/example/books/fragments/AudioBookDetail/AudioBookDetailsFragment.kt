@@ -21,6 +21,7 @@ import com.example.books.R
 import com.example.books.commentFragment.Comment
 import com.example.books.commentFragment.UserComment
 import com.example.books.database.AudioBook
+import com.example.books.database.Favorite
 import com.example.books.database.RatingBook
 import com.example.books.database.User
 import com.example.books.databinding.CommentListItemBinding
@@ -140,6 +141,19 @@ class AudioBookDetailsFragment : Fragment() {
 
         }
 
+        lifecycleScope.launch {
+
+            audioBookDetailsViewModel.getUserData().observe(
+
+                viewLifecycleOwner
+
+            ) {
+
+                binding.usernameTv.text = it.username
+
+            }
+
+        }
 
 //        binding.audioBookBtn.setOnClickListener {
 //            playAudio()
@@ -204,10 +218,6 @@ class AudioBookDetailsFragment : Fragment() {
 
 
         }
-//
-//        var handler = @SuppressLint("HandlerLeak")
-//        object :Handler()
-
 
 
         binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
@@ -371,7 +381,6 @@ class AudioBookDetailsFragment : Fragment() {
 //        binding.rateTv.text= ratingAverage.toString()
 
     }
-
 
 
     }

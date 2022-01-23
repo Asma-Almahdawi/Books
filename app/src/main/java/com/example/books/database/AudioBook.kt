@@ -16,5 +16,4 @@ data class AudioBook(
     val summary:String="",
     var audioFile:String = ""
 
-    ) {
-}
+    )

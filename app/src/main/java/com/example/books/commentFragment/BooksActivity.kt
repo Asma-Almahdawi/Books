@@ -9,45 +9,28 @@ import androidx.appcompat.view.ContextThemeWrapper
 import com.example.books.R
 import java.util.*
 
-class BooksActivity :AppCompatActivity(){
+class BooksActivity : AppCompatActivity() {
 
-    companion object{
-
-
-
-            var dLocale: Locale? = null
+    companion object {
+        var dLocale: Locale? = null
 
         fun newIntent(context: Context): Intent {
-            return Intent(context , BooksActivity::class.java)
-
+            return Intent(context, BooksActivity::class.java)
         }
 
         fun updateConfig(wrapper: ContextThemeWrapper) {
-            if(dLocale== Locale("") ) // Do nothing if dLocale is null
+            if (dLocale == Locale(""))
                 return
-
             Locale.setDefault(dLocale)
             val configuration = Configuration()
             configuration.setLocale(dLocale)
             wrapper.applyOverrideConfiguration(configuration)
         }
+    }
 
-        }
-
-
-
-
-        fun newIntent(context: Context): Intent {
-            return Intent(context , BooksActivity::class.java)
-        }
-
-
-
-
-
-
-
-
+    fun newIntent(context: Context): Intent {
+        return Intent(context, BooksActivity::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

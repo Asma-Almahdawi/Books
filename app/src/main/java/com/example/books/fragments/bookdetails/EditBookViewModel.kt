@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.books.Book
 import com.example.books.database.BookDatabaseRepo
-import com.example.books.database.DatabaseRepo
-import kotlinx.coroutines.tasks.await
 
 class EditBookViewModel : ViewModel() {
    val bookRepo=BookDatabaseRepo.getInstant()
@@ -21,17 +19,15 @@ class EditBookViewModel : ViewModel() {
 
     }
     fun updateBook(book:Book,
-                   bookImage:String ,
                    bookName:String,
                    authorName:String,
-                   yearOfPublication:String,
-                   pdfFile :String){
+                   yearOfPublication:String, ){
 
-        return bookRepo.updateBook(bookImage = bookImage,book = book ,
+        return bookRepo.updateBook(book = book ,
            bookName= bookName,
             authorName=authorName,
             yearOfPublication=yearOfPublication,
-            pdfFile=pdfFile )
+        )
     }
 
     fun insertBook(book: Book){
