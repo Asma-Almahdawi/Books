@@ -31,7 +31,6 @@ class LikePageFragment : Fragment() {
 
     private lateinit var binding: LikePageFragmentBinding
     private lateinit var builder:AlertDialog.Builder
-//    lateinit var bookId:String
 
     private val  viewModel by lazy { ViewModelProvider(this) [LikePageViewModel::class.java] }
 
