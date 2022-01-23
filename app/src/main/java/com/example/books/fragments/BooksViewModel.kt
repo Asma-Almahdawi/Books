@@ -6,18 +6,12 @@ import com.example.books.database.BookDatabaseRepo
 
 class BooksViewModel : ViewModel() {
 
-    val bookRepo = BookDatabaseRepo.getInstant()
+    private val bookRepo = BookDatabaseRepo.getInstant()
 
-
-    fun insertBook(book: Book){
+    fun insertBook(book: Book) {
 
 
         bookRepo.insertBook(book)
 
-    }
-
-    fun deleteBook(book: Book){
-
-       bookRepo.deleteBook(book)
     }
 }

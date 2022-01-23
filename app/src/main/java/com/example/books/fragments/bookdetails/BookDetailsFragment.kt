@@ -37,48 +37,42 @@ import java.util.*
 
 
 private const val TAG = "BookDetailsFragment"
+
 class BookDetailsFragment : Fragment() {
 
     private val bookDetailsViewModel by lazy { ViewModelProvider(this)[BookDetailsViewModel::class.java] }
-private lateinit var binding: FragmentBookDetailsBinding
 
+    private lateinit var binding: FragmentBookDetailsBinding
     private lateinit var book: Book
     private lateinit var user: User
     private lateinit var auth: FirebaseAuth
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var favorite: Favorite
 
-    var ratingAverage =0f
-
-
+    var ratingAverage = 0f
     private val args: BookDetailsFragmentArgs by navArgs()
-    lateinit var bookId:String
-
-
+    lateinit var bookId: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        auth= FirebaseAuth.getInstance()
-        mediaPlayer= MediaPlayer()
-        favorite= Favorite()
-        user=User()
+        auth = FirebaseAuth.getInstance()
+        mediaPlayer = MediaPlayer()
+        favorite = Favorite()
+        user = User()
         bookId = args.bookId
         Log.d(TAG, "onCreate: $bookId")
-
-
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-       binding = FragmentBookDetailsBinding.inflate(layoutInflater)
-//
 
-        lifecycleScope.launch(){
-             book = bookDetailsViewModel.getBook(bookId) ?: Book()
+        binding = FragmentBookDetailsBinding.inflate(layoutInflater)
+
+      lifecycleScope.launch() {
+            book = bookDetailsViewModel.getBook(bookId) ?: Book()
             Log.d(TAG, "onCreateView: ")
             binding.BookNameTv.setText(book.bookName)
             Log.d(TAG, "onCreateView: ${book.bookName}")
@@ -87,177 +81,82 @@ private lateinit var binding: FragmentBookDetailsBinding
             binding.imageBookTv.load(book.bookImage)
             binding.yearOfBookTv.setText(book.yearOfPublication)
             binding.descerption.setText(book.summary)
-//            binding.audioBookBtn.urls
+          if (auth.currentUser!!.uid == book.bookOwner) {
+              binding.editBookBtn.visibility = View.VISIBLE
+              Log.d(TAG, "onCreateViewggggg:${auth.currentUser!!.uid},${book.bookOwner} ")
+          }
 
-
-
-//            Log.d(TAG, "onCreateView:before loop $bookId")
-//            for (i in user.favorite.indices){
-//                Log.d(TAG, "onCreateView: in loop ${book.bookId}")
-//                if (user.favorite[i].bookId == bookId){
-//                    Log.d(TAG, "onCreateView: in condition ${book.bookId}")
-//                    binding.addToFav.setBackgroundColor(Color.RED)
-//                    Toast.makeText(requireContext(),"condition fullfiled", Toast.LENGTH_LONG).show()
-//                }
-//            }
-//            Log.d(TAG, "onCreateView: after loop $bookId")
-//
-//            Log.d(TAG, "Book: $book")
         }.invokeOnCompletion {
 
             lifecycleScope.launch {
-                 bookDetailsViewModel.getComment(bookId).observe(
-                     viewLifecycleOwner
-                 ) {
-
-                     binding.commentRv.adapter = CommentAdapter(it)
-//                     findNavController().navigate(R.id.bookDetailsFragment , arguments,NavOptions.Builder()
-//                         .setPopUpTo(R.id.bookDetailsFragment,true)
-//                         .build()
-//                     )
-
-                     Log.d(
-                         TAG, "onCreateView: ${
-                             it.forEach {
-                                 Log.d(TAG, "onCreateView: $it")
-                             }
-                         }"
-                     )
-                 }
-
+                bookDetailsViewModel.getComment(bookId).observe(
+                    viewLifecycleOwner
+                ) {
+                    binding.commentRv.adapter = CommentAdapter(it)
+                }
             }
-
             Log.d(TAG, "onCreateView: fav ${user.favorite}")
             Log.d(TAG, "onCreateView: condition ${user.favorite.contains(Favorite(book.bookId))}")
-            Log.d(TAG, "onCreateView: reverse condition ${!user.favorite.contains(Favorite(book.bookId))}")
+            Log.d(TAG, "onCreateView: reverse condition ${!user.favorite.contains(Favorite(book.bookId))}"
+            )
 
             Log.d(TAG, "onCreateView: ${book.comment}")
 
-
             book.rating.forEach {
-
                 ratingAverage += it.userRating.toFloat()
-
-
-
             }
+
             ratingAverage /= book.rating.size
-            
-//            binding.ratingBar.rating = ratingAverage
-            binding.rateTv.text= ratingAverage.toString()
-            Log.d(TAG, "onCreateView: $ratingAverage")
 
+            binding.rateTv.text = ratingAverage.toString()
         }
-
-
 
         binding.sendCommentBtn.setOnClickListener {
+            user = User()
+            val commentText = binding.commentTv.text.toString()
+            val comment = Comment(
+                commentText = commentText, useraId = auth.currentUser!!.uid, username = user
+                    .username
+            )
 
-            user= User()
-            val commentText =binding.commentTv.text.toString()
-            val comment = Comment( commentText = commentText ,useraId = auth.currentUser!!.uid , username = user
-                .username)
-
-
-            bookDetailsViewModel.addComment(comment,bookId)
+            bookDetailsViewModel.addComment(comment, bookId)
 
             lifecycleScope.launch {
-
                 bookDetailsViewModel.getComment(bookId).observe(
-
                     viewLifecycleOwner
-
                 ) {
-
                     binding.commentRv.adapter = CommentAdapter(it)
-
                 }
 
             }
-//            binding.commentRv.addOnLayoutChangeListener()
-
-
             binding.commentTv.text.clear()
-
         }
 
+        binding.addToFav.setOnCheckedChangeListener { _, isChecked ->
 
-//        binding.usernameTv.setOnClickListener {
-//
-//            val action =BookDetailsFragmentDirections.actionBookDetailsFragmentToProfileFragment(user.userId)
-//            findNavController().navigate(action)
-//
-//        }
-
-
-        binding.addToFav.setOnCheckedChangeListener {_, isChecked ->
-
-            if (isChecked){
-
+            if (isChecked) {
                 lifecycleScope.launch {
-                    val favorite=Favorite(bookId)
-                    bookDetailsViewModel.addToFavv(favorite , bookId)
+                    val favorite = Favorite(bookId)
+                    bookDetailsViewModel.addToFavv(favorite, bookId)
                 }
-
-            }else{
-
+            } else {
                 lifecycleScope.launch {
                     bookDetailsViewModel.deleteFavorite(bookId)
                 }
             }
-
-
-
         }
-        binding.commentRv.layoutManager=LinearLayoutManager(context)
-
-
+        binding.commentRv.layoutManager = LinearLayoutManager(context)
         book = Book()
-
-
-
-//
-//        binding.favBtn.setOnClickListener {
-//
-//            lifecycleScope.launch {
-//                val favorite=Favorite(bookId)
-//                bookDetailsViewModel.addToFavv(favorite , bookId)
-//            }
-//
-//        }
-
-//        binding.checkBoxFav.setOnCheckedChangeListener { _, isChecked ->
-//
-//            if (isChecked){
-//
-//                lifecycleScope.launch {
-//                    val favorite=Favorite(bookId)
-//                    bookDetailsViewModel.addToFavv(favorite , bookId)
-//                }
-//            }
-//
-//        }
-
-
         binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
-
-
-            val ratingBook = RatingBook(userRating =rating.toString(), userId = auth.currentUser!!.uid)
-            bookDetailsViewModel.addBookRating(bookId,ratingBook ,userId =auth.currentUser!!.uid)
+            val ratingBook =
+                RatingBook(userRating = rating.toString(), userId = auth.currentUser!!.uid)
+            bookDetailsViewModel.addBookRating(bookId, ratingBook, userId = auth.currentUser!!.uid)
 
         }
 
-
-
-//        binding.audioBookBtn.setOnClickListener {
-//            playAudio()
-//        }
         Log.d(TAG, "onCreateViewggggghhhhh:${auth.currentUser!!.uid},${book.bookOwner} ")
-        if (auth.currentUser!!.uid.equals(book.bookOwner)) {
-            binding.editBookBtn.visibility = View.VISIBLE
-            Log.d(TAG, "onCreateViewggggg:${auth.currentUser!!.uid},${book.bookOwner} ")
 
-        }
+
 
         binding.editBookBtn.setOnClickListener {
             val action =
@@ -265,67 +164,53 @@ private lateinit var binding: FragmentBookDetailsBinding
             findNavController().navigate(action)
         }
 
-
         binding.pdfView.setOnClickListener {
-            val action =BookDetailsFragmentDirections.actionBookDetailsFragmentToPdfViewFragment(book.bookId)
+            val action =
+                BookDetailsFragmentDirections.actionBookDetailsFragmentToPdfViewFragment(book.bookId)
             findNavController().navigate(action)
         }
 
         favCheck()
-
         return binding.root
     }
 
-//    private fun playAudio() {
-//        binding.audioBookBtn.isEnabled=false
-//        mediaPlayer.setDataSource(book.audioFile)
-//        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC)
-//        mediaPlayer.prepare()
-//        mediaPlayer.start()
-//
-//    }
 
+    private inner class CommentHolder(val binding: CommentListItemBinding) :
+        RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+        private var comment: Comment? = null
 
-    private inner class CommentHolder(val binding: CommentListItemBinding):RecyclerView.ViewHolder(binding.root),View.OnClickListener {
-    private var comment: Comment? = null
+        init {
+            itemView.setOnClickListener(this)
 
+        }
 
-init {
-    itemView.setOnClickListener(this)
-
-}
-
-     fun bind(comment: UserComment){
-        this.comment = comment.comment
-        binding.commentTv.text= comment.comment?.commentText
-         binding.imageUserTv.load(comment.user?.profileImageUrl)
-         binding.usernameTvComment.text=comment.user?.username
-         Log.d(TAG, "bind: ${user.username}")
-
-
-
-    }
+        fun bind(comment: UserComment) {
+            this.comment = comment.comment
+            binding.commentTv.text = comment.comment?.commentText
+            binding.imageUserTv.load(comment.user?.profileImageUrl)
+            binding.usernameTvComment.text = comment.user?.username
+            Log.d(TAG, "bind: ${user.username}")
+        }
 
         override fun onClick(v: View?) {
 
-            if (v==itemView){
-
-                val action =BookDetailsFragmentDirections.actionBookDetailsFragmentToProfileFragment(user.userId)
+            if (v == itemView) {
+                val action =
+                    BookDetailsFragmentDirections.actionBookDetailsFragmentToProfileFragment(user.userId)
                 findNavController().navigate(action)
-
             }
         }
-
-
     }
 
-    private inner class CommentAdapter(val comments :List<UserComment>):RecyclerView.Adapter<CommentHolder> (){
+
+    private inner class CommentAdapter(val comments: List<UserComment>) :
+        RecyclerView.Adapter<CommentHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentHolder {
-          val binding = CommentListItemBinding.inflate(
-              layoutInflater,
-              parent,
-              false
-          )
+            val binding = CommentListItemBinding.inflate(
+                layoutInflater,
+                parent,
+                false
+            )
 
             return CommentHolder(binding)
         }
@@ -334,23 +219,20 @@ init {
 
             val comment = comments[position]
             holder.bind(comment)
-
-
         }
 
         override fun getItemCount(): Int {
-
             return comments.size
-            Log.d(TAG, "getItemCount:${comments.size} ")
         }
-
     }
-    private fun favCheck(){
-        lifecycleScope.launch{
-            bookDetailsViewModel.getUserData().observe(viewLifecycleOwner){ currentUser ->
+
+
+    private fun favCheck() {
+        lifecycleScope.launch {
+            bookDetailsViewModel.getUserData().observe(viewLifecycleOwner) { currentUser ->
                 Log.d(TAG, "favCheck: ${currentUser.favorite}")
                 binding.addToFav.isChecked = currentUser.favorite.contains(Favorite(bookId))
-                binding.usernameTv.text=currentUser.username
+//                binding.usernameTv.text = currentUser.username
             }
         }
     }

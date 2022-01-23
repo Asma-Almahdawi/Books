@@ -36,5 +36,10 @@
     <string name="upload_audio">Download audio</string>
     <string name="click_to_rate">Click to rate</string>
     <string name="by">by</string>
+    <string name="name">Name</string>
+    <string name="bio">bio</string>
+    <string name="home">home</string>
+    <string name="like">like</string>
+    <string name="profile">profile</string>
 
 </resources>

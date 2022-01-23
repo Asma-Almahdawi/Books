@@ -13,8 +13,4 @@ data class User(
     var flowers:List<String> = listOf(),
     var following: List<String> = listOf(),
     var favorite:List<Favorite> = listOf()
-
-
-){
-
-}
+)

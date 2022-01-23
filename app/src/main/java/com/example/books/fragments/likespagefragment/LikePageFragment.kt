@@ -42,8 +42,6 @@ class LikePageFragment : Fragment() {
 
         binding.favRv.layoutManager=GridLayoutManager(context,2)
 
-
-
         return binding.root
     }
 

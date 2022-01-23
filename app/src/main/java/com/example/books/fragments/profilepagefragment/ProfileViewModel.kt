@@ -9,54 +9,26 @@ import com.example.books.database.UserRepo
 import com.example.books.database.User
 
 class ProfileViewModel : ViewModel() {
-  val bookRepo =BookDatabaseRepo.getInstant()
-    val userRepo =UserRepo.getInstant()
+    private val bookRepo = BookDatabaseRepo.getInstant()
+   private val userRepo = UserRepo.getInstant()
 
 
-
-    suspend fun getUserData():LiveData<User>{
-
-
-      return  userRepo.getUserData()
+    suspend fun getUserData(): LiveData<User> {
+        return userRepo.getUserData()
 
     }
 
-  fun getCurrentUserId():String?{
+    fun getCurrentUserId(): String? {
+        return userRepo.getCurrentUserId()
 
-    return userRepo.getCurrentUserId()
-
-  }
-  fun deleteBook(book: Book){
-
-    bookRepo.deleteBook(book)
-  }
-
-  private suspend fun getUserUid():String?{
-    return userRepo.getUserData().value?.userId
-  }
-
-    suspend fun getBookFromUser(userId:String):LiveData<List<Book>>{
-
-        return userRepo.getBookFromUser(userId)
     }
 
-    suspend fun getBookFromUserToProfile():LiveData<List<Book>>{
+    fun deleteBook(book: Book) {
+        bookRepo.deleteBook(book)
+    }
 
+    suspend fun getBookFromUserToProfile(): LiveData<List<Book>> {
         return bookRepo.getUserBooks()
 
     }
-
-  suspend fun getAudioBooksFromUserToProfile(): LiveData<List<AudioBook>> {
-
-    return bookRepo.getAudioBooksFromUserToProfile()
-
-  }
-
-  suspend fun followers(followers:String , userId: String){
-
-    return userRepo.followers(followers , userId)
-
-  }
-
-
 }

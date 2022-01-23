@@ -43,8 +43,6 @@ class HomePageFragment : Fragment() {
     private lateinit var audioBook: AudioBook
 
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,26 +50,23 @@ class HomePageFragment : Fragment() {
         binding = HomePageFragmentBinding.inflate(layoutInflater)
         user = User()
         if (homePageViewModel.getCurrentUserId().isNullOrEmpty()) {
-
             findNavController().navigate(R.id.action_navigation_home_to_loginFragment)
         }
 
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-
-                if (newText!!.isNotEmpty()){
+                if (newText!!.isNotEmpty()) {
 
                     val search = newText.lowercase(Locale.getDefault())
-lifecycleScope.launch {
-    homePageViewModel.searchBookName(search).observeForever {bookList->
-        binding.booksRv.adapter=BookAdapter(bookList)
-    }
-}
-
+                    lifecycleScope.launch {
+                        homePageViewModel.searchBookName(search).observeForever { bookList ->
+                            binding.booksRv.adapter = BookAdapter(bookList)
+                        }
+                    }
                 }
 
                 return true
@@ -80,22 +75,10 @@ lifecycleScope.launch {
 
         })
 
-
-
-//        lifecycleScope.launch {
-//            homePageViewModel.getUserInfo().observe(
-//                viewLifecycleOwner
-//
-//            ) {
-//                binding.usernameTv.setText(it.username)
-//                binding.userImage.load(it.profileImageUrl)
-//            }
-//        }
-
-        binding.booksRv.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
-//        binding.audioBookRv.layoutManager = GridLayoutManager(context, 2)
-        binding.audioBookRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
-//        binding.booksRv.layoutManager=LinearLayoutManager(context , LinearLayoutManager.HORIZONTAL,false)
+        binding.booksRv.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.audioBookRv.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         book = Book()
         audioBook = AudioBook()
         lifecycleScope.launch {
@@ -109,13 +92,11 @@ lifecycleScope.launch {
         lifecycleScope.launch {
             homePageViewModel.getAllBook().observe(viewLifecycleOwner, Observer {
                 binding.booksRv.adapter = BookAdapter(it)
-            }
-            )
+            })
         }
 
         return binding.root
     }
-
 
     //    --------------------------Book--------------------------------------//
 
@@ -124,7 +105,6 @@ lifecycleScope.launch {
         private lateinit var book: Book
 
         init {
-//            binding.bookDelete.setOnClickListener(this)
             itemView.setOnClickListener(this)
         }
 
@@ -138,11 +118,6 @@ lifecycleScope.launch {
 
         override fun onClick(v: View?) {
             when (v) {
-//                binding.bookDelete -> {
-//                    if (homePageViewModel.getCurrentUserId() == book.bookOwner) {
-//                        homePageViewModel.deleteBook(book)
-//                    }
-//                }
                 itemView -> {
                     val action =
                         HomePageFragmentDirections.actionNavigationHomeToBookDetailsFragment(book.bookId)
@@ -182,7 +157,6 @@ lifecycleScope.launch {
         private lateinit var audioBook: AudioBook
 
         init {
-//            binding.bookDelete.setOnClickListener(this)
             itemView.setOnClickListener(this)
         }
 
@@ -195,11 +169,6 @@ lifecycleScope.launch {
 
         override fun onClick(v: View?) {
             when (v) {
-//                binding.bookDelete -> {
-//                    if (homePageViewModel.getCurrentUserId() == book.bookOwner) {
-//                        homePageViewModel.deleteBook(book)
-//                    }
-//                }
                 itemView -> {
                     val action =
                         HomePageFragmentDirections.actionNavigationHomeToAudioBookDetailsFragment(

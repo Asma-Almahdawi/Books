@@ -32,53 +32,33 @@ class UserRepo private constructor(context: Context) {
 
     suspend fun loginUser(email: String, password: String): Boolean {
 
-
         var isSuccess: Boolean? = null
-
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-
                     isSuccess = true
                     Log.d(TAG, "signInWithEmail:success")
                     val user = auth.currentUser
-
                 } else {
-                    // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
-
-
                 }
-
-
             }.addOnFailureListener {
-
                 isSuccess = false
-
             }.await()
         return isSuccess!!
-
     }
 
 
     fun getCurrentUserId(): String? {
 
         return auth.currentUser?.uid
-
     }
 
 
     fun signOut() = auth.signOut()
 
+
     suspend fun getBookFromUser(userId: String): LiveData<List<Book>> {
-
-        return liveData {
-
-            booksCollectionRef.whereEqualTo("bookOwner", userId).get().await()
-        }
-    }
-
-    suspend fun getAudioBookFromUser(userId: String): LiveData<List<AudioBook>> {
 
         return liveData {
 
@@ -94,40 +74,27 @@ class UserRepo private constructor(context: Context) {
         val task = ref.putFile(curFile)
 
         val uriTask = task.continueWithTask { task ->
-
             if (!task.isSuccessful) {
                 task.exception?.let {
                     throw it
                 }
-
             }
-
             ref.downloadUrl
-        }
-            .addOnSuccessListener {
-
-                val imageUrl = it.toString()
-//                  Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!).set(
-//                      hashMapOf("imageUrl" to imageUrl))
-                if (Firebase.auth.currentUser != null) {
-
-                    firestore.collection("users").document(auth.currentUser?.uid!!).update(
-                        "profileImageUrl",
-                        imageUrl
-                    )
-                }
-
-//                      .update("profileImageUrl",imageUrl)
-
-                isSuccess = true
-            }.addOnFailureListener {
-                Log.d(TAG, "error url ")
-            }.await()
-
+        }.addOnSuccessListener {
+            val imageUrl = it.toString()
+            if (Firebase.auth.currentUser != null) {
+                firestore.collection("users").document(auth.currentUser?.uid!!).update(
+                    "profileImageUrl",
+                    imageUrl
+                )
+            }
+            isSuccess = true
+        }.addOnFailureListener {
+            Log.d(TAG, "error url ")
+        }.await()
         return isSuccess
-
-
     }
+
 
     suspend fun getUserData(): LiveData<User> {
 
@@ -135,96 +102,44 @@ class UserRepo private constructor(context: Context) {
 
             val user = userCollectionRef.document(auth.currentUser!!.uid).get().await()
                 .toObject(User::class.java)
-
             if (user != null) {
                 emit(user)
             }
         }
-
     }
-
 
     suspend fun deleteFavorite(bookId: String) {
 
-//        to delete a FAVEROTE
         val user = userCollectionRef.document(auth.currentUser!!.uid).get().await()
             .toObject(User::class.java)
         val newFav = user?.favorite!!.filter {
             it.bookId != bookId
-
         }
         Log.d(TAG, "deleteFavorite: $newFav")
         userCollectionRef.document(auth.currentUser!!.uid).update("favorite", newFav)
-
     }
 
-
     fun saveUser(user: User) {
-
 
         val Id = userCollectionRef.document(auth.currentUser!!.uid)
         user.userId = Id.id
         Id.set(user)
-
-
     }
 
-    fun savaProfileUserData(user: User) {
 
-
-        val uidRef = userCollectionRef.document(user.userId)
-        uidRef.get().addOnSuccessListener { doc ->
-            if (doc != null) {
-                val user = doc.toObject(User::class.java)
-                Log.d(TAG, "{$user.firstName} {$user.lastName}")
-            } else {
-                Log.d(TAG, "No such document")
-            }
-        }.addOnFailureListener { exception ->
-            Log.d(TAG, "get failed with ", exception)
-        }
-
-
-    }
-
-    suspend fun addToFavv(favorite: Favorite, bookId: String ) {
+    suspend fun addToFavv(favorite: Favorite, bookId: String) {
         userCollectionRef.document(auth.currentUser!!.uid)
             .update("favorite", FieldValue.arrayUnion(favorite))
-
     }
 
-    suspend fun addAudioBookToFavorite(favorite: Favorite, audioBookId: String ) {
+    suspend fun addAudioBookToFavorite(favorite: Favorite, audioBookId: String) {
         userCollectionRef.document(auth.currentUser!!.uid)
             .update("favorite", FieldValue.arrayUnion(favorite))
-
     }
 
     suspend fun followers(followers: String, userId: String) {
-
         userCollectionRef.document(auth.currentUser!!.uid)
             .update("followers", FieldValue.arrayUnion(followers))
-
-    }
-
-    suspend fun getUser(userId: List<String>): LiveData<List<User>> {
-        val users = mutableListOf<User>()
-        return liveData {
-
-            userId.forEach {
-
-                booksCollectionRef.document(it).get().await().toObject(User::class.java)
-                    ?.let {
-                        users.add(
-                            it
-                        )
-                    }
-            }
-
-            emit(users)
-
-        }
-
-
     }
 
 
@@ -236,16 +151,11 @@ class UserRepo private constructor(context: Context) {
 
             if (INSTANT == null) {
                 INSTANT = UserRepo(context)
-
             }
-
         }
 
         fun getInstant(): UserRepo =
             INSTANT ?: throw IllegalStateException(" repo has not be init")
-
     }
 }
-
-
 

@@ -10,29 +10,21 @@ import kotlinx.coroutines.launch
 
 class EditFileViewModel : ViewModel() {
 
+    private val userRepo = UserRepo.getInstant()
 
-    val databaseRepo= UserRepo.getInstant()
-
-    fun saveUser(user: User){
-
-        databaseRepo.saveUser(user)
+    fun saveUser(user: User) {
+        userRepo.saveUser(user)
     }
 
-    suspend fun getUserData():LiveData<User>{
-
-      return  databaseRepo.getUserData()
-
+    suspend fun getUserData(): LiveData<User> {
+        return userRepo.getUserData()
     }
 
-     fun uploadProfileImage(curFile:Uri):Boolean{
+    fun uploadProfileImage(curFile: Uri): Boolean {
         var isSuccess = false
         viewModelScope.launch {
-            isSuccess = databaseRepo.uploadImage(curFile)
+            isSuccess = userRepo.uploadImage(curFile)
         }
         return isSuccess
-
     }
-
-
-
 }

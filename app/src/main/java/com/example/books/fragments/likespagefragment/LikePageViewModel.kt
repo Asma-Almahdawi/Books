@@ -9,36 +9,21 @@ import com.example.books.database.Favorite
 import com.example.books.database.User
 
 class LikePageViewModel : ViewModel() {
-    val bookRebo = BookDatabaseRepo.getInstant()
-    val userRepo = UserRepo.getInstant()
+    private val bookRepo = BookDatabaseRepo.getInstant()
+    private val userRepo = UserRepo.getInstant()
 
     suspend fun getFav(book: List<Favorite>):LiveData<List<Book>>{
 
-
-
-        return bookRebo.getFav(book)
-
+        return bookRepo.getFav(book)
     }
+
     suspend fun deleteFavorite(bookId: String){
 
-
         return userRepo.deleteFavorite(bookId)
-
     }
-
-    suspend fun deleteFav(bookId:String){
-
-       bookRebo.deleteFav(bookId)
-
-    }
-
 
     suspend fun getUserData():LiveData<User>{
 
-
         return  userRepo.getUserData()
-
     }
-    
-
 }

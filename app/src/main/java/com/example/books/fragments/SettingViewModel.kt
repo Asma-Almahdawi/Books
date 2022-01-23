@@ -4,17 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.books.database.UserRepo
 
 class SettingViewModel : ViewModel() {
-    val repo= UserRepo.getInstant()
+    private val userRepo= UserRepo.getInstant()
 
-
-
-
-
-
-
-    fun signOut() = repo.signOut()
-
-
-
-
+    fun signOut() = userRepo.signOut()
 }

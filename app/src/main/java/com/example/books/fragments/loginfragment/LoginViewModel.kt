@@ -5,13 +5,11 @@ import com.example.books.database.UserRepo
 
 class LoginViewModel : ViewModel() {
 
-    val repo = UserRepo.getInstant()
+    val userRepo = UserRepo.getInstant()
 
 
-    suspend fun loginUser(email:String, password:String):Boolean{
+    suspend fun loginUser(email: String, password: String): Boolean {
 
-
-
-        return  repo.loginUser(email,password)
+        return userRepo.loginUser(email, password)
     }
 }

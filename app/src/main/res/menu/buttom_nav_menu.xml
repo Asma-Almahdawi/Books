@@ -4,16 +4,16 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/home"
-        android:title="home" />
+        android:title="@string/home" />
     <item
         android:id="@+id/likePageFragment"
         android:icon="@drawable/love"
-        android:title="like" />
+        android:title="@string/like" />
 
     <item
         android:id="@+id/profileFragment"
         android:icon="@drawable/account"
-        android:title="profile" />
+        android:title="@string/profile" />
 
     <item android:id="@+id/nothing"
         android:title=""/>

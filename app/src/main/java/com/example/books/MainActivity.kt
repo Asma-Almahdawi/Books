@@ -21,8 +21,8 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    val mainActivityViewModel by lazy { ViewModelProvider (this) [MainActivityViewModel::class.java] }
-    lateinit var binding:ActivityMainBinding
+    val mainActivityViewModel by lazy { ViewModelProvider(this)[MainActivityViewModel::class.java] }
+    lateinit var binding: ActivityMainBinding
     private lateinit var myPreferences: QueryPreferences
     private var clicked = false
 
@@ -30,65 +30,47 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.buttomNavMenu.background=null
+        binding.buttomNavMenu.background = null
 
         val bottomNavigationView = binding.buttomNavMenu
 
         val navController = findNavController(R.id.container)
 
         bottomNavigationView.setupWithNavController(navController)
-         navController.addOnDestinationChangedListener { _, destination, _ ->
+        navController.addOnDestinationChangedListener { _, destination, _ ->
 
-             when(destination.id){
+            when (destination.id) {
 
-                 R.id.loginFragment -> {
-                     binding.buttomNavMenu.visibility = View.GONE
-                     binding.fab.visibility=View.GONE
-                     binding.bottomAppBar.visibility=View.GONE
-                 }
-                 R.id.registerFragment -> {
-                     binding.buttomNavMenu.visibility = View.GONE
-                     binding.fab.visibility=View.GONE
-                     binding.bottomAppBar.visibility=View.GONE
-                 }
-                 else -> {
-                     binding.buttomNavMenu.visibility = View.VISIBLE
-                     binding.fab.visibility=View.VISIBLE
-                     binding.bottomAppBar.visibility=View.VISIBLE
-                 }
-             }
-
-         }
-
+                R.id.loginFragment -> {
+                    binding.buttomNavMenu.visibility = View.GONE
+                    binding.fab.visibility = View.GONE
+                    binding.bottomAppBar.visibility = View.GONE
+                }
+                R.id.registerFragment -> {
+                    binding.buttomNavMenu.visibility = View.GONE
+                    binding.fab.visibility = View.GONE
+                    binding.bottomAppBar.visibility = View.GONE
+                }
+                else -> {
+                    binding.buttomNavMenu.visibility = View.VISIBLE
+                    binding.fab.visibility = View.VISIBLE
+                    binding.bottomAppBar.visibility = View.VISIBLE
+                }
+            }
+        }
         binding.fab.setOnClickListener {
 
-//         findNavController(R.id.container).navigate(R.id.booksFragment)
             onAddButtonClicked()
-
         }
 
         binding.addBook.setOnClickListener {
-         findNavController(R.id.container).navigate(R.id.booksFragment)
-
-
+            findNavController(R.id.container).navigate(R.id.booksFragment)
         }
 
         binding.addAudioBook.setOnClickListener {
             findNavController(R.id.container).navigate(R.id.audioBookFragment)
 
         }
-
-//        binding.floatingBookActionButton2.setOnClickListener {
-//            findNavController(R.id.container).navigate(R.id.booksFragment)
-//        }
-//        binding.floatingAudioActionButton.setOnClickListener {
-//            findNavController(R.id.container).navigate(R.id.audioBookFragment)
-//
-//        }
-//        setupActionBarWithNavController(navController, AppBarConfiguration(setOf( R.layout.home_page_fragment,R.layout.like_page_fragment,R.layout.chat_page_fragment,R.layout.profile_fragment)))
-
-
-
     }
 
     private fun onAddButtonClicked() {
@@ -99,75 +81,39 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun setAnimation(clicked:Boolean) {
-        val rotateOpen = AnimationUtils.loadAnimation(this,R.anim.rotate_open_anim)
-        val rotateClose = AnimationUtils.loadAnimation(this,R.anim.rotate_close_anim)
-        //        binding.buttomNavMenu.menu.getItem(2).isEnabled = false
-        val fromButton = AnimationUtils.loadAnimation(this,R.anim.from_bottom_anim)
-        val toButton = AnimationUtils.loadAnimation(this,R.anim.to_bottom_anim)
-        if (!clicked){
+    private fun setAnimation(clicked: Boolean) {
+        val rotateOpen = AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim)
+        val rotateClose = AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim)
+        val fromButton = AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim)
+        val toButton = AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim)
+        if (!clicked) {
 
             binding.addAudioBook.startAnimation(fromButton)
-
             binding.addBook.startAnimation(fromButton)
             binding.fab.startAnimation(rotateOpen)
-        }else{
 
+        } else {
             binding.addAudioBook.startAnimation(toButton)
-binding.addBook.startAnimation(toButton)
+            binding.addBook.startAnimation(toButton)
             binding.fab.startAnimation(rotateClose)
         }
-
-
     }
 
-    private fun setVisibility(clicked:Boolean) {
+    private fun setVisibility(clicked: Boolean) {
 
-if (!clicked){
-    binding.addAudioBook.visibility=View.VISIBLE
-    binding.addBook.visibility=View.VISIBLE
+        if (!clicked) {
+            binding.addAudioBook.visibility = View.VISIBLE
+            binding.addBook.visibility = View.VISIBLE
 
-
-}
-        binding.addAudioBook.visibility=View.INVISIBLE
-        binding.addBook.visibility=View.INVISIBLE
-
+        }
+        binding.addAudioBook.visibility = View.INVISIBLE
+        binding.addBook.visibility = View.INVISIBLE
 
     }
 
     override fun attachBaseContext(newBase: Context?) {
         myPreferences = QueryPreferences(newBase!!)
-        val lang : String? = myPreferences.getLoginCount()
+        val lang: String? = myPreferences.getLoginCount()
         super.attachBaseContext(lang?.let { MyContextWrapper.wrap(newBase, it) })
-
-
     }
-//
-//    override fun onResume() {
-//
-//        changeLanguage()
-//        super.onResume()
-//    }
-//    fun changeLanguage(){
-//        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
-//        val language = sharedPreferences.getString("language","bak")
-//        Toast.makeText(applicationContext,language,Toast.LENGTH_SHORT).show()
-//        if(language=="English"){
-//            Toast.makeText(applicationContext,"English",Toast.LENGTH_SHORT).show()
-//            language("")
-//        }else if(language=="Arabic"){
-//            Toast.makeText(applicationContext,"Arabic",Toast.LENGTH_SHORT).show()
-//            language("ar")
-//        }
-//    }
-//
-//
-//    fun language(language: String){
-//        val locale = Locale(language)
-//        Locale.setDefault(locale)
-//        val resources = getResources()
-//        val configuration = resources.getConfiguration()
-//        configuration.locale = locale
-//        resources.updateConfiguration(configuration, resources.getDisplayMetrics())
-//    }
 }

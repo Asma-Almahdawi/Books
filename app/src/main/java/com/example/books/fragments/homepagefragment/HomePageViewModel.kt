@@ -22,7 +22,6 @@ class HomePageViewModel : ViewModel() {
         }
     }
 
-
    suspend fun getAllBook(): LiveData<List<Book>> {
 
       return bookRep.getAllBook()
@@ -30,34 +29,22 @@ class HomePageViewModel : ViewModel() {
 
     }
     suspend fun getAllAudioBook(): LiveData<List<AudioBook>> {
+
         return bookRep.getAllAudioBook()
     }
 
     fun getCurrentUserId():String?{
 
         return database.getCurrentUserId()
-
-    }
-
-    fun deleteBook(book: Book){
-
-        bookRep.deleteBook(book)
     }
 
    private suspend fun getUserUid():String?{
+
        return database.getUserData().value?.userId
    }
+
     suspend fun searchBookName(letter:String):LiveData<List<Book>>{
 
         return bookRep.searchBookName(letter)
     }
-
-    suspend fun getUserInfo():LiveData<User> {
-
-        return database.getUserData()
-
-    }
-
-
-
 }

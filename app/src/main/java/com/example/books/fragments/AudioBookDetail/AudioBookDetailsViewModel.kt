@@ -9,45 +9,33 @@ import com.example.books.database.*
 import kotlinx.coroutines.launch
 
 class AudioBookDetailsViewModel : ViewModel() {
-   private val bookRepo = BookDatabaseRepo.getInstant()
-    private var userRepo= UserRepo.getInstant()
-
+    private val bookRepo = BookDatabaseRepo.getInstant()
+    private var userRepo = UserRepo.getInstant()
 
     suspend fun getAudioBook(audioBookId: String): AudioBook? {
 
         return bookRepo.getAudioBook(audioBookId)
     }
 
-    fun getCurrentUserId(): String? {
-
-        return userRepo.getCurrentUserId()
-    }
-//
-
     fun addAudioBookComment(comment: Comment, audioBookId: String) {
 
-        return bookRepo.addAudioBookComment(comment,audioBookId)
+        return bookRepo.addAudioBookComment(comment, audioBookId)
     }
 
     suspend fun getAudioBookComment(audioBookId: String): LiveData<List<UserComment>> {
 
         return bookRepo.getAudioBookComment(audioBookId)
-
     }
+
     suspend fun getUserData(): LiveData<User> {
 
-
-        return  userRepo.getUserData()
-
+        return userRepo.getUserData()
     }
 
 
-
-    fun audioBookRating(audioBookId:String, ratingBook: RatingBook, userId: String) {
-viewModelScope.launch {
-    bookRepo.audioBookRating(audioBookId, ratingBook, userId)
-}
-
-
+    fun audioBookRating(audioBookId: String, ratingBook: RatingBook, userId: String) {
+        viewModelScope.launch {
+            bookRepo.audioBookRating(audioBookId, ratingBook, userId)
         }
     }
+}

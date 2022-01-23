@@ -8,14 +8,16 @@
     android:background="#FDFDFD"
     tools:context=".fragments.registerfragment.RegisterFragment">
 
+
     <EditText
         android:id="@+id/email_tv"
         android:layout_width="300sp"
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
         android:layout_marginTop="200dp"
-        android:background="#F6ECF0"
+        android:background="#FFFFFF"
         android:ems="10"
+
         android:hint="@string/enter_email"
         android:inputType="textPersonName"
         android:minHeight="48dp"
@@ -29,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
         android:layout_marginTop="72dp"
-        android:background="#F6ECF0"
+        android:background="#FFFFFF"
         android:ems="10"
         android:hint="@string/enter_password"
         android:inputType="textPersonName"

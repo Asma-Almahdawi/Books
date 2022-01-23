@@ -19,27 +19,29 @@ import com.example.books.fragments.AudioBookDetail.AudioBookDetailsViewModel
 import kotlinx.coroutines.launch
 
 private const val TAG = "EditBookFragment"
+
 class EditBookFragment : Fragment() {
 
     private val editBookViewModel by lazy { ViewModelProvider(this)[EditBookViewModel::class.java] }
-private lateinit var book:Book
-private lateinit var binding: FragmentEditBookBinding
+    private lateinit var book: Book
+    private lateinit var binding: FragmentEditBookBinding
     private val args: EditBookFragmentArgs by navArgs()
-    lateinit var bookId:String
+    lateinit var bookId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-bookId=args.bookId
-        book=Book()
+        bookId = args.bookId
+        book = Book()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-     binding= FragmentEditBookBinding.inflate(layoutInflater)
 
-        lifecycleScope.launch(){
+        binding = FragmentEditBookBinding.inflate(layoutInflater)
+
+        lifecycleScope.launch() {
             book = editBookViewModel.getBook(bookId) ?: Book()
             Log.d(TAG, "onCreateView: ")
             binding.bookNameTv.setText(book.bookName)
@@ -53,21 +55,11 @@ bookId=args.bookId
                 editBookViewModel.updateBook(
                     book,
                     binding.bookNameTv.text.toString(),
-                        binding.autherNameTv.text.toString(),
+                    binding.autherNameTv.text.toString(),
                     binding.yearOfPublicationTv.text.toString(),
-
-                )
-
-
-
+                    )
             }
-
-
-
-    }
+        }
         return binding.root
-
-
-}
-
+    }
 }

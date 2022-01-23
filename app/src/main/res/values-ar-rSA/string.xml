@@ -33,9 +33,15 @@
     <string name="audio_book">كتب مسموعه</string>
     <string name="change_language">تغيير اللغه</string>
     <string name="logout">تسجيل خروج</string>
-    <string name="audio">تحميل صوت</string>
+    <string name="audio">ارفاق صوت</string>
     <string name="upload_audio">ارفاق ملف صوتي</string>
     <string name="click_to_rate">اضغط للتقييم</string>
+    <string name="by">بواسطة</string>
+    <string name="name">الاسم</string>
+    <string name="bio">نبذه عني</string>
+    <string name="home">الرئيسيه</string>
+    <string name="like">المفضله</string>
+    <string name="profile">الملف الشخصي</string>
 
 
 </resources>

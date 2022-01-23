@@ -42,71 +42,45 @@ class ProfileFragment : Fragment() {
 
     private val profileViewModel by lazy { ViewModelProvider(this)[ProfileViewModel::class.java] }
 
-private lateinit var binding: ProfileFragmentBinding
-//    private val args: ProfileFragmentArgs by navArgs()
+    private lateinit var binding: ProfileFragmentBinding
     private lateinit var user: User
-//    private val args: ProfileFragmentArgs by navArgs()
-     lateinit var userId:String
+    lateinit var userId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//       userId=args.userId
-        user=User()
-
-//        userId =args.userId
+        user = User()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-       binding= ProfileFragmentBinding.inflate(layoutInflater)
-//        binding.userImage.load(user.profileImageUrl)
-//        binding.usernameTv.text=user.username
+
+        binding = ProfileFragmentBinding.inflate(layoutInflater)
 
         lifecycleScope.launch {
 
             profileViewModel.getUserData().observe(
-
                 viewLifecycleOwner,
                 Observer {
                     Log.d(TAG, "onCreateView: $it")
-                    binding.usernameTv.text=it.username
+                    binding.usernameTv.text = it.username
                     binding.userImage.load(it.profileImageUrl)
-                    binding.bioTv.text=it.bio
+                    binding.bioTv.text = it.bio
                     Log.d(TAG, "onCreateView: ${user.profileImageUrl}")
-                }
-
-            )
-
+                })
         }
 
-        binding.booksUserRv.layoutManager=GridLayoutManager(context,2)
+        binding.booksUserRv.layoutManager = GridLayoutManager(context, 2)
 
         lifecycleScope.launch {
 
             profileViewModel.getBookFromUserToProfile().observe(
                 viewLifecycleOwner
             ) {
-
                 binding.booksUserRv.adapter = BookUserAdapter(it)
-
             }
-
         }
-//
-//        binding.followBtn.setOnClickListener {
-//
-//            user= User(userId)
-//
-//            lifecycleScope.launch {
-////
-////                profileViewModel.followers(userId)
-//
-//            }
-//        }
-
-
 
         binding.editProfileBtn.setOnClickListener {
 
@@ -115,31 +89,30 @@ private lateinit var binding: ProfileFragmentBinding
         binding.settingVi.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_settingFragment)
         }
-
-
         return binding.root
     }
 
     override fun onResume() {
 
-    changeLanguage()
+        changeLanguage()
         super.onResume()
     }
-    fun changeLanguage(){
+
+    private fun changeLanguage() {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val language = sharedPreferences.getString("language","bak")
-        Toast.makeText(context,language, Toast.LENGTH_SHORT).show()
-        if(language=="English"){
-            Toast.makeText(context,"English", Toast.LENGTH_SHORT).show()
+        val language = sharedPreferences.getString("language", "bak")
+        Toast.makeText(context, language, Toast.LENGTH_SHORT).show()
+        if (language == "English") {
+            Toast.makeText(context, "English", Toast.LENGTH_SHORT).show()
             language("")
-        }else if(language=="Arabic"){
-            Toast.makeText(context,"Arabic", Toast.LENGTH_SHORT).show()
+        } else if (language == "Arabic") {
+            Toast.makeText(context, "Arabic", Toast.LENGTH_SHORT).show()
             language("ar")
         }
     }
 
 
-    fun language(language: String){
+    private fun language(language: String) {
         val locale = Locale(language)
         Locale.setDefault(locale)
         val resources = getResources()
@@ -149,29 +122,22 @@ private lateinit var binding: ProfileFragmentBinding
     }
 
 
-
-
-    private inner class BookUserViewHolder(val binding: BookListItemUserBinding): RecyclerView.ViewHolder(binding.root) , View.OnClickListener{
+    private inner class BookUserViewHolder(val binding: BookListItemUserBinding) :
+        RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         private lateinit var book: Book
 
-        fun bind(book: Book){
+        fun bind(book: Book) {
+
             this.book = book
-//            binding.bookNamesTv.text=book.bookName
             binding.bookUserTv.load(book.bookImage)
-//            binding.bookNameUserTv.text=book.bookName
-
         }
-        init {
 
-           itemView.setOnClickListener(this)
+        init {
+            itemView.setOnClickListener(this)
+            binding.deleteFavBtn.setOnClickListener(this)
         }
 
         override fun onClick(v: View?) {
-//            if (v==itemView){
-//                val action = ProfileFragmentDirections.actionProfileFragmentToBookDetailsFragment(book.bookId)
-//                Log.d(TAG, "onClick: ${book.bookId}")
-//                findNavController().navigate(action)
-//            }
 
             when (v) {
                 binding.deleteFavBtn -> {
@@ -185,15 +151,13 @@ private lateinit var binding: ProfileFragmentBinding
                     findNavController().navigate(action)
                 }
             }
-
         }
-
-        }
-
+    }
 
 
+    private inner class BookUserAdapter(val books: List<Book>) :
+        RecyclerView.Adapter<BookUserViewHolder>() {
 
-    private inner class BookUserAdapter(val books:List<Book>): RecyclerView.Adapter<BookUserViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookUserViewHolder {
 
             val binding = BookListItemUserBinding.inflate(
@@ -201,30 +165,20 @@ private lateinit var binding: ProfileFragmentBinding
                 layoutInflater,
                 parent,
                 false
-
             )
-            return BookUserViewHolder(binding)
 
+            return BookUserViewHolder(binding)
         }
 
 
         override fun onBindViewHolder(holder: BookUserViewHolder, position: Int) {
-            val book =books[position]
-
+            val book = books[position]
             holder.bind(book)
             Log.d("items", " this item $book")
         }
 
         override fun getItemCount(): Int {
             return books.size
-
         }
-
-
     }
-
-
-
-
-
 }

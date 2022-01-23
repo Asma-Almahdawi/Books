@@ -7,10 +7,4 @@ class MainActivityViewModel:ViewModel() {
 
     val repo = UserRepo.getInstant()
 
-    fun getCurrentUserId():String?{
-
-        return repo.getCurrentUserId()
-
-    }
-
 }

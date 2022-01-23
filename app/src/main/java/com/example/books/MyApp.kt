@@ -10,7 +10,8 @@ import com.example.books.database.UserRepo
 import java.util.*
 
 const val CHANNEL_NOTIFICATION_ID = "HELLO"
-class MyApp :Application(){
+
+class MyApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -22,22 +23,23 @@ class MyApp :Application(){
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val language = sharedPreferences.getString("language", "bak")
         if (language == "Turkish") {
-            change="tr"
-        } else if (language=="English" ) {
+            change = "tr"
+        } else if (language == "English") {
             change = "en"
-        }else {
-            change =""
+        } else {
+            change = ""
         }
 
-        BooksActivity.dLocale = Locale(change) //set any locale you want here
-
+        BooksActivity.dLocale = Locale(change)
 
         val channelName = resources.getString(R.string.notification_channel_name)
 
         val channelImportance = NotificationManager.IMPORTANCE_DEFAULT
 
-        val channel = NotificationChannel(CHANNEL_NOTIFICATION_ID,channelName,
-            channelImportance)
+        val channel = NotificationChannel(
+            CHANNEL_NOTIFICATION_ID, channelName,
+            channelImportance
+        )
 
 
         val notificationManager =
@@ -46,5 +48,5 @@ class MyApp :Application(){
         notificationManager.createNotificationChannel(channel)
 
 
-}
+    }
 }
