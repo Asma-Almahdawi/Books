@@ -89,8 +89,8 @@ class LikePageFragment : Fragment() {
                 binding.deleteFavBtn -> {
 
                       builder=AlertDialog.Builder(context)
-                      builder.setTitle("Delete book")
-                          .setMessage("Are you sure you want to delete the book?")
+                      builder.setTitle(getString(R.string.delete))
+                          .setMessage(getString(R.string.delete_msg))
                           .setCancelable(true)
                           .setPositiveButton("yes"){dialogInterface ,it ->
 

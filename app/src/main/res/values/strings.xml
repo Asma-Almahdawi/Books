@@ -41,5 +41,7 @@
     <string name="home">home</string>
     <string name="like">like</string>
     <string name="profile">profile</string>
+    <string name="delete">Delete book</string>
+    <string name="delete_msg">Are you sure you want to delete the book?</string>
 
 </resources>

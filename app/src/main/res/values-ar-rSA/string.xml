@@ -42,6 +42,7 @@
     <string name="home">الرئيسيه</string>
     <string name="like">المفضله</string>
     <string name="profile">الملف الشخصي</string>
-
+    <string name="delete">حذف الكتاب</string>
+    <string name="delete_msg">هل انت متأكد بأنك تريد حذف الكتاب؟</string>
 
 </resources>
