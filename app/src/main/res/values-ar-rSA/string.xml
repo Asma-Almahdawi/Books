@@ -7,7 +7,7 @@
     <string name="password">الرقم السري</string>
     <string name="edit_profile">تعديل الملف الشخصي</string>
     <string name="takephoto">اختار صوره</string>
-    <string name="uoload_pdf_file">حمل ملف PDF</string>
+    <string name="uoload_pdf_file">ارفاق ملف PDF</string>
     <string name="book_owner">مالك الكتاب</string>
     <string name="auther_name">اسم الكاتب</string>
     <string name="yearofpublication">سنة النشر</string>
@@ -18,8 +18,8 @@
     <string name="readpdf">قراءة الكتاب</string>
     <string name="addtofav">اضافة الى المفضله</string>
     <string name="notification_channel_name">اهلا</string>
-    <string name="new_books_title">كتب جديده</string>
-    <string name="new_books_text">لديك كتب جديده</string>
+    <string name="welcome">اهلا بك في تطبيق Books</string>
+    <string name="new_notify">هل تريد رؤية كتب جديده؟</string>
     <string name="hello">اهلا</string>
     <string name="hellooWo">اهلا</string>
     <string name="year">سنة التأليف:</string>

@@ -1,6 +1,7 @@
 package com.example.books.fragments.bookdetails
 
 import android.annotation.SuppressLint
+import android.app.DownloadManager
 import android.graphics.Color
 import android.media.AudioManager
 import android.media.MediaPlayer
@@ -171,6 +172,8 @@ class BookDetailsFragment : Fragment() {
         }
 
         favCheck()
+
+
         return binding.root
     }
 

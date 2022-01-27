@@ -16,9 +16,9 @@
     <string name="sendrate">sendRate</string>
     <string name="readpdf">readpdf</string>
     <string name="addtofav">addToFav</string>
-    <string name="notification_channel_name">Welcome</string>
-    <string name="new_books_title">New Book</string>
-    <string name="new_books_text">You have new book.</string>
+    <string name="notification_channel_name">Books</string>
+    <string name="welcome">Welcome to Books app</string>
+    <string name="new_notify">Do you want to see new books?</string>
     <string name="hello">Hello</string>
     <string name="hellooWo">helloo</string>
     <string name="year">Year:</string>

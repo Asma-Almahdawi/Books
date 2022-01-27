@@ -9,11 +9,13 @@
         android:id="@+id/commentTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
         android:layout_marginTop="48dp"
         android:layout_marginEnd="284dp"
         android:text="TextView"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageUserTv"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView

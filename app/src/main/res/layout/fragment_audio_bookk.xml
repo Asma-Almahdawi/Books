@@ -37,12 +37,12 @@
             android:backgroundTint="@color/teal_700"
             android:text="@string/takephoto" />
 
+
         <Button
             android:id="@+id/audioBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/upload_audio" />
-
+            android:text="Upload audio" />
 
         <EditText
             android:id="@+id/bookNameTv"

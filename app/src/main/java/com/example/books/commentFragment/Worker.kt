@@ -28,10 +28,10 @@ class Worker(private val context: Context, workerPrams: WorkerParameters) :
         val resources = context.resources
         val notification = NotificationCompat.Builder(
             context, CHANNEL_NOTIFICATION_ID
-        ).setTicker(resources.getString(R.string.new_books_title))
+        ).setTicker(resources.getString(R.string.welcome))
             .setSmallIcon(R.drawable.notification)
-            .setContentTitle(resources.getString(R.string.new_books_title))
-            .setContentText(resources.getString(R.string.new_books_text))
+            .setContentTitle(resources.getString(R.string.welcome))
+            .setContentText(resources.getString(R.string.new_notify))
             .setAutoCancel(true)
             .build()
 

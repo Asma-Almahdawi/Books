@@ -38,7 +38,7 @@ class RegisterFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+binding= RegisterFragmentBinding.inflate(layoutInflater)
         binding.registerBtn.setOnClickListener {
             val email = binding.emailTv.text.toString()
             val password = binding.passwordTv.text.toString()

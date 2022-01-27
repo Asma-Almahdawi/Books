@@ -46,11 +46,12 @@
         android:layout_width="150sp"
         android:layout_height="150sp"
         android:layout_marginStart="128dp"
+        android:src="@drawable/account"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck"
-        tools:src="@tools:sample/avatars" />
+         />
 
     <EditText
         android:id="@+id/bioTvUpdate"
